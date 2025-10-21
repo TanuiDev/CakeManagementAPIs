@@ -11,3 +11,18 @@ export const getOrders = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+export const getOrderById = async (req: Request, res: Response) => {
+  const orderId = parseInt(req.params.id, 10);
+  try {
+    const order = await ordersService.fetchOrderById(orderId);
+    if (order) {
+      res.status(200).json(order);
+    } else {
+      res.status(404).json({ error: 'Order not found' });
+    }
+  } catch (error) {
+    console.error('Error fetching order by ID:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
