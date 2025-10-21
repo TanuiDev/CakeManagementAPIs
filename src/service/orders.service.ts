@@ -19,5 +19,6 @@ export const changeOrderStatus = async (orderId: number, status: string) => {
   if (!order) {
     throw new Error('Order not found');
   }
+  
   return await ordersRepository.updateOrderStatus(orderId, status);
 }

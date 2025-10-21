@@ -38,10 +38,12 @@ export const createOrder = async (req: Request, res: Response) => {
 };
 
 export const updateOrderStatus = async (req: Request, res: Response) => {
-  const orderId = parseInt(req.params.Id);
-  const { status } = req.body;
+  const orderId = parseInt(req.params.id);
+  console.log("order id", orderId)
+  const { Status } = req.body;
+  console.log(Status)
   try {
-     await ordersService.changeOrderStatus(orderId, status);
+     await ordersService.changeOrderStatus(orderId, Status);
 
     res.status(200).json({ message: 'Order status updated successfully' });
    
@@ -49,6 +51,6 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
     if (error.message === 'Order not found') {
       return res.status(404).json({ error: 'Order not found' });
     }
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json( error);
   }
 };
