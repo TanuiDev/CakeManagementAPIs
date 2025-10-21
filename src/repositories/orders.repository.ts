@@ -1,6 +1,6 @@
 import sql from 'mssql';
 import { getPool } from '../db/config';
-import { NewOrder } from '../types/orders.types';
+import { NewOrder, updateOrder } from '../types/orders.types';
 
 
 
@@ -51,6 +51,30 @@ await pool
     .input('Status', Status)
     .query('UPDATE Cake_Orders SET Status = @Status WHERE Id = @Id');
   return "Order status updated";
+}
+
+export const updateOrderDetails = async(orderId:number,orderData:Partial<updateOrder>)=>{
+  const pool = await getPool();
+  await pool
+  const existingOrder = await getOrderById(orderId);
+  if (!existingOrder) {
+    throw new Error('Order not found');
+  }
+  const updatedOrder = { ...existingOrder, ...orderData };
+  
+  await pool
+    .request()
+    .input('Id', orderId)
+    .input('DesignId', updatedOrder.DesignId )
+    .input('Size', updatedOrder.Size )
+    .input('Flavor', updatedOrder.Flavor )
+    .input('Message', updatedOrder.Message )
+    .input('ExtendedDescription', updatedOrder.ExtendedDescription )
+    .input('Notes', updatedOrder.Notes )
+    .input('SampleImages', updatedOrder.SampleImages )
+    .input('ColorPreferences', updatedOrder.ColorPreferences)
+    .query('UPDATE Cake_Orders SET DesignId = @DesignId, Size = @Size, Flavor = @Flavor, Message = @Message, ExtendedDescription = @ExtendedDescription, Notes = @Notes, SampleImages = @SampleImages, ColorPreferences = @ColorPreferences WHERE Id = @Id');
+  return "Order details updated";
 }
 
 

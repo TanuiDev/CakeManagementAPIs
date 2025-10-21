@@ -37,6 +37,22 @@ export const createOrder = async (req: Request, res: Response) => {
   }
 };
 
+export const updateOrderDetails = async (req: Request, res: Response) => {
+  const orderId = parseInt(req.params.id);
+  
+  const orderData = req.body;
+ 
+  try {
+    const updatedOrder = await ordersService.modifyOrderDetails(orderId, orderData);
+    res.status(200).json(updatedOrder);
+  } catch (error: any) {
+    if (error.message === 'Order not found') {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+    res.status(500).json({ error  });
+  }
+};
+
 export const updateOrderStatus = async (req: Request, res: Response) => {
   const orderId = parseInt(req.params.id);
   console.log("order id", orderId)
