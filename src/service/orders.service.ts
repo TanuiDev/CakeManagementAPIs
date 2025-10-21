@@ -11,4 +11,13 @@ export const fetchOrderById = async (orderId: number) => {
 
 export const createNewOrder = async (orderData: NewOrder) => {
   return await ordersRepository.createOrder(orderData);
+  
+}
+
+export const changeOrderStatus = async (orderId: number, status: string) => {
+  const order = await ordersRepository.getOrderById(orderId);
+  if (!order) {
+    throw new Error('Order not found');
+  }
+  return await ordersRepository.updateOrderStatus(orderId, status);
 }

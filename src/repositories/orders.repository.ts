@@ -41,4 +41,14 @@ export const createOrder = async (orderData: NewOrder) => {
 
 
 
-}    
+}
+
+export const updateOrderStatus = async (orderId: number, status: string) => {
+  const pool = await getPool();
+  const result = await pool
+    .request()
+    .input('Id', sql.Int, orderId)
+    .input('Status', status)
+    .query('UPDATE Cake_Orders SET Status = @Status WHERE Id = @Id');
+  return result.rowsAffected;
+}
