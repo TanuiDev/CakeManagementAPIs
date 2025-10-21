@@ -55,6 +55,17 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
   }
 };
 
+export const getOrdersByUserId = async (req: Request, res: Response) => {
+  const userId = parseInt(req.params.userId);
+  try {
+    const orders = await ordersService.getOrdersByUserId(userId);
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error('Error fetching orders by user ID:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 
 export const deleteOrder = async (req: Request, res: Response) => {
   const orderId =  parseInt(req.params.id);

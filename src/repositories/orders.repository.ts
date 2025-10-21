@@ -62,3 +62,13 @@ export const deleteOrder = async(orderId: number) => {
     .query('DELETE FROM Cake_Orders WHERE Id = @Id');
   return "Order deleted";
 }
+
+export const getOrdersByUserId = async (userId: number) => {
+  const pool = await getPool();
+  const result = await pool
+    .request()
+    .input('UserId',userId)
+    .query('SELECT * FROM Cake_Orders WHERE UserId = @UserId');
+  return result.recordset;
+};
+

@@ -31,3 +31,7 @@ export const removeOrder = async(orderId: number) => {
 
   return await ordersRepository.deleteOrder(orderId); 
 }
+
+export const getOrdersByUserId = async(userId: number) => {
+  return await ordersRepository.getOrdersByUserId(userId);
+}

@@ -6,6 +6,7 @@ const registerOrderRoutes = (app: any) => {
   app.post('/orders', ordersController.createOrder);
   app.patch('/orders/:id', ordersController.updateOrderStatus);
   app.delete('/orders/:id', ordersController.deleteOrder);
+  app.get('/user/orders/:userId', ordersController.getOrdersByUserId);
 };
 
 
