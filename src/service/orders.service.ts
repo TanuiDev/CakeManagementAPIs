@@ -22,3 +22,12 @@ export const changeOrderStatus = async (orderId: number, status: string) => {
   
   return await ordersRepository.updateOrderStatus(orderId, status);
 }
+
+export const removeOrder = async(orderId: number) => {    
+  const order = await ordersRepository.getOrderById(orderId);
+  if (!order) {
+    throw new Error('Order not found');
+  }
+
+  return await ordersRepository.deleteOrder(orderId); 
+}

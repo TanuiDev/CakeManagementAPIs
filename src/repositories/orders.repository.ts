@@ -52,3 +52,13 @@ await pool
     .query('UPDATE Cake_Orders SET Status = @Status WHERE Id = @Id');
   return "Order status updated";
 }
+
+
+export const deleteOrder = async(orderId: number) => {
+  const pool = await getPool();
+  await pool
+    .request()
+    .input('Id', orderId)
+    .query('DELETE FROM Cake_Orders WHERE Id = @Id');
+  return "Order deleted";
+}
