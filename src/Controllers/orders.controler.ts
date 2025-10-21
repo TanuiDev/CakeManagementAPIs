@@ -26,3 +26,14 @@ export const getOrderById = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+export const createOrder = async (req: Request, res: Response) => {
+  try {
+    const newOrder = await ordersService.createNewOrder(req.body);
+    res.status(201).json(newOrder);
+  } catch (error) {
+    console.error('Error creating order:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+

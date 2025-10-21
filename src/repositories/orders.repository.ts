@@ -1,5 +1,6 @@
 import sql from 'mssql';
 import { getPool } from '../db/config';
+import { NewOrder } from '../types/orders.types';
 
 
 
@@ -17,3 +18,27 @@ export const getOrderById = async (orderId: number) => {
   .query('SELECT * FROM Cake_Orders WHERE Id = @Id');
   return result.recordset[0];
 }
+
+export const createOrder = async (orderData: NewOrder) => {
+  const pool = await getPool();
+  const result = await pool
+    .request()
+    .input('DesignId',orderData.DesignId ?? null)
+      .input('UserId', sql.Int, orderData.UserId)
+      .input('Size', sql.VarChar(50), orderData.Size)
+      .input('Flavor', sql.VarChar(100), orderData.Flavor)
+      .input('Message', sql.VarChar(255), orderData.Message ?? null)
+      .input('Status', sql.VarChar(50), orderData.Status ?? 'Pending')
+      .input('DeliveryDate', sql.DateTime, orderData.DeliveryDate)
+      .input('Notes', sql.VarChar(sql.MAX), orderData.Notes ?? null)
+      .input('ExtendedDescription', sql.VarChar(sql.MAX), orderData.ExtendedDescription ?? null)
+      .input('SampleImages', sql.NVarChar(sql.MAX), orderData.SampleImages ? JSON.stringify(orderData.SampleImages) : null)
+      .input('ColorPreferences', sql.NVarChar(sql.MAX), orderData.ColorPreferences ? JSON.stringify(orderData.ColorPreferences) : null)
+    .query('INSERT INTO Cake_Orders (DesignId, UserId, Size, Flavor, Message, Status, DeliveryDate, Notes, ExtendedDescription, SampleImages, ColorPreferences)VALUES (@DesignId, @UserId, @Size, @Flavor, @Message, @Status, @DeliveryDate, @Notes, @ExtendedDescription, @SampleImages, @ColorPreferences)');
+  return result.recordset;
+    
+
+
+
+
+}    
