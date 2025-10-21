@@ -1,6 +1,8 @@
 import express from "express";
 
 import { getPool } from "./db/config";
+import registerOrderRoutes from "./routers/orders.routes";
+
 
 
 
@@ -10,7 +12,7 @@ app.use(express.json());
 
 //register routes here
 
-
+registerOrderRoutes(app);
 
 
 
