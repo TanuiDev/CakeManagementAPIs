@@ -51,6 +51,7 @@ ADD AvailableSizes NVARCHAR(100) NULL;  -- e.g. 'Small,Medium,Large'
 
 DROP TABLE IF EXISTS Cake_Designs;
 GO
+DROP TABLE IF EXISTS users;
 
 
 
@@ -122,3 +123,32 @@ GO
 
 SELECT * FROM Cake_Orders;
 GO
+    
+    -- Create users table
+CREATE TABLE users(
+  user_Id INT PRIMARY KEY IDENTITY(1,1),
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  phone VARCHAR(20),
+  address VARCHAR(255),
+  role VARCHAR(20) DEFAULT 'customer',
+  Created_At DATETIME2 DEFAULT SYSDATETIME(),
+  Updated_At DATETIME2 DEFAULT SYSDATETIME()
+);
+ALTER TABLE Users
+ADD verification_code VARCHAR(10),
+    is_verified BIT DEFAULT 0;
+
+
+-- Insert sample users
+INSERT INTO users (name, email, password, phone, address, role)
+VALUES
+('Elizabeth Njoki', 'liz@gmail.com', 'hashedpassword123', '0712345678', 'Nyeri', 'admin'),
+('James Mwangi', 'jamesbaker@gmail.com', 'hashedpassword456', '0722987456', 'Nakuru', 'baker'),
+('Ann Wanjiku', 'annwanjiku@gmail.com', 'hashedpassword789', '0723456789', 'Nairobi', 'customer'),
+('Peter Otieno', 'peter.otieno@gmail.com', 'hashedpassword321', '0711456321', 'Kisumu', 'customer'),
+('Grace Njeri', 'grace.njeri@gmail.com', 'hashedpassword654', '0709345678', 'Mombasa', 'baker');
+
+
+SELECT * FROM users;

@@ -1,21 +1,23 @@
 import express from "express";
 import { getPool } from "./db/config";
 import registerOrderRoutes from "./routers/orders.routes";
-import designRoutes from "../src/routers/design.routes";
+import designRoutes from "./routers/design.routes";
+import userRoutes from "./routers/user.routes"; // ✅ Added
 
 const app = express();
 app.use(express.json());
 
 // ✅ Register routes
 registerOrderRoutes(app);
-app.use("/design", designRoutes); // <— this enables /design routes
+app.use("/design", designRoutes);
+app.use("/users", userRoutes); // ✅ Enables /users route
 
 // ✅ Root route
 app.get("/", (_, res) => {
   res.send("Hello, express API is running...");
 });
 
-// (Optional) Direct DB query route (not needed if designRoutes is working)
+// ✅ Optional direct DB route (for testing)
 app.get("/designs-db", (req, res) => {
   getPool()
     .then(pool => pool.request().query("SELECT * FROM Cake_Designs"))

@@ -1,0 +1,102 @@
+import { getPool } from "../db/config";
+import sql from "mssql";
+import { NewUser, UpdateUser, User } from "../types/user.types";
+
+// ✅ Create user
+export const createUser = async (user: NewUser) => {
+  const pool = await getPool();
+  await pool.request()
+    .input("name", sql.VarChar, user.name)
+    .input("email", sql.VarChar, user.email)
+    .input("password", sql.VarChar, user.password)
+    .input("phone", sql.VarChar, user.phone)
+    .input("address", sql.VarChar, user.address || "")
+    .input("role", sql.VarChar, user.role || "customer")
+    .query(`
+      INSERT INTO Users (name, email, password, phone, address, role)
+      VALUES (@name, @email, @password, @phone, @address, @role)
+    `);
+  return { message: "User created successfully" };
+};
+
+// ✅ Get all users
+export const getUsers = async (): Promise<User[]> => {
+  const pool = await getPool();
+  const result = await pool.request().query("SELECT * FROM Users");
+  return result.recordset;
+};
+
+// ✅ Get user by ID
+export const getUserById = async (id: number): Promise<User | null> => {
+  const pool = await getPool();
+  const result = await pool.request()
+    .input("user_Id", sql.Int, id)
+    .query("SELECT * FROM Users WHERE user_Id = @user_Id");
+  return result.recordset[0] || null;
+};
+
+// ✅ Get user by Email
+export const getUserByEmail = async (email: string): Promise<User | null> => {
+  const pool = await getPool();
+  const result = await pool.request()
+    .input("email", sql.VarChar, email)
+    .query("SELECT * FROM Users WHERE email = @email");
+  return result.recordset[0] || null;
+};
+
+// ✅ Update user
+export const updateUser = async (id: number, updates: UpdateUser) => {
+  const pool = await getPool();
+
+  const fields: string[] = [];
+  if (updates.name) fields.push(`name='${updates.name}'`);
+  if (updates.email) fields.push(`email='${updates.email}'`);
+  if (updates.password) fields.push(`password='${updates.password}'`);
+  if (updates.phone) fields.push(`phone='${updates.phone}'`);
+  if (updates.address) fields.push(`address='${updates.address}'`);
+  if (updates.role) fields.push(`role='${updates.role}'`);
+
+  if (fields.length === 0)
+    return { message: "No fields to update" };
+
+  const query = `UPDATE Users SET ${fields.join(", ")} WHERE user_Id=${id}`;
+  await pool.request().query(query);
+
+  return { message: "User updated successfully" };
+};
+
+// ✅ Delete user
+export const deleteUser = async (id: number) => {
+  const pool = await getPool();
+  await pool.request()
+    .input("user_Id", sql.Int, id)
+    .query("DELETE FROM Users WHERE user_Id = @user_Id");
+  return { message: "User deleted successfully" };
+};
+
+// ✅ Set verification code
+export const setVerificationCode = async (email: string, code: string) => {
+  const pool = await getPool();
+  await pool.request()
+    .input("email", sql.VarChar, email)
+    .input("code", sql.VarChar, code)
+    .query(`
+      UPDATE Users 
+      SET verification_code = @code, is_verified = 0 
+      WHERE email = @email
+    `);
+  return { message: "Verification code saved" };
+};
+
+// ✅ Verify user
+export const verifyUser = async (email: string) => {
+  const pool = await getPool();
+  await pool.request()
+    .input("email", sql.VarChar, email)
+    .query(`
+      UPDATE Users 
+      SET is_verified = 1, verification_code = NULL 
+      WHERE email = @email
+    `);
+  return { message: "User verified successfully" };
+};
