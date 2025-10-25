@@ -10,3 +10,14 @@ export const fetchStages = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+export const fetchStagesByOrderId = async (req: Request, res: Response) => {
+  const orderId = parseInt(req.params.orderId);
+  try {
+    const stages = await stagesService.getStagesByOrderId(orderId);
+    res.status(200).json(stages);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+

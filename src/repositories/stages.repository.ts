@@ -8,3 +8,12 @@ export const getAllStages = async () => {
   const result = await pool.request().query('SELECT * FROM Cake_Stages');
   return result.recordset;
 }
+
+
+export const getOrderStages = async (orderId: number) => {
+  const pool = await getPool();
+  const result = await pool.request()
+    .input('OrderId', sql.Int, orderId)
+    .query('SELECT * FROM Cake_Stages WHERE OrderId = @OrderId');
+  return result.recordset;
+}
