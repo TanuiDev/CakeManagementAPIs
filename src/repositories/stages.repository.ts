@@ -54,3 +54,14 @@ export const deleteStageById = async (Id: number) => {
     .input('Id', Id)
     .query('DELETE FROM Cake_Stages WHERE Id = @Id');
 };
+
+
+export const markStageAsCompleted = async (Id: number) => {
+  const pool = await getPool();
+  await pool.request()
+    .input('Id', Id)
+    .input('Status', 'Completed')
+    .input('CompletedAt', new Date())
+    .query('UPDATE Cake_Stages SET Status = @Status, CompletedAt = @CompletedAt WHERE Id = @Id');
+};
+

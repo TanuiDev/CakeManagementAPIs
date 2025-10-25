@@ -38,3 +38,12 @@ export const removeStage = async (Id: number) => {
   await stagesRepository.deleteStageById(Id);
   return { message: 'Stage removed successfully' };
 }
+
+export const completeStage = async (Id: number) => {
+  const stage = await stagesRepository.getStageById(Id);
+  if (!stage) {
+    throw new Error('Stage not found');
+  }
+  await stagesRepository.markStageAsCompleted(Id);
+  return { message: 'Stage marked as completed' };
+}

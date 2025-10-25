@@ -55,3 +55,16 @@ export const deleteStage = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+export const completeStage = async (req: Request, res: Response) => {
+  const stageId = parseInt(req.params.stageId);
+  try {
+    const result = await stagesService.completeStage(stageId);
+    res.status(200).json(result);
+  } catch (error:any) {
+    if (error.message === 'Stage not found') {
+      return res.status(404).json({ error: 'Stage not found' });
+    }
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
