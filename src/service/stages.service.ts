@@ -7,6 +7,10 @@ export const getStages = async () => {
 
 
 export const getStagesByOrderId = async (orderId: number) => {
-  
+
   return await stagesRepository.getOrderStages(orderId);
+}
+
+export const getStageDetails = async (stageId: number) => {
+  return await stagesRepository.getStageById(stageId);
 }

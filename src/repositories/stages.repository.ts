@@ -17,3 +17,11 @@ export const getOrderStages = async (orderId: number) => {
     .query('SELECT * FROM Cake_Stages WHERE OrderId = @OrderId');
   return result.recordset;
 }
+
+export const getStageById = async (Id: number) => {
+  const pool = await getPool();
+  const result = await pool.request()
+    .input('Id',  Id)
+    .query('SELECT * FROM Cake_Stages WHERE Id = @Id');
+  return result.recordset[0];
+}

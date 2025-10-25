@@ -12,7 +12,7 @@ export const fetchStages = async (req: Request, res: Response) => {
 };
 
 export const fetchStagesByOrderId = async (req: Request, res: Response) => {
-  const orderId = parseInt(req.params.orderId);
+  const orderId = parseInt(req.params.Id);
   try {
     const stages = await stagesService.getStagesByOrderId(orderId);
     res.status(200).json(stages);
@@ -21,3 +21,12 @@ export const fetchStagesByOrderId = async (req: Request, res: Response) => {
   }
 };
 
+export const fetchStageDetails = async (req: Request, res: Response) => {
+  const stageId = parseInt(req.params.stageId);
+  try {
+    const stage = await stagesService.getStageDetails(stageId);
+    res.status(200).json(stage);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
