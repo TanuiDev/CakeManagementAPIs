@@ -8,7 +8,7 @@ import { registerStageRoutes } from "./routers/staged.routes";
 const app = express();
 app.use(express.json());
 
-// ✅ Register routes
+
 registerOrderRoutes(app);
 registerStageRoutes(app);
 app.use("/design", designRoutes);
