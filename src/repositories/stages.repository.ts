@@ -30,9 +30,20 @@ export const getStageById = async (Id: number) => {
 export const updateStageStatus = async (Id: number, status: string) => {
   const pool = await getPool();
 
-  await pool.request()
-    .input('Id', sql.Int, Id)
-    .input('Status', sql.VarChar, status)
-    .input('UpdatedAt', sql.DateTime, new Date())
-    .query('UPDATE Cake_Stages SET Status = @Status, UpdatedAt = @UpdatedAt WHERE Id = @Id');
-}
+  const request = pool.request()
+    .input('Id', Id)
+    .input('Status', status)
+    .input('UpdatedAt', new Date());
+
+ 
+  if (status === 'In Progress') {
+    request.input('StartedAt', new Date());
+    await request.query('UPDATE Cake_Stages SET Status = @Status, StartedAt = @StartedAt, UpdatedAt = @UpdatedAt WHERE Id = @Id');
+  } else if (status === 'Completed') {
+    request.input('CompletedAt', new Date());
+    await request.query('UPDATE Cake_Stages SET Status = @Status, CompletedAt = @CompletedAt, UpdatedAt = @UpdatedAt WHERE Id = @Id');
+    
+  } else {
+    await request.query('UPDATE Cake_Stages SET Status = @Status, UpdatedAt = @UpdatedAt WHERE Id = @Id');  
+  }
+};
