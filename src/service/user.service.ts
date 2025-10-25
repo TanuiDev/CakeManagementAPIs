@@ -7,15 +7,24 @@ import { emailTemplate } from '../mailer/emailtemplate';
 
 // ✅ Create user and send verification code
 export const createUser = async (user: NewUser) => {
+  // Hash password
   if (user.password) {
     user.password = await bcrypt.hash(user.password, 10);
   }
 
+  // Generate 6-digit verification code
   const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-  const newUser = { ...user, verification_code: verificationCode, is_verified: false };
+  const newUser = { 
+    ...user, 
+    verification_code: verificationCode, 
+    is_verified: false 
+  };
+
+  // Save user in DB
   await userRepositories.createUser(newUser);
 
+  // Send verification email
   try {
     await sendEmail(
       user.email,
@@ -29,26 +38,39 @@ export const createUser = async (user: NewUser) => {
   return { message: 'User created successfully. Verification code sent to email.' };
 };
 
-// ✅ Login user
+// ✅ Login user with role-based JWT
 export const loginUser = async (email: string, password: string) => {
   const user = await userRepositories.getUserByEmail(email);
   if (!user) throw new Error('User not found.');
 
+  // Verify password
   const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) throw new Error('Invalid email or password.');
+  if (!isMatch) throw new Error('Invalid credentials.');
 
+  // Ensure user verified email
   if (!user.is_verified) throw new Error('Please verify your email before logging in.');
 
-  const token = jwt.sign(
-    { id: user.id, email: user.email },
-    process.env.JWT_SECRET || 'defaultsecret',
-    { expiresIn: '7d' }
-  );
+  // JWT payload including role
+  const payload = {
+    id: user.id,
+    email: user.email,
+    role: user.role, // admin, customer, baker
+  };
+
+  const secret = process.env.JWT_SECRET;
+  if (!secret) throw new Error('JWT secret not defined.');
+  const token = jwt.sign(payload, secret, { expiresIn: '1h' });
 
   return {
     message: 'Login successful.',
     token,
-    user: { id: user.id, name: user.name, email: user.email },
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      role: user.role,
+    },
   };
 };
 
@@ -59,6 +81,7 @@ export const verifyUser = async (email: string, code: string) => {
 
   if (user.verification_code !== code) throw new Error('Invalid verification code.');
 
+  // Mark as verified
   await userRepositories.verifyUser(email);
 
   try {

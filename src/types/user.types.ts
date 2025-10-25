@@ -6,7 +6,7 @@ export interface User {
   password: string;
   phone: string;
   address?: string;
-  role?: string;
+role: 'customer' | 'admin';
   Created_At?: Date;
   Updated_At?: Date;
    verification_code?: string | null;
@@ -19,7 +19,7 @@ export interface NewUser {
   password: string;
   phone: string;
   address?: string;
-  role?: string;
+ role: 'customer' | 'admin';
   is_verified?: boolean;
   verification_code?: string;
 }

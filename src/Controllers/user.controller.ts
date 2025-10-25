@@ -11,44 +11,56 @@ export const createUserController = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Get all users
+// ✅ Get all users (admin only)
 export const getAllUsersController = async (_req: Request, res: Response) => {
   try {
-    const users = await userService.getAllUsers(); // Make sure to add getAllUsers in service
+    const users = await userService.getAllUsers();
     res.status(200).json(users);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// ✅ Get user by ID
+// ✅ Get user by ID (admins can fetch any, user fetches own)
 export const getUserByIdController = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   try {
-    const user = await userService.getUserById(id); // Make sure to add getUserById in service
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    const requestingUser = (req as any).user;
+
+    // Non-admins can only fetch their own data
+    if (requestingUser.role !== 'admin' && requestingUser.id !== id) {
+      return res.status(403).json({ message: "Forbidden: Cannot access other user's data" });
+    }
+
+    const user = await userService.getUserById(id);
     res.status(200).json(user);
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(404).json({ message: error.message });
   }
 };
 
-// ✅ Update user
+// ✅ Update user (admins can update any, users update own)
 export const updateUserController = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   try {
-    const result = await userService.updateUser(id, req.body); // Add updateUser in service
+    const requestingUser = (req as any).user;
+
+    if (requestingUser.role !== 'admin' && requestingUser.id !== id) {
+      return res.status(403).json({ message: "Forbidden: Cannot update other user's data" });
+    }
+
+    const result = await userService.updateUser(id, req.body);
     res.status(200).json(result);
   } catch (error: any) {
     res.status(400).json({ message: error.message });
   }
 };
 
-// ✅ Delete user
+// ✅ Delete user (admin only)
 export const deleteUserController = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   try {
-    const result = await userService.deleteUser(id); // Add deleteUser in service
+    const result = await userService.deleteUser(id);
     res.status(200).json(result);
   } catch (error: any) {
     res.status(400).json({ message: error.message });
