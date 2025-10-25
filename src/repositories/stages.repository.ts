@@ -25,3 +25,14 @@ export const getStageById = async (Id: number) => {
     .query('SELECT * FROM Cake_Stages WHERE Id = @Id');
   return result.recordset[0];
 }
+
+
+export const updateStageStatus = async (Id: number, status: string) => {
+  const pool = await getPool();
+
+  await pool.request()
+    .input('Id', sql.Int, Id)
+    .input('Status', sql.VarChar, status)
+    .input('UpdatedAt', sql.DateTime, new Date())
+    .query('UPDATE Cake_Stages SET Status = @Status, UpdatedAt = @UpdatedAt WHERE Id = @Id');
+}

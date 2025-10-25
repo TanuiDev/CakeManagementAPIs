@@ -30,3 +30,15 @@ export const fetchStageDetails = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+
+export const updateStage = async (req: Request, res: Response) => {
+  const stageId = parseInt(req.params.stageId);
+  const { status } = req.body;
+  try {
+    const result = await stagesService.changeStageStatus(stageId, status);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};

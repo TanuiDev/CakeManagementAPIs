@@ -14,3 +14,14 @@ export const getStagesByOrderId = async (orderId: number) => {
 export const getStageDetails = async (stageId: number) => {
   return await stagesRepository.getStageById(stageId);
 }
+
+
+export const changeStageStatus = async (Id: number, status: string) => {
+const stage = await stagesRepository.getStageById(Id);
+if (!stage) {
+  throw new Error('Stage not found'); 
+  
+}
+await stagesRepository.updateStageStatus(Id, status);
+return { message: 'Stage status updated successfully' };
+}
