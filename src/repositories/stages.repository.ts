@@ -47,3 +47,10 @@ export const updateStageStatus = async (Id: number, status: string) => {
     await request.query('UPDATE Cake_Stages SET Status = @Status, UpdatedAt = @UpdatedAt WHERE Id = @Id');  
   }
 };
+
+export const deleteStageById = async (Id: number) => {
+  const pool = await getPool();
+  await pool.request()
+    .input('Id', Id)
+    .query('DELETE FROM Cake_Stages WHERE Id = @Id');
+};

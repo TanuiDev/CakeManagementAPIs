@@ -7,5 +7,6 @@ export const registerStageRoutes = (app: any) => {
   app.get('/stages/order/:orderId', stagesController.fetchStagesByOrderId);
   app.get('/stages/:stageId', stagesController.fetchStageDetails);
   app.patch('/stages/:stageId', stagesController.updateStage);
+  app.delete('/stages/:stageId', stagesController.deleteStage);
 };
 

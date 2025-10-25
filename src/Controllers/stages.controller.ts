@@ -26,7 +26,10 @@ export const fetchStageDetails = async (req: Request, res: Response) => {
   try {
     const stage = await stagesService.getStageDetails(stageId);
     res.status(200).json(stage);
-  } catch (error) {
+  } catch (error:any) {
+    if (error.message === 'Stage not found') {
+      return res.status(404).json({ error: 'Stage not found' });
+    }
     res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -37,6 +40,16 @@ export const updateStage = async (req: Request, res: Response) => {
   const { status } = req.body;
   try {
     const result = await stagesService.changeStageStatus(stageId, status);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+export const deleteStage = async (req: Request, res: Response) => {
+  const stageId = parseInt(req.params.stageId);
+  try {
+    const result = await stagesService.removeStage(stageId);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });

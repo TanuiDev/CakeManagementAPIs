@@ -12,6 +12,10 @@ export const getStagesByOrderId = async (orderId: number) => {
 }
 
 export const getStageDetails = async (stageId: number) => {
+  const stage = await stagesRepository.getStageById(stageId);
+  if (!stage) {
+    throw new Error('Stage not found');
+  }
   return await stagesRepository.getStageById(stageId);
 }
 
@@ -24,4 +28,13 @@ if (!stage) {
 }
 await stagesRepository.updateStageStatus(Id, status);
 return { message: 'Stage status updated successfully' };
+}
+
+export const removeStage = async (Id: number) => {
+  const stage = await stagesRepository.getStageById(Id);
+  if (!stage) {
+    throw new Error('Stage not found');
+  }
+  await stagesRepository.deleteStageById(Id);
+  return { message: 'Stage removed successfully' };
 }
