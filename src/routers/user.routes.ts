@@ -1,26 +1,25 @@
 import express from "express";
 import {
-  registerUser,
-  loginUser,
-  listUsers,
-  getUser,
   createUserController,
+  getAllUsersController,
+  getUserByIdController,
   updateUserController,
   deleteUserController,
-  sendVerificationCode,
+  loginUserController,         // fixed
   verifyUserController,
+  resendVerificationController
 } from "../Controllers/user.controller";
 
 const router = express.Router();
 
-router.post("/registerUser", registerUser);
-router.post("/login", loginUser);
-router.get("/getAllUsers", listUsers);
-router.get("/user/:id", getUser);
-router.post("/createUser", createUserController);
-router.put("/updateUser/:id", updateUserController);
-router.delete("user/:id", deleteUserController);
-router.post("/verify/send", sendVerificationCode);
+// ✅ Routes
+router.post("/register", createUserController);
+router.post("/login", loginUserController);   // fixed
+router.get("/", getAllUsersController);       // fixed
+router.get("/:id", getUserByIdController);
+router.put("/:id", updateUserController);
+router.delete("/:id", deleteUserController);
 router.post("/verify", verifyUserController);
+router.post("/verify/resend", resendVerificationController);
 
 export default router;

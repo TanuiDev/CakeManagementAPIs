@@ -153,6 +153,23 @@ VALUES
 
 SELECT * FROM users;
 
+USE CakeManagementDB;   
+ALTER TABLE Users
+ADD verification_code VARCHAR(10),
+    is_verified BIT DEFAULT 0;
+
+    USE CakeManagementDB;  
+DELETE FROM Users WHERE email = 'njokimunywa@gmail.com';
+
+
+
+
+
+
+
+
+
+
 
 
 CREATE TABLE Cake_Stages (
