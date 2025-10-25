@@ -1,5 +1,6 @@
 export interface User {
   user_Id: number;
+  id?: number; 
   name: string;
   email: string;
   password: string;
@@ -8,6 +9,8 @@ export interface User {
   role?: string;
   Created_At?: Date;
   Updated_At?: Date;
+   verification_code?: string | null;
+  is_verified?: boolean;
 }
 
 export interface NewUser {
@@ -17,6 +20,8 @@ export interface NewUser {
   phone: string;
   address?: string;
   role?: string;
+  is_verified?: boolean;
+  verification_code?: string;
 }
 
 export interface UpdateUser {
@@ -26,6 +31,8 @@ export interface UpdateUser {
   phone?: string;
   address?: string;
   role?: string;
+   is_verified?: boolean;
+  verification_code?: string;
 }
 
 export interface LoginUser {

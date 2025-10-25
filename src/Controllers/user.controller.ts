@@ -1,91 +1,33 @@
-import { Request, Response } from "express";
-import {
-  createUser,
-  getUsers,
-  getUserByEmail,
-  getUserById,
-  updateUser,
-  deleteUser,
-  setVerificationCode,
-  verifyUser,
-} from "../repositories/user.repository";
-import { NewUser, UpdateUser, LoginUser } from "../types/user.types";
-import bcrypt from "bcrypt";
+import { Request, Response } from 'express';
+import * as userService from '../service/user.service';
 
-// ✅ Register a new user
-export const registerUser = async (req: Request, res: Response) => {
-  const newUser: NewUser = req.body;
-
-  try {
-    const existingUser = await getUserByEmail(newUser.email);
-    if (existingUser)
-      return res.status(400).json({ message: "User already exists" });
-
-    const hashedPassword = await bcrypt.hash(newUser.password, 10);
-    newUser.password = hashedPassword;
-
-    const result = await createUser(newUser);
-    res.status(201).json(result);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// ✅ List all users
-export const listUsers = async (_req: Request, res: Response) => {
-  try {
-    const users = await getUsers();
-    res.json(users);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// ✅ Get single user by ID
-export const getUser = async (req: Request, res: Response) => {
-  const { id } = req.params;
-
-  try {
-    const user = await getUserById(Number(id));
-    if (!user) return res.status(404).json({ message: "User not found" });
-    res.json(user);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// ✅ Login user
-export const loginUser = async (req: Request, res: Response) => {
-  const loginData: LoginUser = req.body;
-  const { email, password } = loginData;
-
-  try {
-    const user = await getUserByEmail(email);
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
-
-    res.status(200).json({ message: "Login successful", user });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// ✅ Create user (admin-level direct creation)
+// ✅ Create / Register user
 export const createUserController = async (req: Request, res: Response) => {
-  const newUser: NewUser = req.body;
-
   try {
-    const existingUser = await getUserByEmail(newUser.email);
-    if (existingUser)
-      return res.status(400).json({ message: "Email already exists" });
-
-    const hashedPassword = await bcrypt.hash(newUser.password, 10);
-    newUser.password = hashedPassword;
-
-    const result = await createUser(newUser);
+    const result = await userService.createUser(req.body);
     res.status(201).json(result);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// ✅ Get all users
+export const getAllUsersController = async (_req: Request, res: Response) => {
+  try {
+    const users = await userService.getAllUsers(); // Make sure to add getAllUsers in service
+    res.status(200).json(users);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// ✅ Get user by ID
+export const getUserByIdController = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  try {
+    const user = await userService.getUserById(id); // Make sure to add getUserById in service
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.status(200).json(user);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -93,59 +35,55 @@ export const createUserController = async (req: Request, res: Response) => {
 
 // ✅ Update user
 export const updateUserController = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const userUpdates: UpdateUser = req.body;
-
+  const id = Number(req.params.id);
   try {
-    if (userUpdates.password) {
-      userUpdates.password = await bcrypt.hash(userUpdates.password, 10);
-    }
-
-    const result = await updateUser(Number(id), userUpdates);
+    const result = await userService.updateUser(id, req.body); // Add updateUser in service
     res.status(200).json(result);
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
 // ✅ Delete user
 export const deleteUserController = async (req: Request, res: Response) => {
-  const { id } = req.params;
-
+  const id = Number(req.params.id);
   try {
-    const result = await deleteUser(Number(id));
+    const result = await userService.deleteUser(id); // Add deleteUser in service
     res.status(200).json(result);
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
-// ✅ Send verification code
-export const sendVerificationCode = async (req: Request, res: Response) => {
-  const { email, code } = req.body;
-
+// ✅ Login user
+export const loginUserController = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
   try {
-    const user = await getUserByEmail(email);
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    const result = await setVerificationCode(email, code);
+    const result = await userService.loginUser(email, password);
     res.status(200).json(result);
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(401).json({ message: error.message });
   }
 };
 
-// ✅ Verify user
+// ✅ Verify user email
 export const verifyUserController = async (req: Request, res: Response) => {
-  const { email } = req.body;
-
+  const { email, code } = req.body;
   try {
-    const user = await getUserByEmail(email);
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    const result = await verifyUser(email);
+    const result = await userService.verifyUser(email, code);
     res.status(200).json(result);
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// ✅ Resend verification code
+export const resendVerificationController = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  try {
+    const result = await userService.resendVerificationCode(email);
+    res.status(200).json(result);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
   }
 };
