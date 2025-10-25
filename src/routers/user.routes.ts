@@ -13,13 +13,13 @@ import {
 
 const router = express.Router();
 
-router.post("/register", registerUser);
+router.post("/registerUser", registerUser);
 router.post("/login", loginUser);
-router.get("/", listUsers);
-router.get("/:id", getUser);
-router.post("/", createUserController);
-router.put("/:id", updateUserController);
-router.delete("/:id", deleteUserController);
+router.get("/getAllUsers", listUsers);
+router.get("/user/:id", getUser);
+router.post("/createUser", createUserController);
+router.put("/updateUser/:id", updateUserController);
+router.delete("user/:id", deleteUserController);
 router.post("/verify/send", sendVerificationCode);
 router.post("/verify", verifyUserController);
 

@@ -125,13 +125,13 @@ SELECT * FROM Cake_Orders;
 GO
     
     -- Create users table
-CREATE TABLE users(
+CREATE TABLE Users(
   user_Id INT PRIMARY KEY IDENTITY(1,1),
   name VARCHAR(100) NOT NULL,
   email VARCHAR(100) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
-  phone VARCHAR(20),
-  address VARCHAR(255),
+  phone VARCHAR(20) NOT NULL UNIQUE,
+  address VARCHAR(255) NOT NULL,
   role VARCHAR(20) DEFAULT 'customer',
   Created_At DATETIME2 DEFAULT SYSDATETIME(),
   Updated_At DATETIME2 DEFAULT SYSDATETIME()
@@ -152,3 +152,29 @@ VALUES
 
 
 SELECT * FROM users;
+
+
+
+CREATE TABLE Cake_Stages (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    OrderId INT NOT NULL,
+    StageName NVARCHAR(50) NOT NULL,        
+    Status NVARCHAR(30) DEFAULT 'Pending',   
+    StartedAt DATETIME2 NULL,
+    CompletedAt DATETIME2 NULL,
+    Notes NVARCHAR(MAX) NULL,
+    UpdatedAt DATETIME2 DEFAULT SYSDATETIME(),
+
+    FOREIGN KEY (OrderId) REFERENCES Cake_Orders(Id) ON DELETE CASCADE
+);
+
+INSERT INTO Cake_Stages (OrderId, StageName, Status, StartedAt, CompletedAt, Notes)
+VALUES
+(1, 'Baking', 'Completed', '2025-10-20 09:00', '2025-10-20 12:00', 'Baked successfully.'),
+(1, 'Decorating', 'In Progress', '2025-10-21 10:00', NULL, 'Working on floral piping.'),
+(2, 'Baking', 'Completed', '2025-10-22 08:30', '2025-10-22 11:30', 'Baked without issues.'),
+(2, 'Decorating', 'Pending', NULL, NULL, 'Scheduled for tomorrow.'),
+(3, 'Baking', 'Completed', '2025-10-23 07:45', '2025-10-23 10:15', 'Red velvet baked perfectly.');
+
+
+SELECT * FROM Cake_Stages;
