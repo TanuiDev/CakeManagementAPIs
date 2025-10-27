@@ -2,21 +2,30 @@ import { getPool } from "../db/config";
 import sql from "mssql";
 import { NewUser, UpdateUser, User } from "../types/user.types";
 
+<<<<<<< HEAD
 //  Create user
 export const createUser = async (user: NewUser) => {
+=======
+// ✅ Create a new user
+export const createUser = async (user: NewUser): Promise<User> => {
+>>>>>>> 9850407e22e4af014f4753ec87a154eef973e492
   const pool = await getPool();
-  await pool.request()
+  const result = await pool.request()
     .input("name", sql.VarChar, user.name)
     .input("email", sql.VarChar, user.email)
     .input("password", sql.VarChar, user.password)
-    .input("phone", sql.VarChar, user.phone)
+    .input("phone", sql.VarChar, user.phone || "")
     .input("address", sql.VarChar, user.address || "")
     .input("role", sql.VarChar, user.role || "customer")
+    .input("is_verified", sql.Bit, 0)
+    .input("verification_code", sql.VarChar, user.verification_code || null)
     .query(`
-      INSERT INTO Users (name, email, password, phone, address, role)
-      VALUES (@name, @email, @password, @phone, @address, @role)
+      INSERT INTO Users (name, email, password, phone, address, role, is_verified, verification_code)
+      OUTPUT INSERTED.*
+      VALUES (@name, @email, @password, @phone, @address, @role, @is_verified, @verification_code)
     `);
-  return { message: "User created successfully" };
+
+  return result.recordset[0];
 };
 
 // Get all users
@@ -55,9 +64,10 @@ export const updateUser = async (id: number, updates: UpdateUser) => {
   if (updates.phone) fields.push(`phone='${updates.phone}'`);
   if (updates.address) fields.push(`address='${updates.address}'`);
   if (updates.role) fields.push(`role='${updates.role}'`);
+  if (typeof updates.is_verified !== "undefined") fields.push(`is_verified=${updates.is_verified ? 1 : 0}`);
+  if (updates.verification_code) fields.push(`verification_code='${updates.verification_code}'`);
 
-  if (fields.length === 0)
-    return { message: "No fields to update" };
+  if (fields.length === 0) return { message: "No fields to update" };
 
   const query = `UPDATE Users SET ${fields.join(", ")} WHERE user_Id=${id}`;
   await pool.request().query(query);
@@ -81,8 +91,8 @@ export const setVerificationCode = async (email: string, code: string) => {
     .input("email", sql.VarChar, email)
     .input("code", sql.VarChar, code)
     .query(`
-      UPDATE Users 
-      SET verification_code = @code, is_verified = 0 
+      UPDATE Users
+      SET verification_code = @code, is_verified = 0
       WHERE email = @email
     `);
   return { message: "Verification code saved" };
@@ -94,8 +104,8 @@ export const verifyUser = async (email: string) => {
   await pool.request()
     .input("email", sql.VarChar, email)
     .query(`
-      UPDATE Users 
-      SET is_verified = 1, verification_code = NULL 
+      UPDATE Users
+      SET is_verified = 1, verification_code = NULL
       WHERE email = @email
     `);
   return { message: "User verified successfully" };
