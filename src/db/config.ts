@@ -32,19 +32,27 @@ export const config = {
       idleTimeoutMillis: 30000,
     },
     options: {
-      encrypt: false, // ✅ Disable if using localhost
+      encrypt: false, // disable if using localhost
       trustServerCertificate: true,
     },
   },
 };
 
+// ✅ Maintain a single shared pool
+let pool: sql.ConnectionPool | null = null;
+
 export const getPool = async () => {
   try {
-    const pool = await sql.connect(config.sqlConfig);
-    console.log('✅ Database connected');
+    if (pool) {
+      // If already connected, reuse the existing pool
+      return pool;
+    }
+
+    pool = await sql.connect(config.sqlConfig);
+    console.log('✅ Connected to SQL Server');
     return pool;
   } catch (error) {
-    console.error('❌ SQL Connection Error:', error);
+    console.error(' SQL Connection Error:', error);
     throw error;
   }
 };

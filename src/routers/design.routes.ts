@@ -1,18 +1,10 @@
-import express from 'express';
-import {
-  getAllDesigns,
-  getDesign,
-  createDesign,
-  updateDesign,
-  deleteDesign
-} from '../Controllers/design.controller';
+import { Express } from "express";
+import * as designController from "../Controllers/design.controller";
 
-const router = express.Router();
-
-router.get('/', getAllDesigns);          // GET all designs
-router.get('/:id', getDesign);           // GET one design
-router.post('/', createDesign);          // CREATE new design
-router.put('/:id', updateDesign);        // UPDATE design
-router.delete('/:id', deleteDesign);     // DELETE design
-
-export default router;
+export default function registerDesignRoutes(app: Express) {
+  app.get("/designs", designController.getAllDesigns);
+  app.get("/designs/:id", designController.getDesign);
+  app.post("/designs", designController.createDesign);
+  app.put("/designs/:id", designController.updateDesign);
+  app.delete("/designs/:id", designController.deleteDesign);
+}

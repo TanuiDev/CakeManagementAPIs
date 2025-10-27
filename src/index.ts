@@ -1,29 +1,33 @@
 import express from "express";
 import { getPool } from "./db/config";
+
+// ✅ Import route registration functions
 import registerOrderRoutes from "./routers/orders.routes";
-import designRoutes from "./routers/design.routes";
-import userRoutes from "./routers/user.routes"; // ✅ Added
+import registerDesignRoutes from "./routers/design.routes";
+import registerUserRoutes from "./routers/user.routes";
+import registerCakeRoutes from "./routers/readycakes.routes";
 
 const app = express();
 app.use(express.json());
 
-// ✅ Register routes
+// ✅ Register all routes in the same consistent style
 registerOrderRoutes(app);
-app.use("/design", designRoutes);
-app.use("/users", userRoutes); // ✅ Enables /users route
+registerDesignRoutes(app);
+registerUserRoutes(app);
+registerCakeRoutes(app);
 
 // ✅ Root route
 app.get("/", (_, res) => {
-  res.send("Hello, express API is running...");
+  res.send("Hello, Express API is running...");
 });
 
-// ✅ Optional direct DB route (for testing)
+// ✅ Optional: direct DB route (for testing)
 app.get("/designs-db", (req, res) => {
   getPool()
     .then(pool => pool.request().query("SELECT * FROM Cake_Designs"))
     .then(result => res.json(result.recordset))
     .catch(err => {
-      console.log("SQL error", err);
+      console.error("SQL error", err);
       res.status(500).send("Server error");
     });
 });
@@ -34,5 +38,5 @@ app.listen(port, () => {
 });
 
 getPool()
-  .then(() => console.log("Database connected"))
-  .catch(error => console.error("Error connecting to SQL Server:", error));
+  .then(() => console.log(" Database connected"))
+  .catch(error => console.error(" Error connecting to SQL Server:", error));

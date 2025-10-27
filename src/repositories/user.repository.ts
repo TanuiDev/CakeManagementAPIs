@@ -2,7 +2,7 @@ import { getPool } from "../db/config";
 import sql from "mssql";
 import { NewUser, UpdateUser, User } from "../types/user.types";
 
-// ✅ Create user
+//  Create user
 export const createUser = async (user: NewUser) => {
   const pool = await getPool();
   await pool.request()
@@ -19,14 +19,14 @@ export const createUser = async (user: NewUser) => {
   return { message: "User created successfully" };
 };
 
-// ✅ Get all users
+// Get all users
 export const getUsers = async (): Promise<User[]> => {
   const pool = await getPool();
   const result = await pool.request().query("SELECT * FROM Users");
   return result.recordset;
 };
 
-// ✅ Get user by ID
+// Get user by ID
 export const getUserById = async (id: number): Promise<User | null> => {
   const pool = await getPool();
   const result = await pool.request()
@@ -35,7 +35,7 @@ export const getUserById = async (id: number): Promise<User | null> => {
   return result.recordset[0] || null;
 };
 
-// ✅ Get user by Email
+// Get user by Email
 export const getUserByEmail = async (email: string): Promise<User | null> => {
   const pool = await getPool();
   const result = await pool.request()
@@ -44,7 +44,7 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
   return result.recordset[0] || null;
 };
 
-// ✅ Update user
+// Update user
 export const updateUser = async (id: number, updates: UpdateUser) => {
   const pool = await getPool();
 
@@ -65,7 +65,7 @@ export const updateUser = async (id: number, updates: UpdateUser) => {
   return { message: "User updated successfully" };
 };
 
-// ✅ Delete user
+//  Delete user
 export const deleteUser = async (id: number) => {
   const pool = await getPool();
   await pool.request()
@@ -74,7 +74,7 @@ export const deleteUser = async (id: number) => {
   return { message: "User deleted successfully" };
 };
 
-// ✅ Set verification code
+// Set verification code
 export const setVerificationCode = async (email: string, code: string) => {
   const pool = await getPool();
   await pool.request()
@@ -88,7 +88,7 @@ export const setVerificationCode = async (email: string, code: string) => {
   return { message: "Verification code saved" };
 };
 
-// ✅ Verify user
+// Verify user
 export const verifyUser = async (email: string) => {
   const pool = await getPool();
   await pool.request()
