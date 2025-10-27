@@ -2,13 +2,9 @@ import { getPool } from "../db/config";
 import sql from "mssql";
 import { NewUser, UpdateUser, User } from "../types/user.types";
 
-<<<<<<< HEAD
+
 //  Create user
 export const createUser = async (user: NewUser) => {
-=======
-// ✅ Create a new user
-export const createUser = async (user: NewUser): Promise<User> => {
->>>>>>> 9850407e22e4af014f4753ec87a154eef973e492
   const pool = await getPool();
   const result = await pool.request()
     .input("name", sql.VarChar, user.name)
