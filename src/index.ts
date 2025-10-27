@@ -2,41 +2,58 @@ import express from "express";
 import dotenv from "dotenv";
 import { getPool } from "./db/config";
 
-// Route imports
-import registerOrderRoutes from "./routers/orders.routes";
-import { registerStageRoutes } from "./routers/staged.routes";
-import designRoutes from "./routers/design.routes";
-import userRoutes from "./routers/user.routes";
+
+
 import deliveryRoutes from "./routers/delivery.routes";
 
-// Load environment variables
-dotenv.config();
+// ✅ Import route registration functions
+import registerOrderRoutes from "./routers/orders.routes";
+import registerDesignRoutes from "./routers/design.routes";
+import registerUserRoutes from "./routers/user.routes";
+import registerCakeRoutes from "./routers/readycakes.routes";
+
 
 const app = express();
 
 // Middleware
 app.use(express.json());
 
-// Route registration
-registerOrderRoutes(app);
-registerStageRoutes(app);
 
-app.use("/api/designs", designRoutes);
-app.use("/api/users", userRoutes);
 app.use("/api/deliveries", deliveryRoutes);
 
-//  Root route
+
+registerOrderRoutes(app);
+registerDesignRoutes(app);
+registerUserRoutes(app);
+registerCakeRoutes(app);
+
+// ✅ Root route
 app.get("/", (_, res) => {
-  res.send("🚀 Cake Management API is running...");
+  res.send("Hello, Express API is running...");
 });
 
-// Start server
+// ✅ Optional: direct DB route (for testing)
+app.get("/designs-db", (req, res) => {
+  getPool()
+    .then(pool => pool.request().query("SELECT * FROM Cake_Designs"))
+    .then(result => res.json(result.recordset))
+    .catch(err => {
+      console.error("SQL error", err);
+      res.status(500).send("Server error");
+    });
+});
+
 const port = process.env.PORT || 8081;
 app.listen(port, () => {
-console.log(`🚀 Server running at http://localhost:${port}`);
+  console.log(`🚀 Server running at ${port}`);
+
 });
+
+
 
 // Database connection check
 getPool()
-  .then(() => console.log("✅ Database connected successfully"))
-  .catch((error) => console.error("❌ Error connecting to SQL Server:", error));
+
+  .then(() => console.log(" Database connected"))
+  .catch(error => console.error(" Error connecting to SQL Server:", error));
+

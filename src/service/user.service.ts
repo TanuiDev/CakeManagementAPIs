@@ -1,42 +1,43 @@
-import bcrypt from 'bcrypt';
+
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import * as userRepositories from '../repositories/user.repository';
 import { NewUser, UpdateUser } from '../types/user.types';
 import { sendEmail } from '../mailer/mailer';
 import { emailTemplate } from '../mailer/emailtemplate';
 
-// ✅ Create user and send verification code
-export const createUser = async (user: NewUser) => {
-  // Hash password
-  if (user.password) {
-    user.password = await bcrypt.hash(user.password, 10);
-  }
+// // ✅ Create user and send verification code
+// export const createUser = async (user: NewUser) => {
+//   // Hash password
+//   if (user.password) {
+//     user.password = await bcrypt.hash(user.password, 10);
+//   }
 
-  // Generate 6-digit verification code
-  const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+//   // Generate 6-digit verification code
+//   const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-  const newUser = { 
-    ...user, 
-    verification_code: verificationCode, 
-    is_verified: false 
-  };
+//   const newUser = { 
+//     ...user, 
+//     verification_code: verificationCode, 
+//     is_verified: false 
+//   };
 
-  // Save user in DB
-  await userRepositories.createUser(newUser);
+//   // Save user in DB
+//   await userRepositories.createUser(newUser);
 
-  // Send verification email
-  try {
-    await sendEmail(
-      user.email,
-      'Verify your email - CAKEApp By Liz',
-      emailTemplate.verify(user.name, verificationCode)
-    );
-  } catch (error) {
-    console.error('❌ Error sending verification email:', error);
-  }
+//   // Send verification email
+//   try {
+//     await sendEmail(
+//       user.email,
+//       'Verify your email - CAKEApp By Liz',
+//       emailTemplate.verify(user.name, verificationCode)
+//     );
+//   } catch (error) {
+//     console.error('❌ Error sending verification email:', error);
+//   }
 
-  return { message: 'User created successfully. Verification code sent to email.' };
-};
+//   return { message: 'User created successfully. Verification code sent to email.' };
+// };
 
 // ✅ Login user with role-based JWT
 export const loginUser = async (email: string, password: string) => {
@@ -130,12 +131,46 @@ export const getUserById = async (id: number) => {
   return user;
 };
 
-// ✅ Update user
-export const updateUser = async (id: number, updates: UpdateUser) => {
-  return await userRepositories.updateUser(id, updates);
-};
-
 // ✅ Delete user
 export const deleteUser = async (id: number) => {
   return await userRepositories.deleteUser(id);
+
 };
+
+
+// Get user by email
+export const getUserByEmail = async (email: string) => {
+  return await userRepositories.getUserByEmail(email);
+};
+
+
+// Create user (admin-level direct creation)
+export const createUser = async (user: NewUser) => {
+  const existingUser = await userRepositories.getUserByEmail(user.email);
+  if (existingUser) {
+    throw new Error('Email already exists');
+  }
+
+  const hashedPassword = await bcrypt.hash(user.password, 10);
+  user.password = hashedPassword;
+
+  return await userRepositories.createUser(user);
+};
+
+// Update user
+export const updateUser = async (id: number, userUpdates: UpdateUser) => {
+  if (userUpdates.password) {
+    userUpdates.password = await bcrypt.hash(userUpdates.password, 10);
+  }
+
+  return await userRepositories.updateUser(id, userUpdates);
+};
+
+// Send verification code
+export const sendVerificationCode = async (email: string, code: string) => {
+  const user = await userRepositories.getUserByEmail(email);
+  if (!user) throw new Error('User not found');
+
+  return await userRepositories.setVerificationCode(email, code);
+};
+

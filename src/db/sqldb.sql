@@ -153,6 +153,57 @@ VALUES
 
 SELECT * FROM users;
 
+<<<<<<< HEAD
+DROP TABLE IF EXISTS ReadyMade_Cakes ;
+
+ CREATE TABLE ReadyMade_Cakes (
+    cakeId INT IDENTITY(1,1) PRIMARY KEY,
+    cakeName VARCHAR(100) NOT NULL,
+    flavorsUsed VARCHAR(150) NOT NULL,
+    size VARCHAR(20) CHECK (size IN ('Small', 'Medium', 'Large')),
+    price AS 
+        CASE 
+            WHEN size = 'Small' THEN 1000
+            WHEN size = 'Medium' THEN 2000
+            WHEN size = 'Large' THEN 3000
+            ELSE 0
+        END PERSISTED,
+    imageURL VARCHAR(255),
+    quantityAvailable INT DEFAULT 1,
+    isactive BIT DEFAULT 1, -- 1 = available, 0 = unavailable
+    createdAt DATETIME2 DEFAULT SYSDATETIME(),
+    updatedAt DATETIME2 DEFAULT SYSDATETIME()
+);
+
+INSERT INTO ReadyMade_Cakes (
+    cakeName, flavorsUsed, size, imageURL, 
+    quantityAvailable, isactive, createdAt, updatedAt
+)
+VALUES 
+    ('Decadent Chocolate Cake', 'Chocolate, Ganache', 'Small',
+    'chocolate.jpg', 15, 1, SYSDATETIME(), SYSDATETIME()),
+
+    ('Classic Vanilla Bean', 'Vanilla, Buttercream', 'Medium', 
+    'vanilla.jpg', 8, 1, SYSDATETIME(), SYSDATETIME()),
+
+    ('Red Velvet Delight', 'Red Velvet, Cream Cheese', 'Large',
+    'redvelvet.jpg', 3, 1, SYSDATETIME(), SYSDATETIME()),
+
+    ('Black Forest Treat', 'Chocolate, Cherry Cream', 'Medium', 
+    'blackforest.jpg', 12, 1, SYSDATETIME(), SYSDATETIME()),
+
+    ('Strawberry Bliss Cupcakes', 'Strawberry, Vanilla Cream', 'Small', 
+    'strawberry_cupcakes.jpg', 10, 1, SYSDATETIME(), SYSDATETIME()),
+
+    ('Choco Lava Cupcakes', 'Chocolate, Molten Ganache', 'Medium',
+    'choco_lava_cupcakes.jpg', 12, 1, SYSDATETIME(), SYSDATETIME()),
+
+    ('Vanilla Swirl Cupcakes', 'Vanilla, Butter Frosting', 'Large', 
+    'vanilla_swirl_cupcakes.jpg', 6, 1, SYSDATETIME(), SYSDATETIME());
+
+
+SELECT * FROM ReadyMade_Cakes;
+=======
 USE CakeManagementDB;   
 ALTER TABLE Users
 ADD verification_code VARCHAR(10),
@@ -195,6 +246,7 @@ VALUES
 
 
 SELECT * FROM Cake_Stages;
+<<<<<<< HEAD
 
 CREATE TABLE Deliveries (
     DeliveryID INT IDENTITY(1,1) PRIMARY KEY,
@@ -220,3 +272,6 @@ VALUES
 
 SELECT * FROM Deliveries;
 
+=======
+>>>>>>> 9850407e22e4af014f4753ec87a154eef973e492
+>>>>>>> 63b0813452d580a6fedc85d5e8d091ecf76f9201
