@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import * as userService from '../service/user.service';
 
-// ✅ Create / Register user
 export const createUserController = async (req: Request, res: Response) => {
   try {
     const result = await userService.createUser(req.body);
@@ -11,7 +10,7 @@ export const createUserController = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Get all users (admin only)
+
 export const getAllUsersController = async (_req: Request, res: Response) => {
   try {
     const users = await userService.getAllUsers();
@@ -21,7 +20,7 @@ export const getAllUsersController = async (_req: Request, res: Response) => {
   }
 };
 
-// ✅ Get user by ID (admins can fetch any, user fetches own)
+
 export const getUserByIdController = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   try {
@@ -38,8 +37,6 @@ export const getUserByIdController = async (req: Request, res: Response) => {
     res.status(404).json({ message: error.message });
   }
 };
-
-// ✅ Update user (admins can update any, users update own)
 export const updateUserController = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   try {
@@ -56,7 +53,7 @@ export const updateUserController = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Delete user (admin only)
+// Delete user (admin only)
 export const deleteUserController = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   try {
@@ -67,7 +64,7 @@ export const deleteUserController = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Login user
+// Login user
 export const loginUserController = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
@@ -78,7 +75,7 @@ export const loginUserController = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Verify user email
+// Verify user email
 export const verifyUserController = async (req: Request, res: Response) => {
   const { email, code } = req.body;
   try {
@@ -89,7 +86,7 @@ export const verifyUserController = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Resend verification code
+// Resend verification code
 export const resendVerificationController = async (req: Request, res: Response) => {
   const { email } = req.body;
   try {
