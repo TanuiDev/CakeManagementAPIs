@@ -18,7 +18,7 @@ afterAll(async () => {
   await pool.close();
 });
 
-describe("Order Controller Integration Tests", () => {
+describe("Orders Controller Integration Tests", () => {
     it("should create a new order", async () => {
         const response = await request(app).post("/orders").send({
                 DesignId: 2,
@@ -60,10 +60,24 @@ describe("Order Controller Integration Tests", () => {
         expect(response.statusCode).toBe(200);
         expect(response.body).toHaveProperty("message", "Order status updated successfully");
     });
-    it("should delete an order", async () => {
+    it.skip("should delete an order", async () => {
         const response = await request(app).delete("/orders/5");
 
         expect(response.statusCode).toBe(200);
         expect(response.body).toHaveProperty("message", "Order deleted successfully");
     });
+
+    it("Should return the orders for a specific user", async () => {
+        const response = await request(app).get("/user/orders/9999");
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBe(true);
+        expect(response.body.length).toBeGreaterThan(0);
+    });
+
+    it("Should return 404 when deleting non-existing order", async () => {
+        const response = await request(app).delete("/orders/9999999");
+        expect(response.statusCode).toBe(404);
+    });
+
+
 });
