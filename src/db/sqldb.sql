@@ -153,7 +153,7 @@ VALUES
 
 SELECT * FROM users;
 
-<<<<<<< HEAD
+
 DROP TABLE IF EXISTS ReadyMade_Cakes ;
 
  CREATE TABLE ReadyMade_Cakes (
@@ -203,7 +203,7 @@ VALUES
 
 
 SELECT * FROM ReadyMade_Cakes;
-=======
+
 USE CakeManagementDB;   
 ALTER TABLE Users
 ADD verification_code VARCHAR(10),
@@ -246,7 +246,7 @@ VALUES
 
 
 SELECT * FROM Cake_Stages;
-<<<<<<< HEAD
+
 
 CREATE TABLE Deliveries (
     DeliveryID INT IDENTITY(1,1) PRIMARY KEY,
@@ -272,6 +272,5 @@ VALUES
 
 SELECT * FROM Deliveries;
 
-=======
->>>>>>> 9850407e22e4af014f4753ec87a154eef973e492
->>>>>>> 63b0813452d580a6fedc85d5e8d091ecf76f9201
+
+

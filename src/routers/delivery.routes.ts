@@ -1,9 +1,13 @@
 import { Router } from "express";
-import { scheduleDelivery } from "../Controllers/delivery.controller";
+import * as deliveryController from "../Controllers/delivery.controller";
 
 const router = Router();
 
-// POST: Schedule a delivery
-router.post("/", scheduleDelivery);
+// All delivery routes
+router.get("/", deliveryController.getAllDeliveries);
+router.get("/:id", deliveryController.getDeliveryById);
+router.post("/", deliveryController.scheduleDelivery);
+router.put("/:id", deliveryController.updateDelivery);
+router.delete("/:id", deliveryController.deleteDelivery);
 
 export default router;

@@ -1,20 +1,9 @@
 
-<<<<<<< HEAD
-export const createUserController = async (req: Request, res: Response) => {
-  try {
-    const result = await userService.createUser(req.body);
-    res.status(201).json(result);
-  } catch (error: any) {
-    res.status(400).json({ message: error.message });
-  }
-};
-=======
+
 import { Request, Response } from "express";
 import * as userService from "../service/user.service";
 import { NewUser, UpdateUser, LoginUser } from "../types/user.types";
 
-
->>>>>>> 63b0813452d580a6fedc85d5e8d091ecf76f9201
 
 
 export const getAllUsersController = async (_req: Request, res: Response) => {
@@ -45,13 +34,11 @@ export const getUserByIdController = async (req: Request, res: Response) => {
     res.status(404).json({ message: error.message });
   }
 };
-<<<<<<< HEAD
-export const updateUserController = async (req: Request, res: Response) => {
-=======
 
-// ✅ Update user (admins can update any, users update own)
+
+// Update user (admins can update any, users update own)
 export const updateUserRolesController = async (req: Request, res: Response) => {
->>>>>>> 63b0813452d580a6fedc85d5e8d091ecf76f9201
+
   const id = Number(req.params.id);
   try {
     const requestingUser = (req as any).user;
@@ -67,16 +54,13 @@ export const updateUserRolesController = async (req: Request, res: Response) => 
   }
 };
 
-<<<<<<< HEAD
-// Delete user (admin only)
-export const deleteUserController = async (req: Request, res: Response) => {
-  const id = Number(req.params.id);
-=======
+
+
 // Login user
 export const loginUser = async (req: Request, res: Response) => {
   const {email, password} = req.body;
 
->>>>>>> 63b0813452d580a6fedc85d5e8d091ecf76f9201
+
   try {
     const result = await userService.loginUser(email, password);
     res.status(200).json(result);
@@ -85,9 +69,7 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-<<<<<<< HEAD
-// Login user
-=======
+
 // Create user (admin-level)
 export const createUserController = async (req: Request, res: Response) => {
   const newUser: NewUser = req.body;
@@ -117,8 +99,8 @@ export const updateUserController = async(req: Request, res: Response) => {
 
 }
 
-// ✅ Login user
->>>>>>> 63b0813452d580a6fedc85d5e8d091ecf76f9201
+//  Login user
+
 export const loginUserController = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
@@ -130,9 +112,7 @@ export const loginUserController = async (req: Request, res: Response) => {
   }
 };
 
-<<<<<<< HEAD
-// Verify user email
-=======
+
 // Delete user
 export const deleteUserController = async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -159,7 +139,7 @@ export const sendVerificationCode = async (req: Request, res: Response) => {
 
 // Verify user
 
->>>>>>> 63b0813452d580a6fedc85d5e8d091ecf76f9201
+
 export const verifyUserController = async (req: Request, res: Response) => {
   const { email, code } = req.body;
   try {
