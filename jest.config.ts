@@ -1,9 +1,9 @@
-import { Config } from "jest"
+import type { Config } from "jest"
 
 const config: Config = {
-    preset: "ts-jest", // Uses ts-jest for TypeScript support
-    testEnvironment: "node", // Specifies the environment for tests
-    verbose: true, // Shows individual test results
+    preset: "ts-jest", 
+    testEnvironment: "node",
+    verbose: true, 
 
     // Coverage Configuration
     collectCoverage: false, // Enables code coverage collection

@@ -1,6 +1,9 @@
 import express, { Application, Request, Response } from "express";
-import dotenv from "dotenv";
+
 import { getPool } from "./db/config";
+import dotenv from "dotenv"
+
+dotenv.config()
 
 // Route imports
 import deliveryRoutes from "./routers/delivery.routes";
@@ -9,7 +12,7 @@ import registerDesignRoutes from "./routers/design.routes";
 import registerUserRoutes from "./routers/user.routes";
 import registerCakeRoutes from "./routers/readycakes.routes";
 
-dotenv.config();
+
 
 const app: Application = express();
 
@@ -22,7 +25,7 @@ registerDesignRoutes(app);
 registerUserRoutes(app);
 registerCakeRoutes(app);
 
-``
+
 
 const PORT = process.env.PORT || 8081;
 

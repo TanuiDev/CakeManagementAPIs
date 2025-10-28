@@ -1,9 +1,12 @@
 // middleware/auth.middleware.ts
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+
 import { Request, Response, NextFunction } from 'express';
 
+import  dotenv from "dotenv";
 dotenv.config();
+
+
 
 // Extend Express Request type to include user
 interface AuthenticatedRequest extends Request {
