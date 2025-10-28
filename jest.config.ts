@@ -1,16 +1,28 @@
-import { Config } from "jest"
+import type { Config } from "jest";
 
 const config: Config = {
-    preset: "ts-jest", // Uses ts-jest for TypeScript support
-    testEnvironment: "node", // Specifies the environment for tests
-    verbose: true, // Shows individual test results
+  preset: "ts-jest",
+  testEnvironment: "node",
+  verbose: true,
 
-    // Coverage Configuration
-    collectCoverage: false, // Enables code coverage collection
-    coverageDirectory: "coverage", // Output directory for coverage reports
-    collectCoverageFrom: [
-        '<rootDir>/src/**/*.ts' // Files to include for coverage
-    ]
-}
 
-export default config
+  roots: ["<rootDir>/__tests__"],
+  moduleFileExtensions: ["ts", "js", "json", "node"],
+  moduleNameMapper: {
+    "^@service/(.*)$": "<rootDir>/src/service/$1",
+    "^@repo/(.*)$": "<rootDir>/src/repositories/$1",
+    "^@mailer/(.*)$": "<rootDir>/src/mailer/$1"
+  },
+
+  
+  transform: {
+    "^.+\\.ts$": ["ts-jest", { tsconfig: "tsconfig.json" }]
+  },
+
+  
+  collectCoverage: false,
+  coverageDirectory: "coverage",
+  collectCoverageFrom: ["<rootDir>/src/**/*.ts"]
+};
+
+export default config;
