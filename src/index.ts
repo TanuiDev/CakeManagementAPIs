@@ -22,22 +22,7 @@ registerDesignRoutes(app);
 registerUserRoutes(app);
 registerCakeRoutes(app);
 
-// Root route
-app.get("/", (_: Request, res: Response) => {
-  res.send("🚀 Express API is running successfully!");
-});
-
-// Test route to check DB connection
-app.get("/designs-db", async (_: Request, res: Response) => {
-  try {
-    const pool = await getPool();
-    const result = await pool.request().query("SELECT * FROM Cake_Designs");
-    res.json(result.recordset);
-  } catch (error) {
-    console.error("SQL error:", error);
-    res.status(500).send("Server error");
-  }
-});
+``
 
 const PORT = process.env.PORT || 8081;
 
