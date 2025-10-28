@@ -1,9 +1,7 @@
-import express, { Application, Request, Response } from "express";
+import express from "express";
 
-import { getPool } from "./db/config";
-import dotenv from "dotenv"
 
-dotenv.config()
+
 
 // Route imports
 import deliveryRoutes from "./routers/delivery.routes";
@@ -14,7 +12,9 @@ import registerCakeRoutes from "./routers/readycakes.routes";
 
 
 
-const app: Application = express();
+const initializeApp = ()=>{
+const app = express();
+
 
 app.use(express.json());
 
@@ -26,16 +26,19 @@ registerUserRoutes(app);
 registerCakeRoutes(app);
 
 
+return app;
 
-const PORT = process.env.PORT || 8081;
+}
 
-app.listen(PORT, async () => {
-  console.log(`✅ Server running on: http://localhost:${PORT}`);
 
-  try {
-    await getPool();
-    console.log("✅ Database connected successfully!");
-  } catch (error) {
-    console.error("❌ Error connecting to SQL Server:", error);
-  }
-});
+const app = initializeApp()
+
+export default app;
+
+
+
+
+
+
+
+
