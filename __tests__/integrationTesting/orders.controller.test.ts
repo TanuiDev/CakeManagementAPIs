@@ -78,6 +78,18 @@ describe("Orders Controller Integration Tests", () => {
         const response = await request(app).delete("/orders/9999999");
         expect(response.statusCode).toBe(404);
     });
+    
+    it("It should update the details of the order", async()=>{
+        const response = await request(app).patch("/order/1006").send({
+            Size: "Large",
+            Flavor: "Chocolate",
+            Message: "Congratulations!",
+            ColorPreferences: "Red"
+        });
+
+        expect(response.statusCode).toBe(200);
+        
+    });
 
 
 });
