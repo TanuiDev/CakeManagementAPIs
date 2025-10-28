@@ -10,8 +10,7 @@ export const fetchOrderById = async (orderId: number) => {
 };
 
 export const createNewOrder = async (orderData: NewOrder) => {
-  return await ordersRepository.createOrder(orderData);
-  
+  return await ordersRepository.createOrder(orderData);  
 }
 
 export const changeOrderStatus = async (orderId: number, status: string) => {
