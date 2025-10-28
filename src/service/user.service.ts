@@ -1,5 +1,5 @@
 
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import * as userRepositories from '../repositories/user.repository';
 import { NewUser, UpdateUser } from '../types/user.types';
@@ -173,4 +173,6 @@ export const sendVerificationCode = async (email: string, code: string) => {
 
   return await userRepositories.setVerificationCode(email, code);
 };
+
+
 
