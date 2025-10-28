@@ -153,7 +153,7 @@ VALUES
 
 SELECT * FROM users;
 
-<<<<<<< HEAD
+
 DROP TABLE IF EXISTS ReadyMade_Cakes ;
 
  CREATE TABLE ReadyMade_Cakes (
@@ -203,7 +203,7 @@ VALUES
 
 
 SELECT * FROM ReadyMade_Cakes;
-=======
+
 USE CakeManagementDB;   
 ALTER TABLE Users
 ADD verification_code VARCHAR(10),
@@ -246,4 +246,31 @@ VALUES
 
 
 SELECT * FROM Cake_Stages;
->>>>>>> 9850407e22e4af014f4753ec87a154eef973e492
+
+
+CREATE TABLE Deliveries (
+    DeliveryID INT IDENTITY(1,1) PRIMARY KEY,
+    OrderID INT NOT NULL,
+    DeliveryAddress VARCHAR(255) NOT NULL,
+    DeliveryDate DATETIME NOT NULL,
+    CourierName VARCHAR(100),
+    CourierContact VARCHAR(50),
+    Status VARCHAR(50) DEFAULT 'Scheduled',
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME DEFAULT GETDATE(),
+    );
+     
+     INSERT INTO Deliveries (OrderID, DeliveryAddress, DeliveryDate, CourierName, CourierContact, Status)
+VALUES 
+(101, 'Karatina, Nyeri, Kenya', '2025-10-30 10:00:00', 'SwiftRider', '+254712345678', 'Scheduled'),
+
+(102, 'Nakuru Town, Kenya', '2025-10-29 14:30:00', 'FastCourier', '+254700998877', 'In Transit'),
+
+(103, 'Kisumu CBD, Kenya', '2025-10-28 09:00:00', 'CakeExpress', '+254713223344', 'Delivered'),
+
+(104, 'Thika Road, Nairobi, Kenya', '2025-10-31 16:00:00', 'SweetDrop', '+254798112233', 'Scheduled');
+
+SELECT * FROM Deliveries;
+
+
+

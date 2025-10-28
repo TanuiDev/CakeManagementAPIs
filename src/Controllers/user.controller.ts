@@ -1,11 +1,11 @@
 
+
 import { Request, Response } from "express";
 import * as userService from "../service/user.service";
 import { NewUser, UpdateUser, LoginUser } from "../types/user.types";
 
 
 
-// ✅ Get all users (admin only)
 export const getAllUsersController = async (_req: Request, res: Response) => {
   try {
     const users = await userService.getAllUsers();
@@ -16,7 +16,7 @@ export const getAllUsersController = async (_req: Request, res: Response) => {
   }
 };
 
-// ✅ Get user by ID (admins can fetch any, user fetches own)
+
 export const getUserByIdController = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   try {
@@ -35,8 +35,10 @@ export const getUserByIdController = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Update user (admins can update any, users update own)
+
+// Update user (admins can update any, users update own)
 export const updateUserRolesController = async (req: Request, res: Response) => {
+
   const id = Number(req.params.id);
   try {
     const requestingUser = (req as any).user;
@@ -52,9 +54,12 @@ export const updateUserRolesController = async (req: Request, res: Response) => 
   }
 };
 
+
+
 // Login user
 export const loginUser = async (req: Request, res: Response) => {
   const {email, password} = req.body;
+
 
   try {
     const result = await userService.loginUser(email, password);
@@ -63,6 +68,7 @@ export const loginUser = async (req: Request, res: Response) => {
     res.status(400).json({ message: error.message });
   }
 };
+
 
 // Create user (admin-level)
 export const createUserController = async (req: Request, res: Response) => {
@@ -93,7 +99,8 @@ export const updateUserController = async(req: Request, res: Response) => {
 
 }
 
-// ✅ Login user
+//  Login user
+
 export const loginUserController = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
@@ -104,6 +111,7 @@ export const loginUserController = async (req: Request, res: Response) => {
     res.status(401).json({ message: error.message });
   }
 };
+
 
 // Delete user
 export const deleteUserController = async (req: Request, res: Response) => {
@@ -131,6 +139,7 @@ export const sendVerificationCode = async (req: Request, res: Response) => {
 
 // Verify user
 
+
 export const verifyUserController = async (req: Request, res: Response) => {
   const { email, code } = req.body;
   try {
@@ -141,7 +150,7 @@ export const verifyUserController = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Resend verification code
+// Resend verification code
 export const resendVerificationController = async (req: Request, res: Response) => {
   const { email } = req.body;
   try {

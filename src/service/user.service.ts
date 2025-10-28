@@ -6,7 +6,7 @@ import { NewUser, UpdateUser } from '../types/user.types';
 import { sendEmail } from '../mailer/mailer';
 import { emailTemplate } from '../mailer/emailtemplate';
 
-// // ✅ Create user and send verification code
+// //  Create user and send verification code
 // export const createUser = async (user: NewUser) => {
 //   // Hash password
 //   if (user.password) {
@@ -39,7 +39,7 @@ import { emailTemplate } from '../mailer/emailtemplate';
 //   return { message: 'User created successfully. Verification code sent to email.' };
 // };
 
-// ✅ Login user with role-based JWT
+// Login user with role-based JWT
 export const loginUser = async (email: string, password: string) => {
   const user = await userRepositories.getUserByEmail(email);
   if (!user) throw new Error('User not found.');
@@ -75,7 +75,7 @@ export const loginUser = async (email: string, password: string) => {
   };
 };
 
-// ✅ Verify user email
+// Verify user email
 export const verifyUser = async (email: string, code: string) => {
   const user = await userRepositories.getUserByEmail(email);
   if (!user) throw new Error('User not found.');
@@ -98,7 +98,7 @@ export const verifyUser = async (email: string, code: string) => {
   return { message: 'User verified successfully.' };
 };
 
-// ✅ Resend verification code
+//  Resend verification code
 export const resendVerificationCode = async (email: string) => {
   const user = await userRepositories.getUserByEmail(email);
   if (!user) throw new Error('User not found.');
@@ -119,19 +119,19 @@ export const resendVerificationCode = async (email: string) => {
   return { message: 'Verification code resent successfully.' };
 };
 
-// ✅ Get all users
+//  Get all users
 export const getAllUsers = async () => {
   return await userRepositories.getUsers();
 };
 
-// ✅ Get user by ID
+// Get user by ID
 export const getUserById = async (id: number) => {
   const user = await userRepositories.getUserById(id);
   if (!user) throw new Error('User not found.');
   return user;
 };
 
-// ✅ Delete user
+// Delete user
 export const deleteUser = async (id: number) => {
   return await userRepositories.deleteUser(id);
 

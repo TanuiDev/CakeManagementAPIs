@@ -1,41 +1,38 @@
-import express from "express";
+import express, { Application, Request, Response } from "express";
+import dotenv from "dotenv";
 import { getPool } from "./db/config";
 
-// ✅ Import route registration functions
+// Route imports
+import deliveryRoutes from "./routers/delivery.routes";
 import registerOrderRoutes from "./routers/orders.routes";
 import registerDesignRoutes from "./routers/design.routes";
 import registerUserRoutes from "./routers/user.routes";
 import registerCakeRoutes from "./routers/readycakes.routes";
 
-const app = express();
+dotenv.config();
+
+const app: Application = express();
+
 app.use(express.json());
 
+//routers
+app.use("/api/deliveries", deliveryRoutes);
 registerOrderRoutes(app);
 registerDesignRoutes(app);
 registerUserRoutes(app);
 registerCakeRoutes(app);
 
-// ✅ Root route
-app.get("/", (_, res) => {
-  res.send("Hello, Express API is running...");
-});
+``
 
-// ✅ Optional: direct DB route (for testing)
-app.get("/designs-db", (req, res) => {
-  getPool()
-    .then(pool => pool.request().query("SELECT * FROM Cake_Designs"))
-    .then(result => res.json(result.recordset))
-    .catch(err => {
-      console.error("SQL error", err);
-      res.status(500).send("Server error");
-    });
-});
+const PORT = process.env.PORT || 8081;
 
-const port = process.env.PORT || 8081;
-app.listen(port, () => {
-  console.log(`🚀 Server running at ${port}`);
-});
+app.listen(PORT, async () => {
+  console.log(`✅ Server running on: http://localhost:${PORT}`);
 
-getPool()
-  .then(() => console.log(" Database connected"))
-  .catch(error => console.error(" Error connecting to SQL Server:", error));
+  try {
+    await getPool();
+    console.log("✅ Database connected successfully!");
+  } catch (error) {
+    console.error("❌ Error connecting to SQL Server:", error);
+  }
+});
