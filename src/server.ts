@@ -10,7 +10,7 @@ dotenv.config()
 const PORT = process.env.PORT || 8081;
 
 app.listen(PORT, async () => {
-  console.log(`✅ Server running on port:${PORT}`);
+  console.log(`✅ Server running on port: http://localhost:${PORT}`);
 
   try {
     await getPool();
