@@ -11,3 +11,4 @@ export const registerStageRoutes = (app: any) => {
   app.delete('/stages/:stageId', stagesController.deleteStage);
 };
 
+

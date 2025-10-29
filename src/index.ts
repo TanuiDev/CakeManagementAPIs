@@ -9,6 +9,7 @@ import registerOrderRoutes from "./routers/orders.routes";
 import registerDesignRoutes from "./routers/design.routes";
 import registerUserRoutes from "./routers/user.routes";
 import registerCakeRoutes from "./routers/readycakes.routes";
+import { registerStageRoutes } from "./routers/stages.routes";
 
 
 
@@ -24,6 +25,7 @@ registerOrderRoutes(app);
 registerDesignRoutes(app);
 registerUserRoutes(app);
 registerCakeRoutes(app);
+registerStageRoutes(app)
 
 
 return app;
