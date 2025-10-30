@@ -36,28 +36,39 @@ export const createUserWithVerification = async (user: NewUser) => {
 // Login user with role-based JWT
 export const loginUser = async (email: string, password: string) => {
   const user = await userRepositories.getUserByEmail(email);
-  if (!user) throw new Error('User not found.');
 
-  // Verify password
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) throw new Error('Invalid credentials.');
+  // Handle invalid email or password the same way
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    const error: any = new Error("Invalid credentials.");
+    error.status = 401;
+    throw error;
+  }
 
-  // Ensure user verified email
-  if (!user.is_verified) throw new Error('Please verify your email before logging in.');
+  // Ensure the user has verified their email
+  if (!user.is_verified) {
+    const error: any = new Error("Please verify your email before logging in.");
+    error.status = 403;
+    throw error;
+  }
 
-  // JWT payload including role
+  // JWT payload
   const payload = {
     id: user.id,
     email: user.email,
-    role: user.role, // admin, customer, baker
+    role: user.role,
   };
 
   const secret = process.env.JWT_SECRET;
-  if (!secret) throw new Error('JWT secret not defined.');
-  const token = jwt.sign(payload, secret, { expiresIn: '1h' });
+  if (!secret) {
+    const error: any = new Error("JWT secret not defined.");
+    error.status = 500;
+    throw error;
+  }
+
+  const token = jwt.sign(payload, secret, { expiresIn: "1h" });
 
   return {
-    message: 'Login successful.',
+    message: "Login successful.",
     token,
     user: {
       id: user.id,
@@ -86,7 +97,7 @@ export const verifyUser = async (email: string, code: string) => {
       emailTemplate.verifiedSuccess(user.name)
     );
   } catch (error) {
-    console.error('❌ Error sending success email:', error);
+    console.error(' Error sending success email:', error);
   }
 
   return { message: 'User verified successfully.' };
@@ -107,7 +118,7 @@ export const resendVerificationCode = async (email: string) => {
       emailTemplate.verify(user.name, verificationCode)
     );
   } catch (error) {
-    console.error('❌ Error resending verification email:', error);
+    console.error(' Error resending verification email:', error);
   }
 
   return { message: 'Verification code resent successfully.' };

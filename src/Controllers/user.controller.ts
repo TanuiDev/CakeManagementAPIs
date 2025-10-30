@@ -56,19 +56,6 @@ export const updateUserRolesController = async (req: Request, res: Response) => 
 
 
 
-// Login user
-export const loginUser = async (req: Request, res: Response) => {
-  const {email, password} = req.body;
-
-
-  try {
-    const result = await userService.loginUser(email, password);
-    res.status(200).json(result);
-  } catch (error: any) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
 
 // Create user (admin-level)
 export const createUserController = async (req: Request, res: Response) => {
@@ -105,10 +92,14 @@ export const loginUserController = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
     const result = await userService.loginUser(email, password);
-
-    res.status(200).json(result);
+    res.status(200).json({
+      message: result.message,
+      token: result.token,
+      user: result.user,
+    });
   } catch (error: any) {
-    res.status(401).json({ message: error.message });
+    
+    res.status(400).json({ error: error.message });
   }
 };
 
