@@ -75,7 +75,7 @@ export const createUserController = async (req: Request, res: Response) => {
   const newUser: NewUser = req.body;
 
   try {
-    const result = await userService.createUser(newUser);
+    const result = await userService.createUserWithVerification(newUser);
     res.status(201).json(result);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -126,16 +126,16 @@ export const deleteUserController = async (req: Request, res: Response) => {
 };
 
 // Send verification code
-export const sendVerificationCode = async (req: Request, res: Response) => {
-  const { email, code } = req.body;
+// export const sendVerificationCode = async (req: Request, res: Response) => {
+//   const { email, code } = req.body;
 
-  try {
-    const result = await userService.sendVerificationCode(email, code);
-    res.status(200).json(result);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-};
+//   try {
+//     const result = await userService.sendVerificationCode(email, code);
+//     res.status(200).json(result);
+//   } catch (error: any) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 
 // Verify user
 

@@ -8,34 +8,29 @@ import { emailTemplate } from '../mailer/emailtemplate';
 
 // //  Create user and send verification code
 export const createUserWithVerification = async (user: NewUser) => { 
+
    if (user.password) {
-     user.password = await bcrypt.hash(user.password, 10);
-   }
+     const hashedPassword = await bcrypt.hash(user.password, 10);
 
-   // Generate 6-digit verification code
-   const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+     user.password= hashedPassword
+  }
 
-   const newUser = { 
-     ...user, 
-     verification_code: verificationCode, 
-     is_verified: false 
-   };
-
- //Save user in DB
-   await userRepositories.createUser(newUser);
-
- //Send verification email
+  await userRepositories.createUser(user);
+  
+  const verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); 
+  
+  await userRepositories.setVerificationCode(user.email,verificationCode)
    try {
      await sendEmail(
        user.email,
-       'Verify your email - CAKEApp By Liz',
-       emailTemplate.verify(user.name, verificationCode)
-     );
+       'Verify your email',
+       emailTemplate.verify(user.name,verificationCode)     
+     )
+    return { message: `User created successfully. Verification code sent to ${user.email}.` };
    } catch (error) {
-     console.error('❌ Error sending verification email:', error);
+     console.error('Error sending verification email');
    }
-
-   return { message: 'User created successfully. Verification code sent to email.' };
+   
  };
 
 // Login user with role-based JWT
@@ -108,7 +103,7 @@ export const resendVerificationCode = async (email: string) => {
   try {
     await sendEmail(
       user.email,
-      'Resend verification code - CAKEApp By Liz',
+      'Resend verification code',
       emailTemplate.verify(user.name, verificationCode)
     );
   } catch (error) {
@@ -144,17 +139,17 @@ export const getUserByEmail = async (email: string) => {
 
 
 // Create user (admin-level direct creation)
-export const createUser = async (user: NewUser) => {
-  const existingUser = await userRepositories.getUserByEmail(user.email);
-  if (existingUser) {
-    throw new Error('Email already exists');
-  }
+// export const createUser = async (user: NewUser) => {
+//   const existingUser = await userRepositories.getUserByEmail(user.email);
+//   if (existingUser) {
+//     throw new Error('Email already exists');
+//   }
 
-  const hashedPassword = await bcrypt.hash(user.password, 10);
-  user.password = hashedPassword;
+//   const hashedPassword = await bcrypt.hash(user.password, 10);
+//   user.password = hashedPassword;
 
-  return await userRepositories.createUser(user);
-};
+//   return await userRepositories.createUser(user);
+// };
 
 // Update user
 export const updateUser = async (id: number, userUpdates: UpdateUser) => {
@@ -166,11 +161,11 @@ export const updateUser = async (id: number, userUpdates: UpdateUser) => {
 };
 
 // Send verification code
-export const sendVerificationCode = async (email: string, code: string) => {
-  const user = await userRepositories.getUserByEmail(email);
-  if (!user) throw new Error('User not found');
+// export const sendVerificationCode = async (email: string, code: string) => {
+//   const user = await userRepositories.getUserByEmail(email);
+//   if (!user) throw new Error('User not found');
 
-  return await userRepositories.setVerificationCode(email, code);
-};
+//   return await userRepositories.setVerificationCode(email, code);
+// };
 
 

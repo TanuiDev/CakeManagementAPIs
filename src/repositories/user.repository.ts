@@ -81,16 +81,12 @@ export const deleteUser = async (id: number) => {
 };
 
 // Set verification code
-export const setVerificationCode = async (email: string, code: string) => {
+export const setVerificationCode = async (email: string, verification_code: string) => {
   const pool = await getPool();
   await pool.request()
     .input("email", sql.VarChar, email)
-    .input("code", sql.VarChar, code)
-    .query(`
-      UPDATE Users
-      SET verification_code = @code, is_verified = 0
-      WHERE email = @email
-    `);
+    .input("verification_code", verification_code)
+    .query('UPDATE  Users SET verification_code = @verification_code   WHERE email = @email ');
   return { message: "Verification code saved" };
 };
 
@@ -98,7 +94,7 @@ export const setVerificationCode = async (email: string, code: string) => {
 export const verifyUser = async (email: string) => {
   const pool = await getPool();
   await pool.request()
-    .input("email", sql.VarChar, email)
+    .input("email",  email)
     .query(`
       UPDATE Users
       SET is_verified = 1, verification_code = NULL

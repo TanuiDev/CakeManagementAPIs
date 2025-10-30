@@ -142,7 +142,7 @@ ADD verification_code VARCHAR(10),
 
 
 -- Insert sample users
-INSERT INTO users (name, email, password, phone, address, role)
+INSERT INTO Users (name, email, password, phone, address, role)
 VALUES
 ('Elizabeth Njoki', 'liz@gmail.com', 'hashedpassword123', '0712345678', 'Nyeri', 'admin'),
 ('James Mwangi', 'jamesbaker@gmail.com', 'hashedpassword456', '0722987456', 'Nakuru', 'baker'),

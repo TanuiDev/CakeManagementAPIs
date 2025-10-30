@@ -13,7 +13,7 @@ export const emailTemplate = {
         <p>Your verification code is: <strong>${code}</strong></p>
         <p>Please enter this code in the app to verify your email address.</p>
         <br />
-        <p> Thank you,<br/>The Todo App Team</p>
+        <p> Thank you,<br/>The CakeHub Team</p>
     </div>
     `,
   
