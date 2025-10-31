@@ -75,15 +75,49 @@ describe("Order stages test Suites",()=>{
         CompletedAt: "2025-10-20T10:00:00.000Z",
         Notes: "Baked successfully."
       };
-      (stagesRepository.getStageById as jest.Mock).mockResolvedValue(mockStage);
-      (stagesRepository.updateStageStatus as jest.Mock).mockResolvedValue({ ...mockStage, status: 'In Progress' });
 
-      const res = await stagesService.changeStageStatus(2003,'In Progress');
-      expect(res).toEqual({ message: 'Stage status updated successfully' });
+      (stagesRepository.getStageById as jest.Mock).mockResolvedValue(mockStage);
+      (stagesRepository.updateStageStatus as jest.Mock).mockResolvedValue(
+        {
+          ...mockStage,
+          Status: "Completed"
+        }
+        );
+    
+      const results = await stagesService.changeStageStatus(2003,"Completed")
+
+      expect(results).toEqual({message:'Stage status updated successfully'})
 
     })
 
+    it("It should delete Stage by stage id",async ()=>{
+       const mockStage={
+        Id:2003,
+        OrderId: 2006,
+        StageName: "Baking",
+        Status: "Baking",
+        StartedAt: "2025-10-20T09:00:00.000Z",
+        CompletedAt: "2025-10-20T10:00:00.000Z",
+        Notes: "Baked successfully."
+      };
 
+      (stagesRepository.getStageById as jest.Mock).mockResolvedValue(mockStage);
+      (stagesRepository.deleteStageById as jest.Mock).mockResolvedValue(mockStage)
+
+
+      const response = await stagesService.removeStage(2003);
+
+      expect(response).toEqual({message:'Stage removed successfully'})
+
+    })
+
+    it("Should fail for non-existent stage", async()=>{
+
+      (stagesRepository.getStageById as jest.Mock).mockResolvedValue(null);
+       await expect(stagesService.removeStage(200))
+       .rejects
+       .toThrow('Stage not found');        
+    })
 
    
 
