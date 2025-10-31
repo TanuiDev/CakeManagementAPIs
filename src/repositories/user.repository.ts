@@ -32,7 +32,7 @@ export const getUsers = async (): Promise<User[]> => {
 };
 
 // Get user by ID
-export const getUserById = async (id: number): Promise<User | null> => {
+export const getUserById = async (id: number)=> {
   const pool = await getPool();
   const result = await pool.request()
     .input("user_Id", sql.Int, id)
@@ -41,7 +41,7 @@ export const getUserById = async (id: number): Promise<User | null> => {
 };
 
 // Get user by Email
-export const getUserByEmail = async (email: string): Promise<User | null> => {
+export const getUserByEmail = async (email: string)=> {
   const pool = await getPool();
   const result = await pool.request()
     .input("email", sql.VarChar, email)
@@ -75,7 +75,7 @@ export const updateUser = async (id: number, updates: UpdateUser) => {
 export const deleteUser = async (id: number) => {
   const pool = await getPool();
   await pool.request()
-    .input("user_Id", sql.Int, id)
+    .input("user_Id", id)
     .query("DELETE FROM Users WHERE user_Id = @user_Id");
   return { message: "User deleted successfully" };
 };

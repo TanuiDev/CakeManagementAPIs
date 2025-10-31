@@ -90,6 +90,7 @@ export const updateUserController = async(req: Request, res: Response) => {
 
 export const loginUserController = async (req: Request, res: Response) => {
   const { email, password } = req.body;
+
   try {
     const result = await userService.loginUser(email, password);
     res.status(200).json({
@@ -98,20 +99,24 @@ export const loginUserController = async (req: Request, res: Response) => {
       user: result.user,
     });
   } catch (error: any) {
+    const statusCode = error.status || 400;
+      res.status(error.status || 400).json({ error: error.message });
     
-    res.status(400).json({ error: error.message });
   }
 };
 
 
 // Delete user
 export const deleteUserController = async (req: Request, res: Response) => {
-  const { id } = req.params;
+const  id = parseInt(req.params.id)
 
   try {
-    const result = await userService.deleteUser(Number(id));
+    const result = await userService.deleteUser(id);
     res.status(200).json(result);
   } catch (error: any) {
+    if(error.message === "User not found"){
+      res.status(404).json({message: error.message})
+    }
     res.status(500).json({ message: error.message });
   }
 };
