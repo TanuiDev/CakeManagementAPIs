@@ -5,6 +5,8 @@ import * as userRepositories from '../repositories/user.repository';
 import { NewUser, UpdateUser } from '../types/user.types';
 import { sendEmail } from '../mailer/mailer';
 import { emailTemplate } from '../mailer/emailtemplate';
+import { error } from 'console';
+import { throws } from 'assert';
 
 // //  Create user and send verification code
 export const createUserWithVerification = async (user: NewUser) => { 
@@ -40,14 +42,22 @@ export const createUserWithVerification = async (user: NewUser) => {
 export const loginUser = async (email: string, password: string) => {
   const user = await userRepositories.getUserByEmail(email);
 
-  // Handle invalid email or password the same way
-  if (!user || !(await bcrypt.compare(password, user.password))) {
+  // Check if user exists
+  if (!user) {
+    const error: any = new Error("User not found.");
+    error.status = 404;
+    throw error;
+  }
+
+  // Verify password
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
     const error: any = new Error("Invalid credentials.");
     error.status = 401;
     throw error;
   }
 
-  // Ensure the user has verified their email
+  // Ensure user has verified email
   if (!user.is_verified) {
     const error: any = new Error("Please verify your email before logging in.");
     error.status = 403;
@@ -82,6 +92,7 @@ export const loginUser = async (email: string, password: string) => {
     },
   };
 };
+
 
 // Verify user email
 export const verifyUser = async (email: string, code: string) => {
@@ -141,7 +152,16 @@ export const getUserById = async (id: number) => {
 
 // Delete user
 export const deleteUser = async (id: number) => {
-  return await userRepositories.deleteUser(id);
+  const user = await userRepositories.getUserById(id)
+
+  if(!user){
+   throw new Error("User not found")
+  }
+
+  await userRepositories.deleteUser(id);
+  
+  return { message:"user deleted successfully" }
+
 };
 
 
