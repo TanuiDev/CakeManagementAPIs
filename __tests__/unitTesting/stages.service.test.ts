@@ -64,6 +64,25 @@ describe("Order stages test Suites",()=>{
       .toThrow("Stage not found")
     })
 
+    it("Should update the stage status ",async()=>{
+      const mockStage={
+
+        Id:2003,
+        OrderId: 2006,
+        StageName: "Baking",
+        Status: "Baking",
+        StartedAt: "2025-10-20T09:00:00.000Z",
+        CompletedAt: "2025-10-20T10:00:00.000Z",
+        Notes: "Baked successfully."
+      };
+      (stagesRepository.getStageById as jest.Mock).mockResolvedValue(mockStage);
+      (stagesRepository.updateStageStatus as jest.Mock).mockResolvedValue({ ...mockStage, status: 'In Progress' });
+
+      const res = await stagesService.changeStageStatus(2003,'In Progress');
+      expect(res).toEqual({ message: 'Stage status updated successfully' });
+
+    })
+
 
 
    
