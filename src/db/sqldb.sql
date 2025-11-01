@@ -252,9 +252,9 @@ CREATE TABLE Cake_Stages (
 
 INSERT INTO Cake_Stages (OrderId, StageName, Status, StartedAt, CompletedAt, Notes)
 VALUES
-(1006, 'Baking', 'Completed', '2025-10-20 09:00', '2025-10-20 12:00', 'Baked successfully.'),
-(2006, 'Decorating', 'In Progress', '2025-10-21 10:00', NULL, 'Working on floral piping.'),
-(001, 'Baking', 'Completed', '2025-10-22 08:30', '2025-10-22 11:30', 'Baked without issues.'),
+(2006, 'Baking', 'Completed', '2025-10-20 09:00', '2025-10-20 12:00', 'Baked successfully.'),
+(2007, 'Decorating', 'In Progress', '2025-10-21 10:00', NULL, 'Working on floral piping.'),
+(2008, 'Baking', 'Completed', '2025-10-22 08:30', '2025-10-22 11:30', 'Baked without issues.'),
 (2010, 'Decorating', 'Pending', NULL, NULL, 'Scheduled for tomorrow.'),
 (2009, 'Baking', 'Completed', '2025-10-23 07:45', '2025-10-23 10:15', 'Red velvet baked perfectly.');
 

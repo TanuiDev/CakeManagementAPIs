@@ -66,16 +66,18 @@ export const updateUserRolesController = async (req: Request, res: Response) => 
 
 
 
-// Create user (admin-level)
 export const createUserController = async (req: Request, res: Response) => {
-  const newUser: NewUser = req.body;
-
+  const newUser = req.body;
+  
   try {
     const result = await userService.createUserWithVerification(newUser);
+
     res.status(201).json(result);
+
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
+
 };
 
 

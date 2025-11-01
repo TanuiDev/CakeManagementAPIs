@@ -28,12 +28,15 @@ export const createUserWithVerification = async (user: NewUser) => {
   const verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); 
   
   await userRepositories.setVerificationCode(user.email,verificationCode)
+
    try {
+    console.log("Sending verification email to", user.email);
      await sendEmail(
        user.email,
-       'Verify your email',
-       emailTemplate.verify(user.name,verificationCode)     
-     )
+      'Verify your email - CAKEApp By Liz',
+      emailTemplate.verify(user.name,verificationCode)
+     );
+      console.log(user.name,verificationCode) 
     return { message: `User created successfully. Verification code sent to ${user.email}.` };
    } catch (error) {
      console.error('Error sending verification email');
