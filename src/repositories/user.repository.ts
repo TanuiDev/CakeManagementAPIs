@@ -32,13 +32,14 @@ export const getUsers = async (): Promise<User[]> => {
 };
 
 // Get user by ID
-export const getUserById = async (id: number)=> {
+export const getUserById = async (id: number): Promise<any | null> => {
   const pool = await getPool();
   const result = await pool.request()
-    .input("user_Id", sql.Int, id)
-    .query("SELECT * FROM Users WHERE user_Id = @user_Id");
+    .input("user_id", sql.Int, id)
+    .query("SELECT * FROM Users WHERE user_id = @user_id");
   return result.recordset[0] || null;
 };
+
 
 // Get user by Email
 export const getUserByEmail = async (email: string)=> {
@@ -49,7 +50,6 @@ export const getUserByEmail = async (email: string)=> {
   return result.recordset[0] || null;
 };
 
-// Update user
 export const updateUser = async (id: number, updates: UpdateUser) => {
   const pool = await getPool();
 
@@ -65,18 +65,24 @@ export const updateUser = async (id: number, updates: UpdateUser) => {
 
   if (fields.length === 0) return { message: "No fields to update" };
 
-  const query = `UPDATE Users SET ${fields.join(", ")} WHERE user_Id=${id}`;
-  await pool.request().query(query);
+  const query = `UPDATE Users SET ${fields.join(", ")} WHERE user_id=${id}`;
+  const result = await pool.request().query(query);
+
+  // Check if any row was updated
+  if (result.rowsAffected[0] === 0) {
+    return null; // user not found
+  }
 
   return { message: "User updated successfully" };
 };
+
 
 //  Delete user
 export const deleteUser = async (id: number) => {
   const pool = await getPool();
   await pool.request()
-    .input("user_Id", id)
-    .query("DELETE FROM Users WHERE user_Id = @user_Id");
+    .input("user_id", sql.Int, id)
+    .query("DELETE FROM Users WHERE user_id = @user_id");
   return { message: "User deleted successfully" };
 };
 

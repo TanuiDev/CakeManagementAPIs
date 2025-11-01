@@ -22,8 +22,7 @@ export const getUserByIdController = async (req: Request, res: Response) => {
   try {
     const requestingUser = (req as any).user;
 
-    // Non-admins can only fetch their own data
-    if (requestingUser.role !== 'admin' && requestingUser.id !== id) {
+    if (requestingUser && requestingUser.role !== 'admin' && requestingUser.id !== id) {
       return res.status(403).json({ message: "Forbidden: Cannot access other user's data" });
     }
 
@@ -35,24 +34,34 @@ export const getUserByIdController = async (req: Request, res: Response) => {
   }
 };
 
-
-// Update user (admins can update any, users update own)
 export const updateUserRolesController = async (req: Request, res: Response) => {
-
   const id = Number(req.params.id);
-  try {
-    const requestingUser = (req as any).user;
 
-    if (requestingUser.role !== 'admin' && requestingUser.id !== id) {
-      return res.status(403).json({ message: "Forbidden: Cannot update other user's data" });
+  // Validate ID first
+  if (!Number.isInteger(id)) {
+    return res.status(400).json({ message: "Invalid user ID" });
+  }
+
+  const requestingUser = (req as any).user;
+
+  try {
+    if (requestingUser) {
+      if (requestingUser.role !== 'admin' && requestingUser.id !== id) {
+        return res.status(403).json({ message: "Forbidden: Cannot update other user's data" });
+      }
     }
 
     const result = await userService.updateUser(id, req.body);
-    res.status(200).json(result);
+    res.status(200).json({ message: "User updated successfully" });
+
   } catch (error: any) {
-    res.status(400).json({ message: error.message });
+    if (error.message === "User not found") {
+      return res.status(404).json({ message: error.message });
+    }
+    res.status(400).json({ message: error.message || "Unknown error" });
   }
 };
+
 
 
 
@@ -69,22 +78,7 @@ export const createUserController = async (req: Request, res: Response) => {
   }
 };
 
-// Update user
-export const updateUserController = async(req: Request, res: Response) => {
-  const { id } = req.params;
-  const userUpdates: UpdateUser = req.body;
 
-
-    try {
-      const result = await userService.updateUser(Number(id), userUpdates);
-      res.status(200).json(result.message)
-
-    } catch (error:any) {
-    res.status(500).json({ message: error.message });
-      
-    }
-
-}
 
 //  Login user
 
@@ -109,6 +103,9 @@ export const loginUserController = async (req: Request, res: Response) => {
 // Delete user
 export const deleteUserController = async (req: Request, res: Response) => {
 const  id = parseInt(req.params.id)
+  if (!Number.isInteger(id)) {
+    return res.status(400).json({ message: "Invalid user ID" });
+  }
 
   try {
     const result = await userService.deleteUser(id);
@@ -121,30 +118,26 @@ const  id = parseInt(req.params.id)
   }
 };
 
-// Send verification code
-// export const sendVerificationCode = async (req: Request, res: Response) => {
-//   const { email, code } = req.body;
-
-//   try {
-//     const result = await userService.sendVerificationCode(email, code);
-//     res.status(200).json(result);
-//   } catch (error: any) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
-// Verify user
 
 
 export const verifyUserController = async (req: Request, res: Response) => {
   const { email, code } = req.body;
+
+  if (!email || !code) {
+    return res.status(400).json({ message: "Email and code are required" });
+  }
+
   try {
     const result = await userService.verifyUser(email, code);
     res.status(200).json(result);
   } catch (error: any) {
-    res.status(400).json({ message: error.message });
+    if (error.message === "User not found") {
+      return res.status(404).json({ message: error.message });
+    }
+    res.status(400).json({ message: error.message || "Unknown error" });
   }
 };
+
 
 // Resend verification code
 export const resendVerificationController = async (req: Request, res: Response) => {

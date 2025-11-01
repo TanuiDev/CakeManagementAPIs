@@ -63,7 +63,8 @@ DROP TABLE IF EXISTS users;
 -- ============================================
 CREATE TABLE Cake_Orders(
     Id INT PRIMARY KEY IDENTITY(1,1),
-    UserId INT NOT NULL,
+    userid
+ INT NOT NULL,
     DesignId INT NULL, -- Optional design
     Size NVARCHAR(10) NOT NULL CHECK (Size IN ('Small', 'Medium', 'Large')),
     Flavor NVARCHAR(50) NOT NULL,
@@ -90,7 +91,8 @@ GO
 -- 3️⃣ Insert Cake_Orders data
 -- ============================================
 INSERT INTO Cake_Orders (
-    UserId, DesignId, Size, Flavor, Message, Status, DeliveryDate, Notes,
+    userid
+, DesignId, Size, Flavor, Message, Status, DeliveryDate, Notes,
     ExtendedDescription, SampleImages, ColorPreferences
 )
 VALUES
@@ -126,7 +128,7 @@ GO
     
     -- Create users table
 CREATE TABLE Users(
-  user_Id INT PRIMARY KEY IDENTITY(1,1),
+  userid INT PRIMARY KEY IDENTITY(1,1),
   name VARCHAR(100) NOT NULL,
   email VARCHAR(100) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
@@ -152,6 +154,14 @@ VALUES
 
 
 SELECT * FROM users;
+SELECT COLUMN_NAME 
+FROM INFORMATION_SCHEMA.COLUMNS 
+WHERE TABLE_NAME = 'Users';
+
+
+
+
+
 
 
 

@@ -22,7 +22,7 @@ describe('Orders Service', () => {
   it("Should fetch order by ID", async () => {
     const mockOrder = {
         "Id": 1,
-        "UserId": 1,
+        "userid": 1,
         "DesignId": 2,
         "Size": "Large",
         "Flavor": "Chocolate",
@@ -46,7 +46,7 @@ describe('Orders Service', () => {
   it("Should create a new order", async () => {
     const newOrderData ={
         "Id": 1,
-        "UserId": 1,
+        "userid": 1,
         "DesignId": 2,
         "Size": "Large",
         "Flavor": "Chocolate",
@@ -89,7 +89,7 @@ describe('Orders Service', () => {
 
        const mockOrder = {
         "Id": 1,
-        "UserId": 1,
+        "userid": 1,
         "DesignId": 2,
         "Size": "Large",
         "Flavor": "Chocolate",
@@ -122,7 +122,7 @@ describe('Orders Service', () => {
   it("Should get orders by user ID", async () => {
         const mockOrders = [{
         "Id": 1,
-        "UserId": 1,
+        "userid": 1,
         "DesignId": 2,
         "Size": "Large",
         "Flavor": "Chocolate",
@@ -136,7 +136,7 @@ describe('Orders Service', () => {
         "ColorPreferences": "Gold,White",
     },{
         "Id": 2,
-        "UserId": 1,
+        "userid": 1,
         "DesignId": 3,
         "Size": "Medium",
         "Flavor": "Vanilla",
@@ -150,9 +150,11 @@ describe('Orders Service', () => {
         "ColorPreferences": "Blue,Yellow"
     }];
 
-    (ordersRepository.getOrdersByUserId as jest.Mock).mockResolvedValue(mockOrders);
+    (ordersRepository.getOrdersByuserid
+ as jest.Mock).mockResolvedValue(mockOrders);
 
-    const orders = await ordersService.getOrdersByUserId(1);
+    const orders = await ordersService.getOrdersByuserid
+(1);
     expect(orders).toEqual(mockOrders);
 });
 

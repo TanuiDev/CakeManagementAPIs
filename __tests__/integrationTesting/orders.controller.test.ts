@@ -8,13 +8,13 @@ let pool:any;
 
 beforeAll(async () => {
   pool = await getPool();
-    await pool.query("INSERT INTO Cake_Orders (DesignId, UserId, Size, Flavor, Message, Status, DeliveryDate, Notes, ExtendedDescription, SampleImages, ColorPreferences)VALUES (2, 9999, 'Medium', 'Vanilla', 'Happy Birthday!', 'Pending', '2023-12-25', 'No nuts, please.', 'Extra layers of chocolate', 'image1.jpg,image2.jpg', 'Red, Blue')");
+    await pool.query("INSERT INTO Cake_Orders (DesignId, userid Size, Flavor, Message, Status, DeliveryDate, Notes, ExtendedDescription, SampleImages, ColorPreferences)VALUES (2, 9999, 'Medium', 'Vanilla', 'Happy Birthday!', 'Pending', '2023-12-25', 'No nuts, please.', 'Extra layers of chocolate', 'image1.jpg,image2.jpg', 'Red, Blue')");
 
 
 });
 afterAll(async () => {
     const pool = await getPool();
-  await pool.query("DELETE FROM Cake_Orders WHERE UserId = 9999");
+  await pool.query("DELETE FROM Cake_Orders WHERE userid= 9999");
   await pool.close();
 });
 
@@ -22,7 +22,8 @@ describe("Orders Controller Integration Tests", () => {
     it("should create a new order", async () => {
         const response = await request(app).post("/orders").send({
                 DesignId: 2,
-                UserId: 9999,
+                userid
+: 9999,
                 Size: "Medium",
                 Flavor: "Vanilla",
                 Message: "Happy Birthday!",

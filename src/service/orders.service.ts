@@ -41,6 +41,10 @@ export const removeOrder = async(orderId: number) => {
   return await ordersRepository.deleteOrder(orderId); 
 }
 
-export const getOrdersByUserId = async(userId: number) => {
-  return await ordersRepository.getOrdersByUserId(userId);
+export const getOrdersByuserid
+ = async(userid
+: number) => {
+  return await ordersRepository.getOrdersByuserid
+(userid
+);
 }

@@ -71,10 +71,15 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
   }
 };
 
-export const getOrdersByUserId = async (req: Request, res: Response) => {
-  const userId = parseInt(req.params.userId);
+export const getOrdersByuserid
+ = async (req: Request, res: Response) => {
+  const userid
+ = parseInt(req.params.userid
+);
   try {
-    const orders = await ordersService.getOrdersByUserId(userId);
+    const orders = await ordersService.getOrdersByuserid
+(userid
+);
     res.status(200).json(orders);
   } catch (error) {
     console.error('Error fetching orders by user ID:', error);

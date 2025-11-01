@@ -24,7 +24,8 @@ export const createOrder = async (orderData: NewOrder) => {
   const result = await pool
     .request()
     .input('DesignId',orderData.DesignId ?? null)
-      .input('UserId', sql.Int, orderData.UserId)
+      .input('userid', sql.Int, orderData.userid
+)
       .input('Size', sql.VarChar(50), orderData.Size)
       .input('Flavor', sql.VarChar(100), orderData.Flavor)
       .input('Message', sql.VarChar(255), orderData.Message ?? null)
@@ -34,7 +35,7 @@ export const createOrder = async (orderData: NewOrder) => {
       .input('ExtendedDescription', sql.VarChar(sql.MAX), orderData.ExtendedDescription ?? null)
       .input('SampleImages', sql.NVarChar(sql.MAX), orderData.SampleImages ? JSON.stringify(orderData.SampleImages) : null)
       .input('ColorPreferences', sql.NVarChar(sql.MAX), orderData.ColorPreferences ? JSON.stringify(orderData.ColorPreferences) : null)
-    .query('INSERT INTO Cake_Orders (DesignId, UserId, Size, Flavor, Message, Status, DeliveryDate, Notes, ExtendedDescription, SampleImages, ColorPreferences)VALUES (@DesignId, @UserId, @Size, @Flavor, @Message, @Status, @DeliveryDate, @Notes, @ExtendedDescription, @SampleImages, @ColorPreferences)');
+.query('INSERT INTO Cake_Orders (DesignId, UserId, Size, Flavor, Message, Status, DeliveryDate, Notes, ExtendedDescription, SampleImages, ColorPreferences)VALUES (@DesignId, @UserId, @Size, @Flavor, @Message, @Status, @DeliveryDate, @Notes, @ExtendedDescription, @SampleImages, @ColorPreferences)');
   return result.recordset;
     
 
@@ -87,11 +88,13 @@ export const deleteOrder = async(orderId: number) => {
   return "Order deleted";
 }
 
-export const getOrdersByUserId = async (userId: number) => {
+export const getOrdersByuserid
+ = async (userid
+: number) => {
   const pool = await getPool();
   const result = await pool
     .request()
-    .input('UserId',userId)
+    .input('UserId',userid)
     .query('SELECT * FROM Cake_Orders WHERE UserId = @UserId');
   return result.recordset;
 };

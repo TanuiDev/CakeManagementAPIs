@@ -26,13 +26,13 @@ describe("User Service Test Suite", () => {
   it("should return a list of users", async () => {
     const mockUsers = [
       {
-        user_Id: 2,
+        userid: 2,
         name: "James Mwangi",
         email: "jamesbaker@gmail.com",
         password: "password123",
       },
       {
-        user_Id: 3,
+        userid: 3,
         name: "Ann Wanjiku",
         email: "annwanjiku@gmail.com",
         password: "password123",
@@ -111,7 +111,8 @@ describe("User Service Test Suite", () => {
     });
 it("should return token and user info when login is successful", async () => {
         const mockUser = {
-            userid: 3,
+            userid
+: 3,
             name: 'Ann Wanjiku',
             email: 'annwanjiku@gmail.com',
             password: 'hashedPass',
@@ -140,7 +141,8 @@ it("should return token and user info when login is successful", async () => {
             .toThrow("Invalid credentials");
     });
     it("should update user after hashing password", async () => {
-        (userRepositories.getUserById as jest.Mock).mockResolvedValue({ userid: 1 });
+        (userRepositories.getUserById as jest.Mock).mockResolvedValue({ userid
+: 1 });
         (bcrypt.hash as jest.Mock).mockResolvedValue("newHashedPassword");
         (userRepositories.updateUser as jest.Mock).mockResolvedValue({ message: "User updated successfully" });
 
@@ -151,7 +153,8 @@ it("should return token and user info when login is successful", async () => {
         expect(result).toEqual({ message: "User updated successfully" });
     });
 it("should delete user if exists", async () => {
-        (userRepositories.getUserById as jest.Mock).mockResolvedValue({ userid: 1 });
+        (userRepositories.getUserById as jest.Mock).mockResolvedValue({ userid
+: 1 });
         (userRepositories.deleteUser as jest.Mock).mockResolvedValue({ message: "User deleted successfully" });
 
         const result = await userService.deleteUser(1);

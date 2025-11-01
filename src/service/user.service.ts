@@ -17,6 +17,12 @@ export const createUserWithVerification = async (user: NewUser) => {
      user.password= hashedPassword
   }
 
+  const availableuser= await userRepositories.getUserByEmail(user.email)
+
+  if(availableuser){
+    throw new Error("Email already exists")
+  }
+
   await userRepositories.createUser(user);
   
   const verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); 
@@ -94,11 +100,9 @@ export const loginUser = async (email: string, password: string) => {
 // Verify user email
 export const verifyUser = async (email: string, code: string) => {
   const user = await userRepositories.getUserByEmail(email);
-  if (!user) throw new Error('User not found.');
-
-  if (user.verification_code !== code) throw new Error('Invalid verification code.');
-
-  // Mark as verified
+  
+if (!user) throw new Error('User not found');
+  
   await userRepositories.verifyUser(email);
 
   try {
@@ -156,7 +160,7 @@ export const deleteUser = async (id: number) => {
   }
 
   await userRepositories.deleteUser(id);
-  
+
   return { message:"user deleted successfully" }
 
 };
@@ -168,34 +172,22 @@ export const getUserByEmail = async (email: string) => {
 };
 
 
-// Create user (admin-level direct creation)
-// export const createUser = async (user: NewUser) => {
-//   const existingUser = await userRepositories.getUserByEmail(user.email);
-//   if (existingUser) {
-//     throw new Error('Email already exists');
-//   }
 
-//   const hashedPassword = await bcrypt.hash(user.password, 10);
-//   user.password = hashedPassword;
-
-//   return await userRepositories.createUser(user);
-// };
-
-// Update user
 export const updateUser = async (id: number, userUpdates: UpdateUser) => {
   if (userUpdates.password) {
     userUpdates.password = await bcrypt.hash(userUpdates.password, 10);
   }
 
-  return await userRepositories.updateUser(id, userUpdates);
+  const updatedUser = await userRepositories.updateUser(id, userUpdates);
+
+  if (!updatedUser) {
+    throw new Error("User not found");
+  }
+
+  return updatedUser;
 };
 
-// Send verification code
-// export const sendVerificationCode = async (email: string, code: string) => {
-//   const user = await userRepositories.getUserByEmail(email);
-//   if (!user) throw new Error('User not found');
 
-//   return await userRepositories.setVerificationCode(email, code);
-// };
+
 
 
