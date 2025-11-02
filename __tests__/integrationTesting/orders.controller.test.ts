@@ -6,12 +6,13 @@ import { getPool } from "../../src/db/config";
 
 let pool:any;
 
-beforeAll(async () => {
-  pool = await getPool();
-    await pool.query("INSERT INTO Cake_Orders (DesignId, userid Size, Flavor, Message, Status, DeliveryDate, Notes, ExtendedDescription, SampleImages, ColorPreferences)VALUES (2, 9999, 'Medium', 'Vanilla', 'Happy Birthday!', 'Pending', '2023-12-25', 'No nuts, please.', 'Extra layers of chocolate', 'image1.jpg,image2.jpg', 'Red, Blue')");
+await pool.query(`
+  INSERT INTO Cake_Orders 
+  (DesignId, userid, [Size], Flavor, Message, Status, DeliveryDate, Notes, ExtendedDescription, SampleImages, ColorPreferences)
+  VALUES 
+  (2, 9999, 'Medium', 'Vanilla', 'Happy Birthday!', 'Pending', '2023-12-25', 'No nuts, please.', 'Extra layers of chocolate', 'image1.jpg,image2.jpg', 'Red, Blue')
+`);
 
-
-});
 afterAll(async () => {
     const pool = await getPool();
   await pool.query("DELETE FROM Cake_Orders WHERE userid= 9999");
