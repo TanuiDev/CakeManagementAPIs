@@ -83,9 +83,7 @@ CREATE TABLE Cake_Orders(
 );
 GO
 
--- ============================================
--- 3️⃣ Insert Cake_Orders data
--- ============================================
+
 INSERT INTO Cake_Orders (
     userid
 , DesignId, Size, Flavor, Message, Status, DeliveryDate, Notes,

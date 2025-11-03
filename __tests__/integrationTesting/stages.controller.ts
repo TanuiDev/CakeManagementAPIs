@@ -30,4 +30,44 @@ describe('Stages Controller Integration Tests', () => {
         expect(response.status).toBe(201);
     });
 
+    it("Should fetch all the stages",async ()=>{
+        const response =  await request(app).get('/stages');
+        expect(response.statusCode).toBe(200);
+    })
+
+    it("Should fetch stage by OrderId",async ()=>{
+        const response =  await request(app).get('/stages/order/1006');
+        expect(response.statusCode).toBe(200);
+    })
+
+    it("Should fetch stage details by StageId",async ()=>{
+        const response =  await request(app).get('/stages/2003');
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty('Id', 2003);
+    });
+
+    it("Should update stage by StageId",async ()=>{
+        const response =  await request(app).patch('/stages/2003').send({
+            StageName: 'Baking',
+            Status: 'Completed',
+            UpdatedAt: '2023-12-01 15:00:00'
+        });
+        expect(response.statusCode).toBe(200);
+    });
+
+    it("Should complete stage by StageId",async ()=>{
+        const response =  await request(app).post('/stages/2003/complete');
+        expect(response.statusCode).toBe(200);
+    });
+    it.skip("Should delete stage by StageId",async ()=>{
+        const response =  await request(app).delete('/stages/2002');
+        expect(response.statusCode).toBe(200);
+    });
+    
+    it("Should return 404 for non-existing StageId",async ()=>{
+        const response =  await request(app).get('/stages/9999');
+        expect(response.statusCode).toBe(404);
+    });
+    
+
 });
