@@ -6,12 +6,10 @@ import { getPool } from "../../src/db/config";
 
 let pool:any;
 
-await pool.query(`
-  INSERT INTO Cake_Orders 
-  (DesignId, userid, [Size], Flavor, Message, Status, DeliveryDate, Notes, ExtendedDescription, SampleImages, ColorPreferences)
-  VALUES 
-  (2, 9999, 'Medium', 'Vanilla', 'Happy Birthday!', 'Pending', '2023-12-25', 'No nuts, please.', 'Extra layers of chocolate', 'image1.jpg,image2.jpg', 'Red, Blue')
-`);
+beforeAll(async () => {
+  pool = await getPool();
+    await pool.query("INSERT INTO Cake_Orders(DesignId, userid, Size, Flavor, Message, Status, DeliveryDate, Notes, ExtendedDescription, SampleImages, ColorPreferences)VALUES (2, 9999, 'Medium', 'Vanilla', 'Happy Birthday!', 'Pending', '2023-12-25', 'No nuts, please.', 'Extra layers of chocolate', 'image1.jpg,image2.jpg', 'Red, Blue')");  
+});
 
 afterAll(async () => {
     const pool = await getPool();
@@ -23,8 +21,7 @@ describe("Orders Controller Integration Tests", () => {
     it("should create a new order", async () => {
         const response = await request(app).post("/orders").send({
                 DesignId: 2,
-                userid
-: 9999,
+                userid: 9999,
                 Size: "Medium",
                 Flavor: "Vanilla",
                 Message: "Happy Birthday!",
@@ -45,25 +42,28 @@ describe("Orders Controller Integration Tests", () => {
 
         expect(Array.isArray(response.body)).toBe(true);
     });
+    
     it("should retrieve an order by ID", async () => {
-        const response = await request(app).get("/orders/1006");
+        const response = await request(app).get("/orders/2011");
+
         expect(response.statusCode).toBe(200);
-        expect(response.body).toHaveProperty("Id", 1006);
+        expect(response.body).toHaveProperty("Id", 2011);
+    });
+     it("should update order status", async () => {
+        const response = await request(app).patch("/orders/2011").send({
+            Status: "Pending"
+        });
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("message", "Order status updated successfully");
     });
     it("Should return 404 for non-existing order", async () => {
         const response = await request(app).get("/orders/122334234");
         expect(response.statusCode).toBe(404);
     });
 
-    it("should update order status", async () => {
-        const response = await request(app).patch("/orders/1006").send({
-            Status: "Completed"
-        });
-        expect(response.statusCode).toBe(200);
-        expect(response.body).toHaveProperty("message", "Order status updated successfully");
-    });
+   
     it.skip("should delete an order", async () => {
-        const response = await request(app).delete("/orders/5");
+        const response = await request(app).delete("/orders/1006");
 
         expect(response.statusCode).toBe(200);
         expect(response.body).toHaveProperty("message", "Order deleted successfully");
@@ -82,7 +82,7 @@ describe("Orders Controller Integration Tests", () => {
     });
     
     it("It should update the details of the order", async()=>{
-        const response = await request(app).patch("/order/1006").send({
+        const response = await request(app).patch("/order/2011").send({
             Size: "Large",
             Flavor: "Chocolate",
             Message: "Congratulations!",
