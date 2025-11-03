@@ -1,4 +1,5 @@
 import * as stagesRepository from '../repositories/stages.repository';
+import { Stage } from '../types/stages.types';
 
 
 export const getStages = async () => {
@@ -8,6 +9,10 @@ export const getStages = async () => {
 
 export const getStagesByOrderId = async (orderId: number) => {
   return await stagesRepository.getOrderStages(orderId);
+}
+
+export const addNewStage = async (stage:Stage) => {
+  return await stagesRepository.addStage(stage);
 }
 
 export const getStageDetails = async (stageId: number) => {
