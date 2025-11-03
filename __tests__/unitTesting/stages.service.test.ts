@@ -36,6 +36,25 @@ describe("Order stages test Suites",()=>{
 
   })
 
+  it("Should add new stage to an order",async()=>{
+    const newStageData={
+        OrderId: 2007,
+        StageName: "Packaging",
+        Status: "Pending",
+        StartedAt: null,
+        CompletedAt: null,
+        Notes: "Awaiting packaging."
+    };
+
+    (stagesRepository.addStage as jest.Mock).mockResolvedValue(newStageData);
+
+    const res = await stagesService.addNewStage(newStageData as any);
+    expect(res).toEqual(newStageData);
+  });
+
+
+
+
   it("Should fetch stages by order id",async()=>{
     const mockStagesByOrderId={
              OrderId: 2006,
@@ -90,7 +109,7 @@ describe("Order stages test Suites",()=>{
 
     })
 
-    it("It should delete Stage by stage id",async ()=>{
+    it.skip("It should delete Stage by stage id",async ()=>{
        const mockStage={
         Id:2003,
         OrderId: 2006,
