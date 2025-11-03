@@ -54,10 +54,6 @@ GO
 DROP TABLE IF EXISTS users;
 
 
-
-
-
-
 CREATE TABLE Cake_Orders(
     Id INT PRIMARY KEY IDENTITY(1,1),
     userid INT NOT NULL,
@@ -153,15 +149,6 @@ FROM INFORMATION_SCHEMA.COLUMNS
 WHERE TABLE_NAME = 'Users';
 
 
-
-
-
-
-
-
-
-
-
 DROP TABLE IF EXISTS ReadyMade_Cakes ;
 
  CREATE TABLE ReadyMade_Cakes (
@@ -219,14 +206,6 @@ ADD verification_code VARCHAR(10),
 
     USE CakeManagementDB;  
 DELETE FROM Users WHERE email = 'njokimunywa@gmail.com';
-
-
-
-
-
-
-
-
 
 
 
