@@ -1,6 +1,11 @@
 export interface Delivery {
-  id?: number;
-  order_id: number;
-  delivery_date: string;
-  status: string;
+  DeliveryID?: number;          
+  OrderID: number;
+  DeliveryAddress: string;
+  DeliveryDate: string;         
+  CourierName?: string;
+  CourierContact?: string;
+  Status?: string;
+  CreatedAt?: string;
+  UpdatedAt?: string;
 }
