@@ -38,7 +38,7 @@ export const config = {
   },
 };
 
-// ✅ Maintain a single shared pool
+
 let pool: sql.ConnectionPool | null = null;
 
 export const getPool = async () => {
@@ -49,7 +49,7 @@ export const getPool = async () => {
     }
 
     pool = await sql.connect(config.sqlConfig);
-    console.log('✅ Connected to SQL Server');
+    console.log('Connected to SQL Server');
     return pool;
   } catch (error) {
     console.error(' SQL Connection Error:', error);
