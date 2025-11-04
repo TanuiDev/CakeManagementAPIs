@@ -90,7 +90,7 @@ export const deleteUser = async (id: number) => {
 export const setVerificationCode = async (email: string, verification_code: string) => {
   const pool = await getPool();
   await pool.request()
-    .input("email", sql.VarChar, email)
+    .input("email", email)
     .input("verification_code", verification_code)
     .query('UPDATE  Users SET verification_code = @verification_code   WHERE email = @email ');
   return { message: "Verification code saved" };
