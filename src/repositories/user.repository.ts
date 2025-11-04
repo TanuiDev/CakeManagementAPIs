@@ -108,3 +108,5 @@ export const verifyUser = async (email: string) => {
     `);
   return { message: "User verified successfully" };
 };
+
+

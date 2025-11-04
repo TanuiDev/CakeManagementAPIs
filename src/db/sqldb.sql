@@ -81,7 +81,8 @@ GO
 
 
 INSERT INTO Cake_Orders (
-    userid
+    
+        userid
 , DesignId, Size, Flavor, Message, Status, DeliveryDate, Notes,
     ExtendedDescription, SampleImages, ColorPreferences
 )
