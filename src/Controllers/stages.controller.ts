@@ -21,6 +21,16 @@ export const fetchStagesByOrderId = async (req: Request, res: Response) => {
   }
 };
 
+export const createStage = async (req: Request, res: Response) => {
+  const newStage = req.body;
+  try {
+    const result = await stagesService.addNewStage(newStage);
+    res.status(201).json(result);
+  } catch (error:any) {
+    res.status(500).json({ error: 'Internal server error', details: error.message });
+  }
+};
+
 export const fetchStageDetails = async (req: Request, res: Response) => {
   const stageId = parseInt(req.params.stageId);
   try {

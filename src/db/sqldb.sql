@@ -54,17 +54,9 @@ GO
 DROP TABLE IF EXISTS users;
 
 
-
-
-
-
--- ============================================
--- 2️⃣ Create Cake_Orders next
--- ============================================
 CREATE TABLE Cake_Orders(
     Id INT PRIMARY KEY IDENTITY(1,1),
-    userid
- INT NOT NULL,
+    userid INT NOT NULL,
     DesignId INT NULL, -- Optional design
     Size NVARCHAR(10) NOT NULL CHECK (Size IN ('Small', 'Medium', 'Large')),
     Flavor NVARCHAR(50) NOT NULL,
@@ -87,9 +79,7 @@ CREATE TABLE Cake_Orders(
 );
 GO
 
--- ============================================
--- 3️⃣ Insert Cake_Orders data
--- ============================================
+
 INSERT INTO Cake_Orders (
     userid
 , DesignId, Size, Flavor, Message, Status, DeliveryDate, Notes,
@@ -159,15 +149,6 @@ FROM INFORMATION_SCHEMA.COLUMNS
 WHERE TABLE_NAME = 'Users';
 
 
-
-
-
-
-
-
-
-
-
 DROP TABLE IF EXISTS ReadyMade_Cakes ;
 
  CREATE TABLE ReadyMade_Cakes (
@@ -225,14 +206,6 @@ ADD verification_code VARCHAR(10),
 
     USE CakeManagementDB;  
 DELETE FROM Users WHERE email = 'njokimunywa@gmail.com';
-
-
-
-
-
-
-
-
 
 
 

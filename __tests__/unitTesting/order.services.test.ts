@@ -150,14 +150,13 @@ describe('Orders Service', () => {
         "ColorPreferences": "Blue,Yellow"
     }];
 
-    (ordersRepository.getOrdersByuserid
- as jest.Mock).mockResolvedValue(mockOrders);
+    (ordersRepository.getOrdersByuserid as jest.Mock).mockResolvedValue(mockOrders);
 
     const orders = await ordersService.getOrdersByuserid
-(1);
+ (1);
     expect(orders).toEqual(mockOrders);
-});
-
-
 
 });
+
+}
+)

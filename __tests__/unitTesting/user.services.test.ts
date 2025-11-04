@@ -70,7 +70,7 @@ describe("User Service Test Suite", () => {
     expect(userRepositories.createUser).toHaveBeenCalled();
     expect(sendEmail).toHaveBeenCalled();
     expect(result).toEqual({
-      message: "User created successfully. Verification code sent to email.",
+      message: "User created successfully. Verification code sent to chebet@gmail.com.",
     });
   });
   it("should verify user with correct code", async () => {
@@ -159,7 +159,7 @@ it("should delete user if exists", async () => {
 
         const result = await userService.deleteUser(1);
         expect(userRepositories.deleteUser).toHaveBeenCalledWith(1);
-        expect(result).toEqual({ message: "User deleted successfully"});
+        expect(result).toEqual({ message: "user deleted successfully"});
     });
 
 });

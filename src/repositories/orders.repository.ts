@@ -35,7 +35,7 @@ export const createOrder = async (orderData: NewOrder) => {
       .input('ExtendedDescription', sql.VarChar(sql.MAX), orderData.ExtendedDescription ?? null)
       .input('SampleImages', sql.NVarChar(sql.MAX), orderData.SampleImages ? JSON.stringify(orderData.SampleImages) : null)
       .input('ColorPreferences', sql.NVarChar(sql.MAX), orderData.ColorPreferences ? JSON.stringify(orderData.ColorPreferences) : null)
-.query('INSERT INTO Cake_Orders (DesignId, UserId, Size, Flavor, Message, Status, DeliveryDate, Notes, ExtendedDescription, SampleImages, ColorPreferences)VALUES (@DesignId, @UserId, @Size, @Flavor, @Message, @Status, @DeliveryDate, @Notes, @ExtendedDescription, @SampleImages, @ColorPreferences)');
+.query('INSERT INTO Cake_Orders (DesignId, UserId,Size, Flavor, Message, Status, DeliveryDate, Notes, ExtendedDescription, SampleImages, ColorPreferences)VALUES (@DesignId, @UserId, @Size, @Flavor, @Message, @Status, @DeliveryDate, @Notes, @ExtendedDescription, @SampleImages, @ColorPreferences)');
   return result.recordset;
     
 

@@ -1,6 +1,7 @@
 import { getPool } from "../db/config";
 
 import sql from "mssql";
+import { Stage } from "../types/stages.types";
 
 
 export const getAllStages = async () => {
@@ -24,6 +25,20 @@ export const getStageById = async (Id: number) => {
     .input('Id',  Id)
     .query('SELECT * FROM Cake_Stages WHERE Id = @Id');
   return result.recordset[0];
+}
+
+export const addStage = async (stage: Stage) => {
+  const pool = await getPool();
+   await pool.request()
+    .input('OrderId',stage.OrderId)
+    .input('StageName', stage.StageName)
+    .input('Status',  stage.Status)
+    .input('StartedAt',  stage.StartedAt)
+    .input('CompletedAt',  stage.CompletedAt)
+    .input('Notes', stage.Notes)
+    .query("INSERT INTO Cake_Stages (OrderId, StageName, Status, StartedAt, CompletedAt, Notes) VALUES (@OrderId, @StageName, @Status, @StartedAt, @CompletedAt, @Notes) ");
+
+  return { message: "Stage added successfully" };
 }
 
 
