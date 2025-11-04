@@ -11,10 +11,12 @@
     "forceConsistentCasingInFileNames": true, 
     /* Type Checking */
     "strict": true,
-    "skipLibCheck": true 
+    "skipLibCheck": true ,
+  "types": ["node", "k6"]
   },
   "include": [
     "src/**/*" , 
+     "load.tests"
   ],
   "exclude": [
     "node_modules",

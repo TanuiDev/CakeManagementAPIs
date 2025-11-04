@@ -138,8 +138,6 @@ it("should return 404 if user not found", async () => {
   expect(res.status).toBe(200);
   expect(res.body.message).toMatch(/user updated successfully/i);
 });
-
-});
  it("should return 400 when updating with invalid ID", async () => {
     const res = await request(app).put("/users/abc").send({
         name: "BadId",
@@ -189,5 +187,6 @@ it("should return 404 if user not found", async () => {
         });
         expect(res.status).toBe(404);
     });
+  })
 
 
