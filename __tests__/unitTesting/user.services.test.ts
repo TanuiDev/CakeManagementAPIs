@@ -18,7 +18,7 @@ jest.mock("jsonwebtoken");
 jest.mock("../../src/mailer/mailer");
 jest.mock("../../src/mailer/emailtemplate");
 
-describe("User Service Test Suite", () => {
+describe("User Service ", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });

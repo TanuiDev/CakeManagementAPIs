@@ -7,9 +7,8 @@
     "build": "tsc",
     "start": "npm run build && node dist/index.js",
     "dev": "tsx watch src/server.ts",
-    "test": "set NODE_ENV=test&& jest",
-     "k6": "tsc --outDir dist && node -e \"const { execSync } = require('child_process'); const file = process.argv[1]; const outFile = 'dist/' + file.replace(/\\.ts$/, '.js'); execSync('k6 run ' + outFile, { stdio: 'inherit' });\""
-
+    "test": "cross-env NODE_ENV=test jest --runInBand",
+    "k6": "tsc --outDir dist && node -e \"const { execSync } = require('child_process'); const file = process.argv[1]; const outFile = 'dist/' + file.replace(/\\.ts$/, '.js'); execSync('k6 run ' + outFile, { stdio: 'inherit' });\""
   },
   "keywords": [],
   "author": "",
@@ -25,6 +24,7 @@
     "@types/node": "^24.8.1",
     "@types/nodemailer": "^7.0.3",
     "@types/supertest": "^6.0.3",
+    "cross-env": "^10.1.0",
     "jest": "^30.2.0",
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.5",
