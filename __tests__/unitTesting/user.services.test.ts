@@ -9,10 +9,8 @@ import bcrypt from "bcryptjs";
 jest.mock("../../src/repositories/user.repository");
 jest.mock("bcryptjs", () => ({
   __esModule: true,
-  default: {
-    hash: jest.fn(),
-    compare: jest.fn(),
-  },
+  default: { hash: jest.fn(), compare: jest.fn() },
+
 }));
 
 jest.mock("../../src/mailer/mailer");
