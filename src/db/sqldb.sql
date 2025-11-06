@@ -81,7 +81,8 @@ GO
 
 
 INSERT INTO Cake_Orders (
-    userid
+    
+        userid
 , DesignId, Size, Flavor, Message, Status, DeliveryDate, Notes,
     ExtendedDescription, SampleImages, ColorPreferences
 )
@@ -208,9 +209,9 @@ ADD verification_code VARCHAR(10),
 DELETE FROM Users WHERE email = 'njokimunywa@gmail.com';
 
 
+DROP TABLE IF EXISTS Cake_Stages ;
 
-
-CREATE TABLE Cake_Stages (
+CREATE TABLE Cake_Stages(
     Id INT PRIMARY KEY IDENTITY(1,1),
     OrderId INT NOT NULL,
     StageName NVARCHAR(50) NOT NULL,        
@@ -219,18 +220,18 @@ CREATE TABLE Cake_Stages (
     CompletedAt DATETIME2 NULL,
     Notes NVARCHAR(MAX) NULL,
     UpdatedAt DATETIME2 DEFAULT SYSDATETIME(),
-
     FOREIGN KEY (OrderId) REFERENCES Cake_Orders(Id) ON DELETE CASCADE
 );
 
 INSERT INTO Cake_Stages (OrderId, StageName, Status, StartedAt, CompletedAt, Notes)
 VALUES
-(2006, 'Baking', 'Completed', '2025-10-20 09:00', '2025-10-20 12:00', 'Baked successfully.'),
-(2007, 'Decorating', 'In Progress', '2025-10-21 10:00', NULL, 'Working on floral piping.'),
-(2008, 'Baking', 'Completed', '2025-10-22 08:30', '2025-10-22 11:30', 'Baked without issues.'),
-(2010, 'Decorating', 'Pending', NULL, NULL, 'Scheduled for tomorrow.'),
-(2009, 'Baking', 'Completed', '2025-10-23 07:45', '2025-10-23 10:15', 'Red velvet baked perfectly.');
+(1, 'Baking', 'Completed', '2025-10-20 09:00', '2025-10-20 12:00', 'Baked successfully.'),
+(2, 'Decorating', 'In Progress', '2025-10-21 10:00', NULL, 'Working on floral piping.'),
+(3, 'Baking', 'Completed', '2025-10-22 08:30', '2025-10-22 11:30', 'Baked without issues.'),
+(3, 'Decorating', 'Pending', NULL, NULL, 'Scheduled for tomorrow.'),
+(2, 'Baking', 'Completed', '2025-10-23 07:45', '2025-10-23 10:15', 'Red velvet baked perfectly.');
 
+-- DROP TABLE Cake_Stages ;
 
 SELECT * FROM Cake_Stages;
 

@@ -48,3 +48,7 @@ export const getOrdersByuserid
 (userid
 );
 }
+
+export const fetchOrdersofUser = async (userid:number)=>{
+  return await ordersRepository.fetchOrdersofUser(userid);
+}

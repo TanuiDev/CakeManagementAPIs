@@ -100,3 +100,14 @@ export const deleteOrder = async (req: Request, res: Response) => {
     res.status(500).json( error);
   }
 };
+
+export const fetchOrdersofUser = async (req: Request, res: Response)=>{
+  const userid = parseInt(req.params.UserId);
+  try {
+    const orders = await ordersService.fetchOrdersofUser(userid);
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error('Error fetching orders of user:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};

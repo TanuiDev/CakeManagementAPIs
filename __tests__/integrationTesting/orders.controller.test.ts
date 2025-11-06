@@ -44,13 +44,13 @@ describe("Orders Controller Integration Tests", () => {
     });
     
     it("should retrieve an order by ID", async () => {
-        const response = await request(app).get("/orders/2011");
+        const response = await request(app).get("/orders/1");
 
         expect(response.statusCode).toBe(200);
-        expect(response.body).toHaveProperty("Id", 2011);
+        expect(response.body).toHaveProperty("Id", 1);
     });
      it("should update order status", async () => {
-        const response = await request(app).patch("/orders/2011").send({
+        const response = await request(app).patch("/orders/1").send({
             Status: "Pending"
         });
         expect(response.statusCode).toBe(200);
@@ -82,7 +82,7 @@ describe("Orders Controller Integration Tests", () => {
     });
     
     it("It should update the details of the order", async()=>{
-        const response = await request(app).patch("/order/2011").send({
+        const response = await request(app).patch("/order/1").send({
             Size: "Large",
             Flavor: "Chocolate",
             Message: "Congratulations!",

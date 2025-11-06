@@ -8,7 +8,6 @@ import { emailTemplate } from '../mailer/emailtemplate';
 import { error } from 'console';
 import { throws } from 'assert';
 
-// //  Create user and send verification code
 export const createUserWithVerification = async (user: NewUser) => { 
 
    if (user.password) {
@@ -105,6 +104,10 @@ export const verifyUser = async (email: string, code: string) => {
   const user = await userRepositories.getUserByEmail(email);
   
 if (!user) throw new Error('User not found');
+if (user.verification_code !== code) {
+  throw new Error('Invalid verification code');
+}
+
   
   await userRepositories.verifyUser(email);
 

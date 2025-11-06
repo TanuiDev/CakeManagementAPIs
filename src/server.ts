@@ -14,7 +14,7 @@ app.listen(PORT, async () => {
 
   try {
     await getPool();
-    console.log("✅ Database connected successfully!");
+    console.log("✅ Database connected successfully");
   } catch (error) {
     console.error("❌ Error connecting to SQL Server:", error);
   }
