@@ -2,7 +2,6 @@ import { Application, application } from "express";
 import * as userController from "../Controllers/user.controller";
 
 export default function registerUserRoutes(app: Application) {
- 
   app.post("/users/register", userController.createUserController);
   app.post("/users/login", userController.loginUserController);
   app.get("/users", userController.getAllUsersController);
@@ -11,5 +10,4 @@ export default function registerUserRoutes(app: Application) {
   app.delete("/users/:id", userController.deleteUserController);
   app.post("/users/verify", userController.verifyUserController);
   app.post("/users/verify/resend", userController.resendVerificationController);
-
 }

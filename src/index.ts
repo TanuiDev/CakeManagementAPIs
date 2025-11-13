@@ -1,8 +1,5 @@
 import express from "express";
 
-
-
-
 // Route imports
 import deliveryRoutes from "./routers/delivery.routes";
 import registerOrderRoutes from "./routers/orders.routes";
@@ -10,37 +7,30 @@ import registerDesignRoutes from "./routers/design.routes";
 import registerUserRoutes from "./routers/user.routes";
 import registerCakeRoutes from "./routers/readycakes.routes";
 import { registerStageRoutes } from "./routers/stages.routes";
+import cors from "cors";
 
+const initializeApp = () => {
+  const app = express();
+  app.use(
+    cors({
+      origin: "http://localhost:5173",
+      methods: ["GET", "POST", "PUT", "DELETE"],
+    }),
+  );
 
+  app.use(express.json());
 
-const initializeApp = ()=>{
-const app = express();
+  //routers
+  app.use("/api/deliveries", deliveryRoutes);
+  registerOrderRoutes(app);
+  registerDesignRoutes(app);
+  registerUserRoutes(app);
+  registerCakeRoutes(app);
+  registerStageRoutes(app);
 
+  return app;
+};
 
-app.use(express.json());
-
-//routers
-app.use("/api/deliveries", deliveryRoutes);
-registerOrderRoutes(app);
-registerDesignRoutes(app);
-registerUserRoutes(app);
-registerCakeRoutes(app);
-registerStageRoutes(app)
-
-
-return app;
-
-}
-
-
-const app = initializeApp()
+const app = initializeApp();
 
 export default app;
-
-
-
-
-
-
-
-

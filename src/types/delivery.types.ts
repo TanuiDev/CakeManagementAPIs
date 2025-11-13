@@ -1,8 +1,8 @@
 export interface Delivery {
-  DeliveryID?: number;          
+  DeliveryID?: number;
   OrderID: number;
   DeliveryAddress: string;
-  DeliveryDate: string;         
+  DeliveryDate: string;
   CourierName?: string;
   CourierContact?: string;
   Status?: string;

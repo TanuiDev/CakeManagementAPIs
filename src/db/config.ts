@@ -1,22 +1,15 @@
-import dotenv from 'dotenv';
-import assert from 'assert';
-import sql from 'mssql';
+import dotenv from "dotenv";
+import assert from "assert";
+import sql from "mssql";
 
 dotenv.config();
 
-const {
-  SQL_SERVER,
-  SQL_USER,
-  SQL_PWD,
-  SQL_DB,
-  SQL_PORT,
-  PORT,
-} = process.env;
+const { SQL_SERVER, SQL_USER, SQL_PWD, SQL_DB, SQL_PORT, PORT } = process.env;
 
-assert(SQL_SERVER, 'SQL_SERVER is not set in environment variables');
-assert(SQL_USER, 'SQL_USER is not set in environment variables');
-assert(SQL_PWD, 'SQL_PWD is not set in environment variables');
-assert(SQL_DB, 'SQL_DB is not set in environment variables');
+assert(SQL_SERVER, "SQL_SERVER is not set in environment variables");
+assert(SQL_USER, "SQL_USER is not set in environment variables");
+assert(SQL_PWD, "SQL_PWD is not set in environment variables");
+assert(SQL_DB, "SQL_DB is not set in environment variables");
 
 export const config = {
   port: PORT || 5000,
@@ -38,7 +31,6 @@ export const config = {
   },
 };
 
-
 let pool: sql.ConnectionPool | null = null;
 
 export const getPool = async () => {
@@ -49,10 +41,10 @@ export const getPool = async () => {
     }
 
     pool = await sql.connect(config.sqlConfig);
-    console.log('Connected to SQL Server');
+    console.log("Connected to SQL Server");
     return pool;
   } catch (error) {
-    console.error(' SQL Connection Error:', error);
+    console.error(" SQL Connection Error:", error);
     throw error;
   }
 };

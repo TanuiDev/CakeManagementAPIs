@@ -1,11 +1,9 @@
 import app from "./index";
 import { getPool } from "./db/config";
 
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 
-dotenv.config()
-
-
+dotenv.config();
 
 const PORT = process.env.PORT || 8081;
 
