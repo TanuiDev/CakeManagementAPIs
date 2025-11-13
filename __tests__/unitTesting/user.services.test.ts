@@ -9,12 +9,10 @@ import bcrypt from "bcryptjs";
 jest.mock("../../src/repositories/user.repository");
 jest.mock("bcryptjs", () => ({
   __esModule: true,
-  default: {
-    hash: jest.fn(),
-    compare: jest.fn(),
-  },
+  default: { hash: jest.fn(), compare: jest.fn() },
+
 }));
-jest.mock("jsonwebtoken");
+
 jest.mock("../../src/mailer/mailer");
 jest.mock("../../src/mailer/emailtemplate");
 
@@ -111,8 +109,7 @@ describe("User Service ", () => {
     });
 it("should return token and user info when login is successful", async () => {
         const mockUser = {
-            userid
-: 3,
+            userid: 3,
             name: 'Ann Wanjiku',
             email: 'annwanjiku@gmail.com',
             password: 'hashedPass',
@@ -141,8 +138,7 @@ it("should return token and user info when login is successful", async () => {
             .toThrow("Invalid credentials");
     });
     it("should update user after hashing password", async () => {
-        (userRepositories.getUserById as jest.Mock).mockResolvedValue({ userid
-: 1 });
+        (userRepositories.getUserById as jest.Mock).mockResolvedValue({ userid: 1 });
         (bcrypt.hash as jest.Mock).mockResolvedValue("newHashedPassword");
         (userRepositories.updateUser as jest.Mock).mockResolvedValue({ message: "User updated successfully" });
 

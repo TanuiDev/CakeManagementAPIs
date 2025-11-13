@@ -8,7 +8,13 @@
     "start": "npm run build && node dist/index.js",
     "dev": "tsx watch src/server.ts",
     "test": "cross-env NODE_ENV=test jest --runInBand",
-    "k6": "tsc --outDir dist && node -e \"const { execSync } = require('child_process'); const file = process.argv[1]; const outFile = 'dist/' + file.replace(/\\.ts$/, '.js'); execSync('k6 run ' + outFile, { stdio: 'inherit' });\""
+    "k6": "tsc --outDir dist && node -e \"const { execSync } = require('child_process'); const file = process.argv[1]; const outFile = 'dist/' + file.replace(/\\.ts$/, '.js'); execSync('k6 run ' + outFile, { stdio: 'inherit' });\"",
+    "smoke:user": "k6 run __tests__/performanceTesting/0.smoke/user.smoke.ts",
+    "stress:user":"k6 run __tests__/performanceTesting/1.stress/user.stress.ts",
+    "soak:user":"k6 run __tests__/performanceTesting/2.soak.Testsing/user.soak.ts",
+    "spike:user":"k6 run __tests__/performanceTesting/3.spike/user.spike.ts"
+
+
   },
   "keywords": [],
   "author": "",
