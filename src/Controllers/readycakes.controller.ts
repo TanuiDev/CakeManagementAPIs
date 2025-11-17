@@ -30,7 +30,10 @@ export const addCake = async (req: Request, res: Response) => {
 
 export const updateCake = async (req: Request, res: Response) => {
   try {
-    const response = await cakeService.updateCake(Number(req.params.id), req.body);
+    const response = await cakeService.updateCake(
+      Number(req.params.id),
+      req.body,
+    );
     res.json(response);
   } catch (error: any) {
     res.status(400).json({ message: error.message });

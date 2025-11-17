@@ -1,47 +1,51 @@
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import * as userRepositories from "../repositories/user.repository";
+import { NewUser, UpdateUser } from "../types/user.types";
+import { sendEmail } from "../mailer/mailer";
+import { emailTemplate } from "../mailer/emailtemplate";
+import { error } from "console";
+import { throws } from "assert";
+import dotenv from "dotenv";
 
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import * as userRepositories from '../repositories/user.repository';
-import { NewUser, UpdateUser } from '../types/user.types';
-import { sendEmail } from '../mailer/mailer';
-import { emailTemplate } from '../mailer/emailtemplate';
-import { error } from 'console';
-import { throws } from 'assert';
+dotenv.config();
 
-export const createUserWithVerification = async (user: NewUser) => { 
+export const createUserWithVerification = async (user: NewUser) => {
+  if (user.password) {
+    const hashedPassword = await bcrypt.hash(user.password, 10);
 
-   if (user.password) {
-     const hashedPassword = await bcrypt.hash(user.password, 10);
-
-     user.password= hashedPassword
+    user.password = hashedPassword;
   }
 
-  const availableuser= await userRepositories.getUserByEmail(user.email)
+  const availableuser = await userRepositories.getUserByEmail(user.email);
 
-  if(availableuser){
-    throw new Error("Email already exists")
+  if (availableuser) {
+    throw new Error("Email already exists");
   }
 
   await userRepositories.createUser(user);
-  
-  const verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); 
-  
-  await userRepositories.setVerificationCode(user.email,verificationCode)
 
-   try {
+  const verificationCode = Math.floor(
+    100000 + Math.random() * 900000,
+  ).toString();
+
+  await userRepositories.setVerificationCode(user.email, verificationCode);
+
+  try {
     console.log("Sending verification email to", user.email);
-     await sendEmail(
-       user.email,
-      'Verify your email - CAKEApp By Liz',
-      emailTemplate.verify(user.name,verificationCode)
-     );
-      console.log(user.name,verificationCode) 
-    return { message: `User created successfully. Verification code sent to ${user.email}.` };
-   } catch (error) {
-     console.error('Error sending verification email');
-   }
-   
- };
+    await sendEmail(
+      user.email,
+      "Verify your email - CAKEApp By Liz",
+      emailTemplate.verify(user.name, verificationCode),
+    );
+    console.log(user.name, verificationCode);
+    return {
+      message: `User created successfully. Verification code sent to ${user.email}.`,
+    };
+  } catch (error) {
+    console.error("Error sending verification email");
+  }
+};
 
 // Login user with role-based JWT
 export const loginUser = async (email: string, password: string) => {
@@ -62,14 +66,12 @@ export const loginUser = async (email: string, password: string) => {
     throw error;
   }
 
-  // Ensure user has verified email
   if (!user.is_verified) {
     const error: any = new Error("Please verify your email before logging in.");
     error.status = 403;
     throw error;
   }
 
-  // JWT payload
   const payload = {
     id: user.id,
     email: user.email,
@@ -98,51 +100,51 @@ export const loginUser = async (email: string, password: string) => {
   };
 };
 
-
 // Verify user email
 export const verifyUser = async (email: string, code: string) => {
   const user = await userRepositories.getUserByEmail(email);
-  
-if (!user) throw new Error('User not found');
-if (user.verification_code !== code) {
-  throw new Error('Invalid verification code');
-}
 
-  
+  if (!user) throw new Error("User not found");
+
+  if (user.verification_code !== code) {
+    throw new Error("Invalid verification code");
+  }
+
   await userRepositories.verifyUser(email);
 
   try {
     await sendEmail(
       user.email,
-      'Your email has been verified - CAKEApp By Liz',
-      emailTemplate.verifiedSuccess(user.name)
+      "Your email has been verified - CAKEApp By Liz",
+      emailTemplate.verifiedSuccess(user.name),
     );
   } catch (error) {
-    console.error(' Error sending success email:', error);
+    console.error(" Error sending success email:", error);
   }
-
-  return { message: 'User verified successfully.' };
+  return { message: "User verified successfully." };
 };
 
 //  Resend verification code
 export const resendVerificationCode = async (email: string) => {
   const user = await userRepositories.getUserByEmail(email);
-  if (!user) throw new Error('User not found.');
+  if (!user) throw new Error("User not found.");
 
-  const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+  const verificationCode = Math.floor(
+    100000 + Math.random() * 900000,
+  ).toString();
   await userRepositories.setVerificationCode(email, verificationCode);
 
   try {
     await sendEmail(
       user.email,
-      'Resend verification code',
-      emailTemplate.verify(user.name, verificationCode)
+      "Resend verification code",
+      emailTemplate.verify(user.name, verificationCode),
     );
   } catch (error) {
-    console.error(' Error resending verification email:', error);
+    console.error(" Error resending verification email:", error);
   }
 
-  return { message: 'Verification code resent successfully.' };
+  return { message: "Verification code resent successfully." };
 };
 
 //  Get all users
@@ -153,31 +155,27 @@ export const getAllUsers = async () => {
 // Get user by ID
 export const getUserById = async (id: number) => {
   const user = await userRepositories.getUserById(id);
-  if (!user) throw new Error('User not found.');
+  if (!user) throw new Error("User not found.");
   return user;
 };
 
 // Delete user
 export const deleteUser = async (id: number) => {
-  const user = await userRepositories.getUserById(id)
+  const user = await userRepositories.getUserById(id);
 
-  if(!user){
-   throw new Error("User not found")
+  if (!user) {
+    throw new Error("User not found");
   }
 
   await userRepositories.deleteUser(id);
 
-  return { message:"user deleted successfully" }
-
+  return { message: "user deleted successfully" };
 };
-
 
 // Get user by email
 export const getUserByEmail = async (email: string) => {
   return await userRepositories.getUserByEmail(email);
 };
-
-
 
 export const updateUser = async (id: number, userUpdates: UpdateUser) => {
   if (userUpdates.password) {
@@ -192,8 +190,3 @@ export const updateUser = async (id: number, userUpdates: UpdateUser) => {
 
   return updatedUser;
 };
-
-
-
-
-

@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import * as designService from '../service/design.service';
+import { Request, Response } from "express";
+import * as designService from "../service/design.service";
 
 // Get all designs
 export const getAllDesigns = async (req: Request, res: Response) => {
@@ -42,10 +42,10 @@ export const createDesign = async (req: Request, res: Response) => {
       availability,
       size,
       imageUrl,
-      category
+      category,
     );
 
-    res.status(201).json({ message: 'Cake design created successfully' });
+    res.status(201).json({ message: "Cake design created successfully" });
   } catch (error: any) {
     res.status(400).json({ message: error.message });
   }
@@ -73,10 +73,10 @@ export const updateDesign = async (req: Request, res: Response) => {
       availability,
       size,
       imageUrl,
-      category
+      category,
     );
 
-    res.status(200).json({ message: 'Cake design updated successfully' });
+    res.status(200).json({ message: "Cake design updated successfully" });
   } catch (error: any) {
     res.status(400).json({ message: error.message });
   }
@@ -87,7 +87,7 @@ export const deleteDesign = async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
     await designService.removeDesign(id);
-    res.status(200).json({ message: 'Cake design deleted successfully' });
+    res.status(200).json({ message: "Cake design deleted successfully" });
   } catch (error: any) {
     res.status(404).json({ message: error.message });
   }

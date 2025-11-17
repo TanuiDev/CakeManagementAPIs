@@ -1,15 +1,15 @@
 export interface User {
   user_id: number;
-  id?: number; 
+  id?: number;
   name: string;
   email: string;
   password: string;
   phone: string;
   address?: string;
-role: 'customer' | 'admin';
+  role: "customer" | "admin";
   Created_At?: Date;
   Updated_At?: Date;
-   verification_code?: string | null;
+  verification_code?: string | null;
   is_verified?: boolean;
 }
 
@@ -19,7 +19,7 @@ export interface NewUser {
   password: string;
   phone: string;
   address?: string;
- role: 'customer' | 'admin';
+  role: "customer" | "admin";
   is_verified?: boolean;
   verification_code?: string;
 }
@@ -31,7 +31,7 @@ export interface UpdateUser {
   phone?: string;
   address?: string;
   role?: string;
-   is_verified?: boolean;
+  is_verified?: boolean;
   verification_code?: string;
 }
 

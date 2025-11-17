@@ -1,4 +1,4 @@
-import * as designRepo from '../repositories/design.repository';
+import * as designRepo from "../repositories/design.repository";
 
 //  Fetch all designs
 export const listDesigns = async () => {
@@ -8,7 +8,7 @@ export const listDesigns = async () => {
 //  Find design by ID
 export const findDesign = async (id: number) => {
   const design = await designRepo.getDesignById(id);
-  if (!design) throw new Error('Design not found');
+  if (!design) throw new Error("Design not found");
   return design;
 };
 
@@ -20,13 +20,21 @@ export const addDesign = async (
   availability: number,
   size: string,
   imageUrl: string,
-  category: string
+  category: string,
 ) => {
   if (!designName || !baseFlavor || !size) {
-    throw new Error('Design name, base flavor, and size are required');
+    throw new Error("Design name, base flavor, and size are required");
   }
 
-  await designRepo.createDesign(designName, description, baseFlavor, availability, size, imageUrl, category);
+  await designRepo.createDesign(
+    designName,
+    description,
+    baseFlavor,
+    availability,
+    size,
+    imageUrl,
+    category,
+  );
 };
 
 //  Update design
@@ -38,17 +46,26 @@ export const modifyDesign = async (
   availability: number,
   size: string,
   imageUrl: string,
-  category: string
+  category: string,
 ) => {
   const existing = await designRepo.getDesignById(id);
-  if (!existing) throw new Error('Design not found');
+  if (!existing) throw new Error("Design not found");
 
-  await designRepo.updateDesign(id, designName, description, baseFlavor, availability, size, imageUrl, category);
+  await designRepo.updateDesign(
+    id,
+    designName,
+    description,
+    baseFlavor,
+    availability,
+    size,
+    imageUrl,
+    category,
+  );
 };
 
 //  Delete design
 export const removeDesign = async (id: number) => {
   const existing = await designRepo.getDesignById(id);
-  if (!existing) throw new Error('Design not found');
+  if (!existing) throw new Error("Design not found");
   await designRepo.deleteDesign(id);
 };
