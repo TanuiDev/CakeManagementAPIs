@@ -1,9 +1,10 @@
 import { Application, application } from "express";
 import * as userController from "../Controllers/user.controller";
+import { adminOnly, userOnly, } from "../middlewares/auth.middlewares";
 
 export default function registerUserRoutes(app: Application) {
  
-  app.post("/users/register", userController.createUserController);
+  app.post("/users/register", adminOnly, userController.createUserController);
   app.post("/users/login", userController.loginUserController);
   app.get("/users", userController.getAllUsersController);
   app.get("/users/:id", userController.getUserByIdController);

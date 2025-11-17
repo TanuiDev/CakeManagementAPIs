@@ -22,9 +22,9 @@ export const createDelivery = async (delivery: Delivery): Promise<void> => {
   const pool = await getPool();
   await pool
     .request()
-    .input("order_id", delivery.order_id)
-    .input("delivery_date", delivery.delivery_date)
-    .input("status", delivery.status)
+    .input("order_id", delivery.DeliveryID)
+    .input("delivery_date", delivery.DeliveryDate)
+    .input("status", delivery.Status)
     .query(
       "INSERT INTO Deliveries (order_id, delivery_date, status) VALUES (@order_id, @delivery_date, @status)"
     );
@@ -35,9 +35,9 @@ export const updateDelivery = async (id: number, delivery: Delivery): Promise<vo
   await pool
     .request()
     .input("id", id)
-    .input("order_id", delivery.order_id)
-    .input("delivery_date", delivery.delivery_date)
-    .input("status", delivery.status)
+    .input("order_id", delivery.Order_id)
+    .input("delivery_date", delivery.DeliveryDate)
+    .input("status", delivery.Status)
     .query(
       `UPDATE Deliveries 
        SET order_id = @order_id, delivery_date = @delivery_date, status = @status
