@@ -12,12 +12,10 @@ export const scheduleDelivery = async (req: Request, res: Response) => {
   } = req.body;
 
   if (!orderId || !deliveryAddress || !deliveryDate) {
-    return res
-      .status(400)
-      .json({
-        message:
-          "Missing required fields: orderId, deliveryAddress, deliveryDate",
-      });
+    return res.status(400).json({
+      message:
+        "Missing required fields: orderId, deliveryAddress, deliveryDate",
+    });
   }
 
   try {

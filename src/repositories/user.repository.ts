@@ -110,8 +110,8 @@ export const verifyUser = async (email: string) => {
   const pool = await getPool();
   await pool.request().input("email", email).query(`
       UPDATE Users
-      SET is_verified = 1, verification_code = NULL
-      WHERE email = @email
+      SET is_verified =1, verification_code=NULL
+      WHERE email=@email
     `);
   return { message: "User verified successfully" };
 };

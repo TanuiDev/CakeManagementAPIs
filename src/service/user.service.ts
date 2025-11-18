@@ -115,11 +115,11 @@ export const verifyUser = async (email: string, code: string) => {
   try {
     await sendEmail(
       user.email,
-      "Your email has been verified - CAKEApp By Liz",
+      "Your email has been verified",
       emailTemplate.verifiedSuccess(user.name),
     );
   } catch (error) {
-    console.error(" Error sending success email:", error);
+    console.error("Error sending success email:", error);
   }
   return { message: "User verified successfully." };
 };

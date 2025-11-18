@@ -5,7 +5,7 @@ import { NewUser, UpdateUser, LoginUser } from "../types/user.types";
 export const getAllUsersController = async (_req: Request, res: Response) => {
   try {
     const users = await userService.getAllUsers();
-    res.status(200).json(users);
+    res.status(200).json({ data: users });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -55,7 +55,7 @@ export const updateUserRolesController = async (
       }
     }
 
-    const result = await userService.updateUser(id, req.body);
+    await userService.updateUser(id, req.body);
     res.status(200).json({ message: "User updated successfully" });
   } catch (error: any) {
     if (error.message === "User not found") {

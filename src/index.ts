@@ -11,19 +11,16 @@ import cors from "cors";
 const initializeApp = () => {
   const app = express();
 
-
-  
   app.use(
     cors({
-      origin: "http://localhost:5173", 
+      origin: "http://localhost:5173",
       methods: ["GET", "POST", "PUT", "DELETE"],
-      credentials: true, 
-    })
+      credentials: true,
+    }),
   );
 
   app.use(express.json());
 
- 
   app.use("/api/deliveries", deliveryRoutes);
   registerOrderRoutes(app);
   registerDesignRoutes(app);
@@ -33,7 +30,6 @@ const initializeApp = () => {
 
   return app;
 };
-
 
 const app = initializeApp();
 
