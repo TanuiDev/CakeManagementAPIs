@@ -8,7 +8,7 @@ export default function registerUserRoutes(app: Application) {
   app.get("/users", adminOnly, userController.getAllUsersController);
   app.get("/users/:id", userController.getUserByIdController);
   app.put("/users/:id", userController.updateUserRolesController);
-  app.delete("/users/:id", userController.deleteUserController);
+  app.delete("/users/:id", adminOnly, userController.deleteUserController);
   app.post("/users/verify", userController.verifyUserController);
   app.post("/users/verify/resend", userController.resendVerificationController);
 }
