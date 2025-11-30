@@ -3,25 +3,17 @@ import sql from "mssql";
 import { Design } from "../types/design.types";
 
 //  Create new design
-export const createDesign = async (
-  designName: string,
-  description: string,
-  baseFlavor: string,
-  availability: number,
-  size: string,
-  imageUrl: string,
-  category: string,
-) => {
+export const createDesign = async (designData: Design) => {
   const pool = await getPool();
   await pool
     .request()
-    .input("DesignName", sql.NVarChar, designName)
-    .input("Description", sql.NVarChar, description)
-    .input("BaseFlavor", sql.NVarChar, baseFlavor)
-    .input("Availability", sql.Bit, availability)
-    .input("Size", sql.NVarChar, size)
-    .input("ImageUrl", sql.NVarChar, imageUrl)
-    .input("Category", sql.NVarChar, category).query(`
+    .input("DesignName", sql.NVarChar, designData.DesignName)
+    .input("Description", sql.NVarChar, designData.Description)
+    .input("BaseFlavor", sql.NVarChar, designData.BaseFlavor)
+    .input("Availability", sql.Bit, designData.Availability)
+    .input("Size", sql.NVarChar, designData.Size)
+    .input("ImageUrl", sql.NVarChar, designData.ImageUrl)
+    .input("Category", sql.NVarChar, designData.Category).query(`
       INSERT INTO Cake_Designs 
         (DesignName, Description, BaseFlavor, Size, ImageUrl, Category, Availability, CreatedAt, UpdatedAt)
       VALUES 
@@ -48,8 +40,7 @@ export const getDesignById = async (id: number) => {
   return result.recordset[0];
 };
 
-export const updateDesign = async (designData:Design) => {
-
+export const updateDesign = async (designData: Design) => {
   const pool = await getPool();
   await pool
     .request()
@@ -57,7 +48,7 @@ export const updateDesign = async (designData:Design) => {
     .input("DesignName", sql.NVarChar, designData.DesignName)
     .input("Description", sql.NVarChar, designData.Description)
     .input("BaseFlavor", sql.NVarChar, designData.BaseFlavor)
-    .input("Availability", sql.Bit, designData.availability)
+    .input("Availability", sql.Bit, designData.Availability)
     .input("Size", sql.NVarChar, designData.Size)
     .input("ImageUrl", sql.NVarChar, designData.ImageUrl)
     .input("Category", sql.NVarChar, designData.Category).query(`

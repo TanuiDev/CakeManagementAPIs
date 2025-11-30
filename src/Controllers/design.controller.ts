@@ -5,7 +5,7 @@ import * as designService from "../service/design.service";
 export const getAllDesigns = async (req: Request, res: Response) => {
   try {
     const designs = await designService.listDesigns();
-    res.status(200).json({data: designs});
+    res.status(200).json({ data: designs });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -16,7 +16,7 @@ export const getDesign = async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
     const design = await designService.findDesign(id);
-    res.status(200).json({data: design});
+    res.status(200).json({ data: design });
   } catch (error: any) {
     res.status(404).json({ message: error.message });
   }
@@ -25,25 +25,9 @@ export const getDesign = async (req: Request, res: Response) => {
 //  Create new design
 export const createDesign = async (req: Request, res: Response) => {
   try {
-    const {
-      designName,
-      description,
-      baseFlavor,
-      availability,
-      size,
-      imageUrl,
-      category,
-    } = req.body;
+    const designData = req.body;
 
-    await designService.addDesign(
-      designName,
-      description,
-      baseFlavor,
-      availability,
-      size,
-      imageUrl,
-      category,
-    );
+    await designService.addDesign(designData);
 
     res.status(201).json({ message: "Cake design created successfully" });
   } catch (error: any) {
@@ -57,7 +41,7 @@ export const updateDesign = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     const designData = req.body;
 
-    await designService.modifyDesign(id,designData);
+    await designService.modifyDesign(id, designData);
 
     res.status(200).json({ message: "Cake design updated successfully" });
   } catch (error: any) {

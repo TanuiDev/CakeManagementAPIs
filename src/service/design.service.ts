@@ -14,32 +14,16 @@ export const findDesign = async (id: number) => {
 };
 
 //  Create design
-export const addDesign = async (
-  designName: string,
-  description: string,
-  baseFlavor: string,
-  availability: number,
-  size: string,
-  imageUrl: string,
-  category: string,
-) => {
-  if (!designName || !baseFlavor || !size) {
-    throw new Error("Design name, base flavor, and size are required");
+export const addDesign = async (designData: Design) => {
+  if (!designData.DesignName || !designData.BaseFlavor || !designData.Size) {
+    throw new Error("All fields required!!!!");
   }
 
-  await designRepo.createDesign(
-    designName,
-    description,
-    baseFlavor,
-    availability,
-    size,
-    imageUrl,
-    category,
-  );
+  await designRepo.createDesign(designData);
 };
 
 //  Update design
-export const modifyDesign = async (DesignID:number,designData:Design)=> {
+export const modifyDesign = async (DesignID: number, designData: Design) => {
   const existing = await designRepo.getDesignById(DesignID);
   if (!existing) throw new Error("Design not found");
   await designRepo.updateDesign(designData);

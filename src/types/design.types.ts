@@ -3,7 +3,7 @@ export interface Design {
   DesignName: string;
   BaseFlavor: string;
   BasePrice: number;
-  availability: boolean;
+  Availability: boolean;
   Size: string;
   Description: string;
   Category: string;

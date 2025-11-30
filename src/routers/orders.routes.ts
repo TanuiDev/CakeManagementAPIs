@@ -1,5 +1,5 @@
 import * as ordersController from "../Controllers/orders.controler";
-import { adminOnly, userOnly, } from "../middlewares/auth.middlewares";
+import { adminOnly, userOnly } from "../middlewares/auth.middlewares";
 
 const registerOrderRoutes = (app: any) => {
   app.get("/orders", adminOnly, ordersController.getOrders);
