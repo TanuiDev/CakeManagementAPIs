@@ -1,4 +1,5 @@
 import * as designRepo from "../repositories/design.repository";
+import { Design } from "../types/design.types";
 
 //  Fetch all designs
 export const listDesigns = async () => {
@@ -38,29 +39,10 @@ export const addDesign = async (
 };
 
 //  Update design
-export const modifyDesign = async (
-  id: number,
-  designName: string,
-  description: string,
-  baseFlavor: string,
-  availability: number,
-  size: string,
-  imageUrl: string,
-  category: string,
-) => {
-  const existing = await designRepo.getDesignById(id);
+export const modifyDesign = async (DesignID:number,designData:Design)=> {
+  const existing = await designRepo.getDesignById(DesignID);
   if (!existing) throw new Error("Design not found");
-
-  await designRepo.updateDesign(
-    id,
-    designName,
-    description,
-    baseFlavor,
-    availability,
-    size,
-    imageUrl,
-    category,
-  );
+  await designRepo.updateDesign(designData);
 };
 
 //  Delete design

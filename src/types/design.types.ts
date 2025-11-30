@@ -1,10 +1,13 @@
 export interface Design {
   DesignID: number;
-  Name: string;
-  Flavor: string;
-  Price: number;
-  Availability: boolean;
-  Size?: string;
+  DesignName: string;
+  BaseFlavor: string;
+  BasePrice: number;
+  availability: boolean;
+  Size: string;
+  Description: string;
+  Category: string;
+  ImageUrl: string;
   CreatedAt?: Date;
   UpdatedAt?: Date;
 }
