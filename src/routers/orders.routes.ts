@@ -12,7 +12,7 @@ const registerOrderRoutes = (app: any) => {
   app.patch("/orders/:id", ordersController.updateOrderStatus);
   app.patch("/order/:id", ordersController.updateOrderDetails);
   app.delete("/orders/:id", ordersController.deleteOrder);
-  app.get("/user/orders/:userId", ordersController.fetchOrdersofUser);
+  app.get("/user/orders/:UserId", ordersController.fetchOrdersofUser);
 };
 
 export default registerOrderRoutes;
