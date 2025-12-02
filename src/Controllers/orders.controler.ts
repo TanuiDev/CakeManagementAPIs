@@ -28,8 +28,9 @@ export const getOrderById = async (req: Request, res: Response) => {
 };
 
 export const createOrder = async (req: Request, res: Response) => {
+  const orderData = req.body;
   try {
-    const newOrder = await ordersService.createNewOrder(req.body);
+    const newOrder = await ordersService.createNewOrder(orderData);
     res.status(201).json(newOrder);
   } catch (error) {
     console.error("Error creating order:", error);
