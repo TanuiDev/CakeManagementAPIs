@@ -32,7 +32,7 @@ export const getUsers = async (): Promise<User[]> => {
 };
 
 // Get user by ID
-export const getUserById = async (userid: number): Promise<any | null> => {
+export const getUserById = async (userid: number) => {
   const pool = await getPool();
   const result = await pool
     .request()

@@ -6,7 +6,7 @@ import {
 } from "../middlewares/auth.middlewares";
 
 const registerOrderRoutes = (app: any) => {
-  app.get("/orders", adminOnly, ordersController.getOrders);
+  app.get("/orders", ordersController.getOrders);
   app.get("/orders/:id", ordersController.getOrderById);
   app.post("/orders", customerOnly, ordersController.createOrder);
   app.patch("/orders/:id", ordersController.updateOrderStatus);

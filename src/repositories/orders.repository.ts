@@ -100,14 +100,14 @@ export const deleteOrder = async (orderId: number) => {
   return "Order deleted";
 };
 
-export const getOrdersByuserid = async (userid: number) => {
-  const pool = await getPool();
-  const result = await pool
-    .request()
-    .input("UserId", userid)
-    .query("SELECT * FROM Cake_Orders WHERE UserId = @UserId");
-  return result.recordset;
-};
+// export const getOrdersByuserid = async (UserId: number) => {
+//   const pool = await getPool();
+//   const result = await pool
+//     .request()
+//     .input("UserId", UserId)
+//     .query("SELECT * FROM Cake_Orders WHERE UserId = @UserId");
+//   return result.recordset;
+// };
 
 export const fetchOrdersofUser = async (UserId: number) => {
   const pool = await getPool();
@@ -115,7 +115,7 @@ export const fetchOrdersofUser = async (UserId: number) => {
     .request()
     .input("UserId", UserId)
     .query(
-      "SELECT  u.name, u.email, u.phone, u.address, o.* FROM Users u LEFT JOIN Cake_Orders o ON o.UserId = u.user_Id",
+      "SELECT  u.name, u.email, u.phone, u.address, o.* FROM Users u LEFT JOIN Cake_Orders o ON o.UserId = u.user_Id WHERE u.user_Id = @UserId",
     );
   if (result.recordset.length === 0) {
     return { message: "No orders found" };

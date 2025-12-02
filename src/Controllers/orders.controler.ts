@@ -2,7 +2,7 @@ import * as ordersService from "../service/orders.service";
 
 import { Request, Response } from "express";
 
-export const getOrders = async (req: Request, res: Response) => {
+export const getOrders = async (_req: Request, res: Response) => {
   try {
     const orders = await ordersService.fetchAllOrders();
     res.status(200).json({ data: orders });
@@ -75,9 +75,9 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 };
 
 export const getOrdersByuserid = async (req: Request, res: Response) => {
-  const userid = parseInt(req.params.userid);
+  const UserId = parseInt(req.params.UserId);
   try {
-    const orders = await ordersService.getOrdersByuserid(userid);
+    const orders = await ordersService.fetchOrdersofUser(UserId);
     res.status(200).json(orders);
   } catch (error) {
     console.error("Error fetching orders by user ID:", error);
@@ -103,8 +103,10 @@ export const fetchOrdersofUser = async (req: Request, res: Response) => {
   try {
     const orders = await ordersService.fetchOrdersofUser(userid);
     res.status(200).json(orders);
-  } catch (error) {
-    console.error("Error fetching orders of user:", error);
+  } catch (error: any) {
+    if (error.message === "User not found") {
+      return res.status(404).json({ error: "User not found" });
+    }
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
