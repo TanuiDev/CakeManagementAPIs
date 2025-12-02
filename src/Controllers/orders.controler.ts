@@ -99,9 +99,9 @@ export const deleteOrder = async (req: Request, res: Response) => {
 };
 
 export const fetchOrdersofUser = async (req: Request, res: Response) => {
-  const userid = parseInt(req.params.UserId);
+  const UserId = parseInt(req.params.UserId);
   try {
-    const orders = await ordersService.fetchOrdersofUser(userid);
+    const orders = await ordersService.fetchOrdersofUser(UserId);
     res.status(200).json(orders);
   } catch (error: any) {
     if (error.message === "User not found") {

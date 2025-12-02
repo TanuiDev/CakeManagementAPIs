@@ -1,6 +1,5 @@
 import * as ordersRepository from "../repositories/orders.repository";
 import { NewOrder, updateOrder } from "../types/orders.types";
-import * as userRepositories from "../repositories/user.repository";
 
 export const fetchAllOrders = async () => {
   return await ordersRepository.getAllOrders();
@@ -43,10 +42,12 @@ export const removeOrder = async (orderId: number) => {
   return await ordersRepository.deleteOrder(orderId);
 };
 
-export const fetchOrdersofUser = async (userid: number) => {
-  const user = await userRepositories.getUserById(userid);
-  if (!user) {
-    throw new Error("User not found");
+export const fetchOrdersofUser = async (UserId: number) => {
+  const result = await ordersRepository.fetchOrdersofUser(UserId);
+
+  if (!result) {
+    throw new Error("User not found or has no orders");
   }
-  return await ordersRepository.fetchOrdersofUser(userid);
+
+  return result;
 };
