@@ -4,8 +4,7 @@ import * as userRepositories from "../repositories/user.repository";
 import { NewUser, UpdateUser } from "../types/user.types";
 import { sendEmail } from "../mailer/mailer";
 import { emailTemplate } from "../mailer/emailtemplate";
-import { error } from "console";
-import { throws } from "assert";
+
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -73,7 +72,8 @@ export const loginUser = async (email: string, password: string) => {
   }
 
   const payload = {
-    id: user.id,
+    User_Id: user.user_Id,
+    name: user.name,
     email: user.email,
     role: user.role,
   };
@@ -91,10 +91,11 @@ export const loginUser = async (email: string, password: string) => {
     message: "Login successful.",
     token,
     user: {
-      id: user.id,
+      user_id: user.user_Id,
       name: user.name,
       email: user.email,
       phone: user.phone,
+      address: user.address || "",
       role: user.role,
     },
   };

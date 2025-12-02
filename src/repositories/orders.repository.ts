@@ -22,7 +22,7 @@ export const createOrder = async (orderData: NewOrder) => {
   const result = await pool
     .request()
     .input("DesignId", orderData.DesignId ?? null)
-    .input("userid", sql.Int, orderData.userid)
+    .input("userid", sql.Int, orderData.user_id)
     .input("Size", sql.VarChar(50), orderData.Size)
     .input("Flavor", sql.VarChar(100), orderData.Flavor)
     .input("Message", sql.VarChar(255), orderData.Message ?? null)

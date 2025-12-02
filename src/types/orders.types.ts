@@ -1,5 +1,5 @@
 export interface NewOrder {
-  userid: number;
+  user_id: number;
   DesignId?: number;
   Size: "Small" | "Medium" | "Large";
   Flavor: string;

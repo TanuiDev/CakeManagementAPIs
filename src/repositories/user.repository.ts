@@ -32,11 +32,11 @@ export const getUsers = async (): Promise<User[]> => {
 };
 
 // Get user by ID
-export const getUserById = async (id: number): Promise<any | null> => {
+export const getUserById = async (userid: number): Promise<any | null> => {
   const pool = await getPool();
   const result = await pool
     .request()
-    .input("user_id", sql.Int, id)
+    .input("user_id", sql.Int, userid)
     .query("SELECT * FROM Users WHERE user_id = @user_id");
   return result.recordset[0] || null;
 };
