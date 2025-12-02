@@ -102,7 +102,7 @@ export const fetchOrdersofUser = async (req: Request, res: Response) => {
   const UserId = parseInt(req.params.UserId);
   try {
     const orders = await ordersService.fetchOrdersofUser(UserId);
-    res.status(200).json(orders);
+    res.status(200).json({ data: orders });
   } catch (error: any) {
     if (error.message === "User not found") {
       return res.status(404).json({ error: "User not found" });
