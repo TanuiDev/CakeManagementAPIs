@@ -9,9 +9,9 @@ const registerOrderRoutes = (app: any) => {
   app.get("/orders", ordersController.getOrders);
   app.get("/orders/:id", ordersController.getOrderById);
   app.post("/orders", customerOnly, ordersController.createOrder);
-  app.patch("/orders/:id", ordersController.updateOrderStatus);
-  app.patch("/order/:id", ordersController.updateOrderDetails);
-  app.delete("/orders/:id", ordersController.deleteOrder);
+  app.patch("/order/:id", adminOnly, ordersController.updateOrderStatus);
+  app.patch("/orders/:id", adminOnly, ordersController.updateOrderDetails);
+  app.delete("/orders/:id", adminOnly, ordersController.deleteOrder);
   app.get("/user/orders/:UserId", ordersController.fetchOrdersofUser);
 };
 
