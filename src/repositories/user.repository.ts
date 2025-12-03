@@ -24,14 +24,12 @@ export const createUser = async (user: NewUser) => {
   return result.recordset[0];
 };
 
-// Get all users
 export const getUsers = async (): Promise<User[]> => {
   const pool = await getPool();
   const result = await pool.request().query("SELECT * FROM Users");
   return result.recordset;
 };
 
-// Get user by ID
 export const getUserById = async (userid: number) => {
   const pool = await getPool();
   const result = await pool
@@ -41,7 +39,6 @@ export const getUserById = async (userid: number) => {
   return result.recordset[0] || null;
 };
 
-// Get user by Email
 export const getUserByEmail = async (email: string) => {
   const pool = await getPool();
   const result = await pool
@@ -79,7 +76,6 @@ export const updateUser = async (id: number, updates: UpdateUser) => {
   return { message: "User updated successfully" };
 };
 
-//  Delete user
 export const deleteUser = async (id: number) => {
   const pool = await getPool();
   await pool
@@ -89,7 +85,6 @@ export const deleteUser = async (id: number) => {
   return { message: "User deleted successfully" };
 };
 
-// Set verification code
 export const setVerificationCode = async (
   email: string,
   verification_code: string,
@@ -105,7 +100,6 @@ export const setVerificationCode = async (
   return { message: "Verification code saved" };
 };
 
-// Verify user
 export const verifyUser = async (email: string) => {
   const pool = await getPool();
   await pool.request().input("email", email).query(`
@@ -114,4 +108,21 @@ export const verifyUser = async (email: string) => {
       WHERE email=@email
     `);
   return { message: "User verified successfully" };
+};
+
+export const updateUserProfile = async (
+  userid: number,
+  updates: UpdateUser,
+) => {
+  const pool = await getPool();
+  await pool
+    .request()
+    .input("user_id", userid)
+    .input("name", updates.name || "")
+    .input("phone", updates.phone || "")
+    .input("address", updates.address || "")
+    .query(
+      "UPDATE Users SET name=@name, phone=@phone, address=@address WHERE user_id=@user_id",
+    );
+  return { message: "Profile updated successfully" };
 };

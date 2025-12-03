@@ -38,10 +38,11 @@ export const updateUserRolesController = async (
   res: Response,
 ) => {
   const id = Number(req.params.id);
+  const userDetails = req.body;
 
-  // Validate ID first
   if (!Number.isInteger(id)) {
-    return res.status(400).json({ message: "Invalid user ID" });
+    res.status(400).json({ message: "Invalid user ID" });
+    return;
   }
 
   const requestingUser = (req as any).user;
@@ -49,13 +50,13 @@ export const updateUserRolesController = async (
   try {
     if (requestingUser) {
       if (requestingUser.role !== "admin" && requestingUser.id !== id) {
-        return res
+        res
           .status(403)
           .json({ message: "Forbidden: Cannot update other user's data" });
+        return;
       }
     }
-
-    await userService.updateUser(id, req.body);
+    await userService.updateUser(id, userDetails);
     res.status(200).json({ message: "User updated successfully" });
   } catch (error: any) {
     if (error.message === "User not found") {
@@ -77,8 +78,6 @@ export const createUserController = async (req: Request, res: Response) => {
   }
 };
 
-//  Login user
-
 export const loginUserController = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
@@ -94,7 +93,6 @@ export const loginUserController = async (req: Request, res: Response) => {
   }
 };
 
-// Delete user
 export const deleteUserController = async (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
   if (!Number.isInteger(id)) {
@@ -129,7 +127,6 @@ export const verifyUserController = async (req: Request, res: Response) => {
   }
 };
 
-// Resend verification code
 export const resendVerificationController = async (
   req: Request,
   res: Response,
@@ -140,5 +137,26 @@ export const resendVerificationController = async (
     res.status(200).json(result);
   } catch (error: any) {
     res.status(400).json({ message: error.message });
+  }
+};
+
+export const updateUserProfileController = async (
+  req: Request,
+  res: Response,
+) => {
+  const user_Id = Number(req.params.id);
+  const updates = req.body;
+
+  try {
+    const updatedProfile = await userService.updateUserProfile(
+      user_Id,
+      updates,
+    );
+    res.status(200).json(updatedProfile);
+  } catch (error: any) {
+    if (error.message === "User not found") {
+      return res.status(404).json({ message: error.message });
+    }
+    res.status(400).json({ message: error.message || "Unknown error" });
   }
 };

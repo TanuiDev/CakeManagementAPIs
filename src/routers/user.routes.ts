@@ -1,6 +1,10 @@
 import { Application, application } from "express";
 import * as userController from "../Controllers/user.controller";
-import { adminOnly, userOnly } from "../middlewares/auth.middlewares";
+import {
+  adminOnly,
+  customerOnly,
+  userOnly,
+} from "../middlewares/auth.middlewares";
 
 export default function registerUserRoutes(app: Application) {
   app.post("/users/register", userController.createUserController);
@@ -11,4 +15,9 @@ export default function registerUserRoutes(app: Application) {
   app.delete("/users/:id", adminOnly, userController.deleteUserController);
   app.post("/users/verify", userController.verifyUserController);
   app.post("/users/verify/resend", userController.resendVerificationController);
+  app.put(
+    "/user/:id",
+    customerOnly,
+    userController.updateUserProfileController,
+  );
 }

@@ -46,7 +46,6 @@ export const createUserWithVerification = async (user: NewUser) => {
   }
 };
 
-// Login user with role-based JWT
 export const loginUser = async (email: string, password: string) => {
   const user = await userRepositories.getUserByEmail(email);
 
@@ -101,7 +100,6 @@ export const loginUser = async (email: string, password: string) => {
   };
 };
 
-// Verify user email
 export const verifyUser = async (email: string, code: string) => {
   const user = await userRepositories.getUserByEmail(email);
 
@@ -125,7 +123,6 @@ export const verifyUser = async (email: string, code: string) => {
   return { message: "User verified successfully." };
 };
 
-//  Resend verification code
 export const resendVerificationCode = async (email: string) => {
   const user = await userRepositories.getUserByEmail(email);
   if (!user) throw new Error("User not found.");
@@ -148,19 +145,16 @@ export const resendVerificationCode = async (email: string) => {
   return { message: "Verification code resent successfully." };
 };
 
-//  Get all users
 export const getAllUsers = async () => {
   return await userRepositories.getUsers();
 };
 
-// Get user by ID
 export const getUserById = async (id: number) => {
   const user = await userRepositories.getUserById(id);
   if (!user) throw new Error("User not found.");
   return user;
 };
 
-// Delete user
 export const deleteUser = async (id: number) => {
   const user = await userRepositories.getUserById(id);
 
@@ -173,11 +167,9 @@ export const deleteUser = async (id: number) => {
   return { message: "user deleted successfully" };
 };
 
-// Get user by email
 export const getUserByEmail = async (email: string) => {
   return await userRepositories.getUserByEmail(email);
 };
-
 export const updateUser = async (id: number, userUpdates: UpdateUser) => {
   if (userUpdates.password) {
     userUpdates.password = await bcrypt.hash(userUpdates.password, 10);
@@ -190,4 +182,21 @@ export const updateUser = async (id: number, userUpdates: UpdateUser) => {
   }
 
   return updatedUser;
+};
+
+export const updateUserProfile = async (
+  userid: number,
+  updates: UpdateUser,
+) => {
+  if (!Number.isInteger(userid)) {
+    throw new Error("Invalid user ID");
+  }
+  const updatedProfile = await userRepositories.updateUserProfile(
+    userid,
+    updates,
+  );
+  if (!updatedProfile) {
+    throw new Error("User not found");
+  }
+  return updatedProfile;
 };
