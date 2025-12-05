@@ -1,5 +1,5 @@
 export interface NewOrder {
-  user_id: number;
+  UserId: number;
   DesignId?: number;
   Size: "Small" | "Medium" | "Large";
   Flavor: string;
@@ -12,7 +12,7 @@ export interface NewOrder {
   ColorPreferences?: string[];
 }
 export interface updateOrder {
-  userid?: number;
+  UserId?: number;
   DesignId?: number;
   Size?: "Small" | "Medium" | "Large";
   Flavor?: string;

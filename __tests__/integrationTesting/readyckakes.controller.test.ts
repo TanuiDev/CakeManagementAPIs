@@ -8,7 +8,7 @@ let testCakeId: number;
 beforeAll(async () => {
   pool = await getPool();
 
-  // Insert a test cake to work with
+  
   const result = await pool
     .request()
     .query(`
@@ -29,13 +29,13 @@ describe("ReadyMade Cakes Controller Integration Tests", () => {
   it("should retrieve all cakes", async () => {
     const response = await request(app).get("/readycakes");
     expect(response.statusCode).toBe(200);
-    expect(Array.isArray(response.body)).toBe(true);
+    expect(Array.isArray(response.body.data)).toBe(true);
   });
 
   it("should retrieve a cake by ID", async () => {
     const response = await request(app).get(`/readycakes/${testCakeId}`);
     expect(response.statusCode).toBe(200);
-    expect(response.body).toHaveProperty("cakeId", testCakeId);
+    expect(response.body.data).toHaveProperty("cakeId", testCakeId);
   });
 
   it("should return 404 for a non-existing cake", async () => {
@@ -56,7 +56,7 @@ describe("ReadyMade Cakes Controller Integration Tests", () => {
     expect(response.statusCode).toBe(201);
     expect(response.body).toHaveProperty("message", "Cake added successfully");
 
-    // Clean up new cake
+    
     const newCakeId = response.body.newCake.cakeId;
     await pool.request().query(`DELETE FROM ReadyMade_Cakes WHERE cakeId = ${newCakeId}`);
   });
@@ -69,7 +69,7 @@ describe("ReadyMade Cakes Controller Integration Tests", () => {
   });
 
   it("should delete an existing cake", async () => {
-    // First, insert a cake to delete
+    
     const result = await pool
       .request()
       .query(`

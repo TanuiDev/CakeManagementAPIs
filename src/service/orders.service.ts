@@ -48,6 +48,5 @@ export const fetchOrdersofUser = async (UserId: number) => {
   if (!result) {
     throw new Error("User not found or has no orders");
   }
-
   return result;
 };

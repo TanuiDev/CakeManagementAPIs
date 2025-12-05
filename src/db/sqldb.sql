@@ -236,7 +236,7 @@ VALUES
 SELECT * FROM Cake_Stages;
 
 
-CREATE TABLE Deliveries (
+CREATE TABLE Deliveries(
     DeliveryID INT IDENTITY(1,1) PRIMARY KEY,
     OrderID INT NOT NULL,
     DeliveryAddress VARCHAR(255) NOT NULL,

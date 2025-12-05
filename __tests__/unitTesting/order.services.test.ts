@@ -150,10 +150,9 @@ describe('Orders Service', () => {
         "ColorPreferences": "Blue,Yellow"
     }];
 
-    (ordersRepository.getOrdersByuserid as jest.Mock).mockResolvedValue(mockOrders);
+    (ordersRepository.fetchOrdersofUser as jest.Mock).mockResolvedValue(mockOrders);
 
-    const orders = await ordersService.getOrdersByuserid
- (1);
+    const orders = await ordersService.fetchOrdersofUser(1);
     expect(orders).toEqual(mockOrders);
 
 });
@@ -161,6 +160,4 @@ describe('Orders Service', () => {
 }
 )
 
-function expect(order: any) {
-  throw new Error('Function not implemented.');
-}
+

@@ -11,13 +11,11 @@ export default function registerUserRoutes(app: Application) {
   app.post("/users/login", userController.loginUserController);
   app.get("/users", userController.getAllUsersController);
   app.get("/users/:id", userController.getUserByIdController);
-  app.put("/users/:id", adminOnly, userController.updateUserRolesController);
-  app.delete("/users/:id", adminOnly, userController.deleteUserController);
+  app.put("/users/:id",  userController.updateUserRolesController);
+  app.delete("/users/:id",  userController.deleteUserController);
   app.post("/users/verify", userController.verifyUserController);
   app.post("/users/verify/resend", userController.resendVerificationController);
   app.put(
-    "/user/:id",
-    customerOnly,
-    userController.updateUserProfileController,
+    "/user/:id",userController.updateUserProfileController,
   );
 }

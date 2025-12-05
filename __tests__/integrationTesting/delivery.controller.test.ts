@@ -7,21 +7,20 @@ let testDeliveryId: number;
 
 beforeAll(async () => {
   pool = await getPool();
-
-  // Insert a test delivery before running tests
+  
   const result = await pool.request().query(`
-    INSERT INTO Deliveries 
+    INSERT INTO Deliveries
       (OrderID, DeliveryAddress, DeliveryDate, CourierName, CourierContact, Status)
     OUTPUT INSERTED.DeliveryID
     VALUES 
-      (501, 'Test Address, Nyeri', '2025-11-05 10:00:00', 'TestCourier', '+254711111111', 'Scheduled')
+      (1, 'Test Address, Nyeri', '2025-11-05 10:00:00', 'TestCourier', '+254711111111', 'Scheduled')
   `);
 
   testDeliveryId = result.recordset[0].DeliveryID;
 });
 
 afterAll(async () => {
-  // Clean up test data
+  
   await pool.request().query(`
     DELETE FROM Deliveries 
     WHERE DeliveryAddress IN ('Test Address, Nyeri', 'Delete Me Address', 'New Test Delivery', 'Updated Address')

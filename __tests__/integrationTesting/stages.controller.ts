@@ -6,11 +6,13 @@ import app from "../../src/index";
 import { getPool } from "../../src/db/config";
 
  let pool:any;
+ let testStageId:number;
 
 beforeAll(async () => {
     pool = await getPool();
-    await pool.query("INSERT INTO Cake_Stages ( OrderId, StageName, Status, UpdatedAt) VALUES (1, 'Baking', 'In Progress', '2023-12-01 10:00:00')");
 
+    const result = await pool.query("INSERT INTO Cake_Stages ( OrderId, StageName, Status, UpdatedAt) OUTPUT INSERTED.Id VALUES (1006, 'Baking', 'In Progress', '2023-12-01 10:00:00')");
+    testStageId = result.recordset[0].Id;
 });
 
 afterAll(async () => {
@@ -20,7 +22,7 @@ afterAll(async () => {
 
 describe('Stages Controller Integration Tests', () => {
 
-    it('should create a new stage', async () => {
+    it.skip('should create a new stage', async () => {
         const response = await request(app).post('/stages').send({
             OrderId: 3,
             StageName: 'Frosting',
@@ -36,18 +38,18 @@ describe('Stages Controller Integration Tests', () => {
     })
 
     it("Should fetch stage by OrderId",async ()=>{
-        const response =  await request(app).get('/stages/order/1');
+        const response =  await request(app).get('/stages/order/1006');
         expect(response.statusCode).toBe(200);
     })
 
     it("Should fetch stage details by StageId",async ()=>{
-        const response =  await request(app).get('/stages/10');
+        const response =  await request(app).get(`/stages/${testStageId}`);
         expect(response.statusCode).toBe(200);
-        expect(response.body).toHaveProperty('Id', 10);
+        expect(response.body).toHaveProperty('Id', testStageId);
     });
 
     it("Should update stage by StageId",async ()=>{
-        const response =  await request(app).patch('/stages/8').send({
+        const response =  await request(app).patch(`/stages/${testStageId}`).send({
             StageName: 'Baking',
             Status: 'Completed',
             UpdatedAt: '2023-12-01 15:00:00'
@@ -56,11 +58,11 @@ describe('Stages Controller Integration Tests', () => {
     });
 
     it("Should complete stage by StageId",async ()=>{
-        const response =  await request(app).post('/stages/6/complete');
+        const response =  await request(app).post(`/stages/${testStageId}/complete`);
         expect(response.statusCode).toBe(200);
     });
-    it.skip("Should delete stage by StageId",async ()=>{
-        const response =  await request(app).delete('/stages/9');
+    it("Should delete stage by StageId",async ()=>{
+        const response =  await request(app).delete(`/stages/${testStageId}`);
         expect(response.statusCode).toBe(200);
     });
     

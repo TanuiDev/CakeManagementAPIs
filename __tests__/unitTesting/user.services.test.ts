@@ -21,6 +21,13 @@ describe("User Service ", () => {
     jest.clearAllMocks();
   });
 
+jest.mock("jsonwebtoken", () => ({
+  __esModule: true,
+  default: { sign: jest.fn() },
+}));
+
+
+
   it("should return a list of users", async () => {
     const mockUsers = [
       {
@@ -107,7 +114,7 @@ describe("User Service ", () => {
             .rejects
             .toThrow("Invalid verification code");
     });
-it("should return token and user info when login is successful", async () => {
+it("should return JWT token and user info when login is successful", async () => {
         const mockUser = {
             userid: 3,
             name: 'Ann Wanjiku',
@@ -120,6 +127,7 @@ it("should return token and user info when login is successful", async () => {
         (userRepositories.getUserByEmail as jest.Mock).mockResolvedValue(mockUser);
         (bcrypt.compare as jest.Mock).mockResolvedValue(true);
         (jwt.sign as jest.Mock).mockReturnValue("mockjwtToken");
+        // (jwt.sign as jest.Mock).mockReturnValue("mockjwtToken");
 
         const result = await userService.loginUser("annwanjiku@gmail.com", "password123");
 
