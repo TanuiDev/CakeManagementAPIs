@@ -9,3 +9,20 @@ export const getAllDelivereries = async () => {
 export const getDeliveryById = async (deliveryId: number) => {
    return await DeliveryRepository.getDeliveryById(deliveryId); 
 }
+
+export const scheduleDelivery = async (delivery: Delivery) => {
+  return await DeliveryRepository.createDelivery(delivery);
+}
+
+export const updateDelivery = async (DeliveryID: number, delivery: Delivery) => {
+  const existingDelivery = await DeliveryRepository.getDeliveryById(DeliveryID);
+  if (!existingDelivery) {
+    throw new Error("Delivery not found");
+  }
+  const updatedDelivery = { ...existingDelivery, ...delivery };
+  return await DeliveryRepository.updateDelivery(DeliveryID, updatedDelivery);  
+}
+
+export const deleteDelivery = async (id: number) => {
+  return await DeliveryRepository.deleteDelivery(id);
+}

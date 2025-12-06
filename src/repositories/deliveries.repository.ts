@@ -1,5 +1,5 @@
 import { getPool } from "../db/config";
-import { Delivery } from "../types/delivery.types";
+import { Delivery, DeliveryUpdate } from "../types/delivery.types";
 
 export const getAllDeliveries = async () => {
   const pool = await getPool();
@@ -32,28 +32,24 @@ export const createDelivery = async (delivery: Delivery)=> {
     );
 };
 
-export const updateDelivery = async (
-  id: number,
-  delivery: Delivery,
+export const updateDelivery = async (DeliveryID: number, delivery: DeliveryUpdate ,
 )=> {
   const pool = await getPool();
   await pool
     .request()
-    .input("id", id)
-    .input("OrderId", delivery.OrderId)
+    .input("DeliveryID", DeliveryID)
     .input("DeliveryDate", delivery.DeliveryDate)
+    .input("DeliveryAdrress",delivery.DeliveryAddress)
+    .input("CourierName",delivery.CourierName)
+    .input("CourierContact",delivery.CourierContact)
     .input("Status", delivery.Status)
-    .query(
-      `UPDATE Deliveries 
-       SET OrderId = @OrderId, DeliveryDate = @DeliveryDate, Status = @Status
-       WHERE id = @id`,
-    );
+    .query("UPDATE Deliveries SET DeliveryDate = @DeliveryDate, DeliveryAddress=@DeliveryAdrress, CourierName=@CourierName, CourierContact=@CourierContact, Status = @Status WHERE DeliveryID = @DeliveryID");
 };
 
-export const deleteDelivery = async (id: number)=> {
+export const deleteDelivery = async (DeliveryID: number)=> {
   const pool = await getPool();
   await pool
     .request()
-    .input("id", id)
-    .query("DELETE FROM Deliveries WHERE id = @id");
+    .input("DeliveryID", DeliveryID)
+    .query("DELETE FROM Deliveries WHERE DeliveryID = @DeliveryID");
 };

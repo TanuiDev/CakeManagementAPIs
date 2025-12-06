@@ -25,3 +25,35 @@ export const getDeliveryById = async (req: Request, res: Response) => {
     res.status(500).json({message:"Internal server error",error})
   }
 };
+
+
+export const scheduleDelivery = async (req: Request, res: Response) => {
+  const deliveryData = req.body;
+  try {
+    await DeliveryService.scheduleDelivery(deliveryData);
+    res.status(201).json({ message: "Delivery scheduled successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error scheduling delivery", error });
+  }
+};
+
+export const updateDelivery = async (req: Request, res: Response) => {
+  const deliveryId = parseInt(req.params.id);
+  const deliveryData = req.body;
+  try {
+    await DeliveryService.updateDelivery(deliveryId, deliveryData);
+    res.json({ message: "Delivery updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating delivery", error });
+  }
+};
+
+export const deleteDelivery = async (req: Request, res: Response) => {
+  const deliveryId = parseInt(req.params.id);
+  try {
+    await DeliveryService.deleteDelivery(deliveryId);
+    res.json({ message: "Delivery deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting delivery", error });
+  }
+};
