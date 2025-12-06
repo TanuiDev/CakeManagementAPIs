@@ -24,5 +24,9 @@ export const updateDelivery = async (DeliveryID: number, delivery: Delivery) => 
 }
 
 export const deleteDelivery = async (id: number) => {
+  const existingDelivery =await DeliveryRepository.getDeliveryById(id);
+  if (!existingDelivery) {
+    throw new Error("Delivery not found");
+  }
   return await DeliveryRepository.deleteDelivery(id);
 }

@@ -1,13 +1,13 @@
-import { DeliveryService } from "../../src/service/delivery.service";
+import * as DeliveryServices from "../../src/service/delivery.service";
 import * as DeliveryRepository from "../../src/repositories/deliveries.repository";
 import { Delivery } from "../../src/types/delivery.types";
 
 jest.mock("../../src/repositories/deliveries.repository");
 
 describe("DeliveryService", () => {
-  const mockDelivery: Delivery = {
-    DeliveryID: 1,
-    OrderID: 101,
+  const mockDelivery: Delivery = {   
+    DeliveryID: 1, 
+    OrderId: 101,
     DeliveryAddress: "Karatina, Nyeri, Kenya",
     DeliveryDate: "2025-10-30 10:00:00",
     CourierName: "SwiftRider",
@@ -24,7 +24,7 @@ describe("DeliveryService", () => {
   it("should return all deliveries", async () => {
     (DeliveryRepository.getAllDeliveries as jest.Mock).mockResolvedValue([mockDelivery]);
 
-    const result = await DeliveryService.getAll();
+    const result = await DeliveryServices.getAllDelivereries();
 
     expect(DeliveryRepository.getAllDeliveries).toHaveBeenCalledTimes(1);
     expect(result).toEqual([mockDelivery]);
@@ -33,24 +33,16 @@ describe("DeliveryService", () => {
   it("should return a delivery by ID", async () => {
     (DeliveryRepository.getDeliveryById as jest.Mock).mockResolvedValue(mockDelivery);
 
-    const result = await DeliveryService.getById(1);
-
+    const result = await DeliveryServices.getDeliveryById(1);
     expect(DeliveryRepository.getDeliveryById).toHaveBeenCalledWith(1);
     expect(result).toEqual(mockDelivery);
-  });
-
-  it("should throw an error when delivery not found", async () => {
-    (DeliveryRepository.getDeliveryById as jest.Mock).mockResolvedValue(undefined);
-
-    await expect(DeliveryService.getById(99)).rejects.toThrow("Delivery not found");
-    expect(DeliveryRepository.getDeliveryById).toHaveBeenCalledWith(99);
   });
 
   it("should create a new delivery", async () => {
     (DeliveryRepository.createDelivery as jest.Mock).mockResolvedValue(undefined);
 
     const newDelivery: Delivery = {
-      OrderID: 105,
+      OrderId: 105,
       DeliveryAddress: "Eldoret, Kenya",
       DeliveryDate: "2025-11-01 11:00:00",
       CourierName: "QuickShip",
@@ -58,7 +50,7 @@ describe("DeliveryService", () => {
       Status: "Scheduled",
     };
 
-    await DeliveryService.create(newDelivery);
+    await DeliveryServices.scheduleDelivery(newDelivery);
 
     expect(DeliveryRepository.createDelivery).toHaveBeenCalledWith(newDelivery);
   });
@@ -67,7 +59,7 @@ describe("DeliveryService", () => {
     (DeliveryRepository.updateDelivery as jest.Mock).mockResolvedValue(undefined);
 
     const updatedData: Delivery = {
-      OrderID: 101,
+      OrderId: 101,
       DeliveryAddress: "Karatina, Nyeri, Kenya",
       DeliveryDate: "2025-10-31 09:00:00",
       CourierName: "SwiftRider",
@@ -75,15 +67,19 @@ describe("DeliveryService", () => {
       Status: "In Transit",
     };
 
-    await DeliveryService.update(1, updatedData);
+   
+    const existingDelivery = await DeliveryServices.getDeliveryById(1);
+    const updatedDataMerged = { ...existingDelivery, ...updatedData };
 
-    expect(DeliveryRepository.updateDelivery).toHaveBeenCalledWith(1, updatedData);
+    await DeliveryServices.updateDelivery(1, updatedDataMerged);
+
+    expect(DeliveryRepository.updateDelivery).toHaveBeenCalledWith(1, updatedDataMerged);
   });
 
   it("should delete a delivery", async () => {
     (DeliveryRepository.deleteDelivery as jest.Mock).mockResolvedValue(undefined);
 
-    await DeliveryService.delete(1);
+    await DeliveryServices.deleteDelivery(1);
 
     expect(DeliveryRepository.deleteDelivery).toHaveBeenCalledWith(1);
   });

@@ -30,6 +30,7 @@ export const createDelivery = async (delivery: Delivery)=> {
     .query(
       "INSERT INTO Deliveries (OrderId, DeliveryAddress, DeliveryDate, CourierName, CourierContact, Status) VALUES (@OrderId, @DeliveryAddress, @DeliveryDate, @CourierName, @CourierContact, @Status)",
     );
+  return {message:"Delivery scheduled successfully"};
 };
 
 export const updateDelivery = async (DeliveryID: number, delivery: DeliveryUpdate ,
@@ -44,6 +45,8 @@ export const updateDelivery = async (DeliveryID: number, delivery: DeliveryUpdat
     .input("CourierContact",delivery.CourierContact)
     .input("Status", delivery.Status)
     .query("UPDATE Deliveries SET DeliveryDate = @DeliveryDate, DeliveryAddress=@DeliveryAdrress, CourierName=@CourierName, CourierContact=@CourierContact, Status = @Status WHERE DeliveryID = @DeliveryID");
+
+    return {message:"Delivery updated successfully"};
 };
 
 export const deleteDelivery = async (DeliveryID: number)=> {
@@ -52,4 +55,5 @@ export const deleteDelivery = async (DeliveryID: number)=> {
     .request()
     .input("DeliveryID", DeliveryID)
     .query("DELETE FROM Deliveries WHERE DeliveryID = @DeliveryID");
+    return {message:"Delivery deleted successfully"};
 };

@@ -30,8 +30,8 @@ export const getDeliveryById = async (req: Request, res: Response) => {
 export const scheduleDelivery = async (req: Request, res: Response) => {
   const deliveryData = req.body;
   try {
-    await DeliveryService.scheduleDelivery(deliveryData);
-    res.status(201).json({ message: "Delivery scheduled successfully" });
+   const delivery = await DeliveryService.scheduleDelivery(deliveryData);
+    res.status(201).json(delivery);
   } catch (error) {
     res.status(500).json({ message: "Error scheduling delivery", error });
   }
@@ -53,7 +53,10 @@ export const deleteDelivery = async (req: Request, res: Response) => {
   try {
     await DeliveryService.deleteDelivery(deliveryId);
     res.json({ message: "Delivery deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: "Error deleting delivery", error });
+  } catch (error:any) {
+    if(error.message === "Delivery not found"){
+      return res.status(404).json({message:"Delivery not found"})
+    }
+    res.status(500).json({ message: "Error deleting delivery"});
   }
 };
