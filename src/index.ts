@@ -1,6 +1,6 @@
 import express from "express";
 
-import{ registerDeliveryRoutes } from "./routers/delivery.routes";
+import { registerDeliveryRoutes } from "./routers/delivery.routes";
 import registerOrderRoutes from "./routers/orders.routes";
 import registerDesignRoutes from "./routers/design.routes";
 import registerUserRoutes from "./routers/user.routes";
@@ -21,7 +21,6 @@ const initializeApp = () => {
 
   app.use(express.json());
 
-  
   registerOrderRoutes(app);
   registerDesignRoutes(app);
   registerUserRoutes(app);
