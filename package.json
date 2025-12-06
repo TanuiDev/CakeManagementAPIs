@@ -22,7 +22,7 @@
     "stress:delivery":"k6 run ./__tests__/performanceTesting/1.stress/delivery.stress.ts",
     "stress:design":"k6 run ./__tests__/performanceTesting/1.stress/design.stress.ts",
     "stress:ready":"k6 run ./__tests__/performanceTesting/1.stress/readycakes.stress.ts",
-    "stress:users":"k6 run ./__tests__/performanceTesting/1.stress/users.stress.ts",
+    "stress:users":"k6 run ./__tests__/performanceTesting/1.stress/user.stress.ts",
     "stress:all":"pnpm run stress:orders && pnpm run stress:stages && pnpm run stress:delivery && pnpm run stress:design && pnpm run stress:ready && pnpm run stress:users",
 
     "soak:orders": "k6 run ./__tests__/performanceTesting/2.soak.Testsing/orders.soak.ts",
