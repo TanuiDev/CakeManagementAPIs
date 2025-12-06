@@ -1,37 +1,41 @@
 import { getPool } from "../db/config";
 import { Delivery } from "../types/delivery.types";
 
-export const getAllDeliveries = async (): Promise<Delivery[]> => {
+export const getAllDeliveries = async () => {
   const pool = await getPool();
   const result = await pool.request().query("SELECT * FROM Deliveries");
   return result.recordset;
 };
 
-export const getDeliveryById = async (id: number): Promise<Delivery | null> => {
-  const pool = await getPool();
-  const result = await pool
-    .request()
-    .input("id", id)
-    .query("SELECT * FROM Deliveries WHERE id = @id");
-  return result.recordset[0] || null;
-};
+export const getDeliveryById = async(DeliveryID:number)=>{
+  const pool=await getPool()
+  const results = await pool
+  .request()
+  .input("DeliveryID",DeliveryID)
+  .query("SELECT * FROM Deliveries WHERE DeliveryID=@DeliveryID")
 
-export const createDelivery = async (delivery: Delivery): Promise<void> => {
+  return results.recordset[0];
+}
+
+export const createDelivery = async (delivery: Delivery)=> {
   const pool = await getPool();
   await pool
     .request()
     .input("OrderId", delivery.OrderId)
+    .input("DeliveryAddress", delivery.DeliveryAddress)
     .input("DeliveryDate", delivery.DeliveryDate)
+    .input("CourierName", delivery.CourierName)
+    .input("CourierContact", delivery.CourierContact)
     .input("Status", delivery.Status)
     .query(
-      "INSERT INTO Deliveries (OrderId, DeliveryDate, Status) VALUES (@OrderId, @DeliveryDate, @Status)",
+      "INSERT INTO Deliveries (OrderId, DeliveryAddress, DeliveryDate, CourierName, CourierContact, Status) VALUES (@OrderId, @DeliveryAddress, @DeliveryDate, @CourierName, @CourierContact, @Status)",
     );
 };
 
 export const updateDelivery = async (
   id: number,
   delivery: Delivery,
-): Promise<void> => {
+)=> {
   const pool = await getPool();
   await pool
     .request()
@@ -46,7 +50,7 @@ export const updateDelivery = async (
     );
 };
 
-export const deleteDelivery = async (id: number): Promise<void> => {
+export const deleteDelivery = async (id: number)=> {
   const pool = await getPool();
   await pool
     .request()

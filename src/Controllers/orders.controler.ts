@@ -80,7 +80,7 @@ export const getOrdersByuserid = async (req: Request, res: Response) => {
     const orders = await ordersService.fetchOrdersofUser(UserId);
     res.status(200).json(orders);
   } catch (error) {
-    console.error("Error fetching orders by user ID:", error);
+    
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
