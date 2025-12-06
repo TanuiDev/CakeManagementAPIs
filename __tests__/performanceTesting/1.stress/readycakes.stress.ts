@@ -11,7 +11,7 @@ export const options = {
 };
 
 export default () => {
-    const res = http.get('http://localhost:5000/readycakes');
+    const res = http.get('http://localhost:8081/readycakes');
     check(res, {
         'is status 200': (r) => r.status === 200,
     });

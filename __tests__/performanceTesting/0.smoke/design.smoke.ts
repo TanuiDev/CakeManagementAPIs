@@ -7,7 +7,7 @@ export const options = {
 }
 
 export default () => {
-    const res = http.get("http://localhost:5000/designs")
+    const res = http.get("http://localhost:8081/designs")
     check(res, {
         "is status 200": (r) => r.status === 200,
     })

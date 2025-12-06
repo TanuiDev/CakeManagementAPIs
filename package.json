@@ -7,12 +7,44 @@
     "build": "tsc",
     "start": "npm run build && node dist/index.js",
     "dev": "tsx watch src/server.ts",
-    "test": "cross-env NODE_ENV=test jest --runInBand",
-    "k6": "tsc --outDir dist && node -e \"const { execSync } = require('child_process'); const file = process.argv[1]; const outFile = 'dist/' + file.replace(/\\.ts$/, '.js'); execSync('k6 run ' + outFile, { stdio: 'inherit' });\"",
-    "smoke:user": "k6 run __tests__/performanceTesting/0.smoke/user.smoke.ts",
-    "stress:user": "k6 run __tests__/performanceTesting/1.stress/user.stress.ts",
-    "soak:user": "k6 run __tests__/performanceTesting/2.soak.Testsing/user.soak.ts",
-    "spike:user": "k6 run __tests__/performanceTesting/3.spike/user.spike.ts"
+    "test": "jest",
+    "smoke:orders": "k6 run __tests__/performanceTesting/0.smoke/smoke.orders.ts",
+    "smoke:users":"k6 run __tests__/performanceTesting/0.smoke/user.smoke.ts",
+    "smoke:delivery":"k6 run ./__tests__/performanceTesting/0.smoke/delivery.smoke.ts",
+    "smoke:design":"k6 run ./__tests__/performanceTesting/0.smoke/design.smoke.ts",
+    "smoke:ready":"k6 run ./__tests__/performanceTesting/0.smoke/readycakes.smoke.ts",
+    "smoke:stages":"k6 run ./__tests__/performanceTesting/0.smoke/smoke.stages.ts",
+    "smoke:all":"pnpm run smoke:orders && pnpm run smoke:users && pnpm run smoke:delivery && pnpm run smoke:design && pnpm run smoke:ready && pnpm run smoke:stages",
+   
+
+    "stress:orders": "k6 run ./__tests__/performanceTesting/1.stress/stress.orders.ts",
+    "stress:stages":"k6 run ./__tests__/performanceTesting/1.stress/stress.stages.ts",
+    "stress:delivery":"k6 run ./__tests__/performanceTesting/1.stress/delivery.stress.ts",
+    "stress:design":"k6 run ./__tests__/performanceTesting/1.stress/design.stress.ts",
+    "stress:ready":"k6 run ./__tests__/performanceTesting/1.stress/readycakes.stress.ts",
+    "stress:users":"k6 run ./__tests__/performanceTesting/1.stress/users.stress.ts",
+    "stress:all":"pnpm run stress:orders && pnpm run stress:stages && pnpm run stress:delivery && pnpm run stress:design && pnpm run stress:ready && pnpm run stress:users",
+
+    "soak:orders": "k6 run ./__tests__/performanceTesting/2.soak.Testsing/orders.soak.ts",
+    "soak:stages":"k6 run ./__tests__/performanceTesting/2.soak.Testsing/stages.soak.ts",
+    "soak:delivery":"k6 run ./__tests__/performanceTesting/2.soak.Testsing/delivery.soak.ts",
+    "soak:design":"k6 run ./__tests__/performanceTesting/2.soak.Testsing/design.soak.ts",
+    "soak:ready":"k6 run ./__tests__/performanceTesting/2.soak.Testsing/readycakes.soak.ts",
+    "soak:users":"k6 run ./__tests__/performanceTesting/2.soak.Testsing/user.soak.ts",
+    "soak:all":"pnpm run soak:orders && pnpm run soak:stages && pnpm run soak:delivery && pnpm run soak:design && pnpm run soak:ready && pnpm run soak:users",
+
+
+    "spike:orders": "k6 run ./__tests__/performanceTesting/3.spike/spike.orders.ts",
+    "spike:stages":"k6 run ./__tests__/performanceTesting/3.spike/spike.stages.ts",
+    "spike:delivery":"k6 run ./__tests__/performanceTesting/3.spike/delivery.spike.ts",
+    "spike:design":"k6 run ./__tests__/performanceTesting/3.spike/design.spike.ts",
+    "spike:ready":"k6 run ./__tests__/performanceTesting/3.spike/readycakes.spike.ts",
+    "spike:users":"k6 run ./__tests__/performanceTesting/3.spike/user.spike.ts",
+    "spike:all":"pnpm run spike:orders && pnpm run spike:stages && pnpm run spike:delivery && pnpm run spike:design && pnpm run spike:ready && pnpm run spike:users",
+
+    "tests:all":"pnpm run test && pnpm run smoke:all && pnpm run stress:all && pnpm run soak:all && pnpm run spike:all"
+
+    
   },
   "keywords": [],
   "author": "",

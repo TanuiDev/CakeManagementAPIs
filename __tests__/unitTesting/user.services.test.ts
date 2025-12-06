@@ -13,6 +13,11 @@ jest.mock("bcryptjs", () => ({
 
 }));
 
+ jest.mock("jsonwebtoken", () => ({
+  __esModule: true,
+  default: { sign: jest.fn() },
+}));
+
 jest.mock("../../src/mailer/mailer");
 jest.mock("../../src/mailer/emailtemplate");
 
@@ -20,14 +25,6 @@ describe("User Service ", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-
-jest.mock("jsonwebtoken", () => ({
-  __esModule: true,
-  default: { sign: jest.fn() },
-}));
-
-
-
   it("should return a list of users", async () => {
     const mockUsers = [
       {

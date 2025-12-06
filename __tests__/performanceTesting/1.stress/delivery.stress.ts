@@ -10,7 +10,7 @@ export const options = {
 }
 
 export default () => {
-    const res = http.get("http://localhost:5000/deliveries")
+    const res = http.get("http://localhost:8081/deliveries")
     check(res, {
         "is status 200": (r) => r.status === 200,
     })
