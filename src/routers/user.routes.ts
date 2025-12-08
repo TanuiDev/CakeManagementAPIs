@@ -2,8 +2,7 @@ import { Application, application } from "express";
 import * as userController from "../Controllers/user.controller";
 import {
   adminOnly,
-  customerOnly,
-  userOnly,
+  customerOnly
 } from "../middlewares/auth.middlewares";
 
 export default function registerUserRoutes(app: Application) {

@@ -1,8 +1,8 @@
 import * as ordersController from "../Controllers/orders.controler";
 import {
   adminOnly,
-  customerOnly,
-  userOnly,
+  customerOnly
+ 
 } from "../middlewares/auth.middlewares";
 
 const registerOrderRoutes = (app: any) => {
