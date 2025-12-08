@@ -2,7 +2,7 @@ export const emailTemplate = {
   welcome: (firstName: string) => `
     <div>
         <h2>Welcome ${firstName}!</h2>
-        <p>Thank you for registering with our  CAKE App. We're excited to have you on board!</p>
+        <p>Thank you for registering with our  SweetDelights App. We're excited to have you on board!</p>
         <P>You can now log in and place your order.</P>
     </div>
     `,
@@ -13,7 +13,7 @@ export const emailTemplate = {
         <p>Your verification code is: <strong>${code}</strong></p>
         <p>Please enter this code in the app to verify your email address.</p>
         <br />
-        <p> Thank you,<br/>The CakeHub Team</p>
+        <p> Thank you,<br/>The SweetDelights Team</p>
     </div>
     `,
 
@@ -23,7 +23,7 @@ export const emailTemplate = {
       <p> Your account has been verified successfully!</p>
       <p>You can now log in and place your order.</p>
       <br/>
-      <p> Thank you,<br/>Cake by Liz</p>
+      <p> Thank you,<br/>Cake SweetDelights</p>
     </div>
     `,
 };

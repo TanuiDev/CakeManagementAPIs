@@ -2,7 +2,7 @@ import { getPool } from "../db/config";
 import sql from "mssql";
 import { NewUser, UpdateUser, User } from "../types/user.types";
 
-//  Create user
+
 export const createUser = async (user: NewUser) => {
   const pool = await getPool();
   const result = await pool

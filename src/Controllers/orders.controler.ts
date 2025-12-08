@@ -59,9 +59,9 @@ export const updateOrderDetails = async (req: Request, res: Response) => {
 
 export const updateOrderStatus = async (req: Request, res: Response) => {
   const orderId = parseInt(req.params.id);
-  console.log("order id", orderId);
+  
   const { Status } = req.body;
-  console.log(Status);
+  
   try {
     await ordersService.changeOrderStatus(orderId, Status);
 

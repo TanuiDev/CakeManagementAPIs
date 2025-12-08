@@ -1,15 +1,12 @@
--- write all the sql code related to sql db connection and creation of tables here
-
 CREATE DATABASE CakeManagementDB;
-GO
+
 
 USE CakeManagementDB;
-GO
 
--- Drop existing tables to avoid conflicts
+
 DROP TABLE IF EXISTS Cake_Orders;
 DROP TABLE IF EXISTS Cake_Designs;
-GO
+
 
 CREATE TABLE Cake_Designs (
     DesignID INT IDENTITY(1,1) PRIMARY KEY,
@@ -25,23 +22,23 @@ CREATE TABLE Cake_Designs (
             ELSE 0
         END PERSISTED,
     ImageUrl NVARCHAR(255),
-    Category NVARCHAR(100),
+    Catery NVARCHAR(100),
     Availability BIT DEFAULT 1, -- 1 = available, 0 = unavailable
     CreatedAt DATETIME2 DEFAULT SYSDATETIME(),
     UpdatedAt DATETIME2 DEFAULT SYSDATETIME()
 );
-GO
 
-INSERT INTO Cake_Designs (DesignName, Description, BaseFlavor, Size, ImageUrl, Category)
+
+INSERT INTO Cake_Designs (DesignName, Description, BaseFlavor, Size, ImageUrl, Catery)
 VALUES
 ('Birthday Bliss', 'Colorful birthday cake with sprinkles.', 'Vanilla', 'Small', 'birthday.jpg', 'Birthday'),
 ('Wedding Elegance', 'Three-tier fondant wedding cake.', 'Chocolate', 'Large', 'wedding.jpg', 'Wedding'),
 ('Classic Mocha', 'Elegant mocha cake with smooth frosting.', 'Mocha', 'Medium', 'mocha.jpg', 'Classic');
-GO
+
 
 
 SELECT * FROM Cake_Designs;
-GO
+
 TRUNCATE TABLE Cake_Designs;
 
 
@@ -50,7 +47,7 @@ ADD AvailableSizes NVARCHAR(100) NULL;  -- e.g. 'Small,Medium,Large'
 
 
 DROP TABLE IF EXISTS Cake_Designs;
-GO
+
 DROP TABLE IF EXISTS users;
 
 
@@ -77,7 +74,7 @@ CREATE TABLE Cake_Orders(
     CreatedAt DATETIME2 DEFAULT SYSDATETIME(),
     UpdatedAt DATETIME2 DEFAULT SYSDATETIME()
 );
-GO
+
 
 
 INSERT INTO Cake_Orders (
@@ -117,7 +114,7 @@ GO
 SELECT * FROM Cake_Orders;
 GO
     
-    -- Create users table
+  
 CREATE TABLE Users(
   userid INT PRIMARY KEY IDENTITY(1,1),
   name VARCHAR(100) NOT NULL,
@@ -134,7 +131,6 @@ ADD verification_code VARCHAR(10),
     is_verified BIT DEFAULT 0;
 
 
--- Insert sample users
 INSERT INTO Users (name, email, password, phone, address, role)
 VALUES
 ('Elizabeth Njoki', 'liz@gmail.com', 'hashedpassword123', '0712345678', 'Nyeri', 'admin'),
@@ -231,7 +227,7 @@ VALUES
 (3, 'Decorating', 'Pending', NULL, NULL, 'Scheduled for tomorrow.'),
 (2, 'Baking', 'Completed', '2025-10-23 07:45', '2025-10-23 10:15', 'Red velvet baked perfectly.');
 
--- DROP TABLE Cake_Stages ;
+
 
 SELECT * FROM Cake_Stages;
 

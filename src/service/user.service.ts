@@ -12,12 +12,10 @@ dotenv.config();
 export const createUserWithVerification = async (user: NewUser) => {
   if (user.password) {
     const hashedPassword = await bcrypt.hash(user.password, 10);
-
     user.password = hashedPassword;
   }
 
   const availableuser = await userRepositories.getUserByEmail(user.email);
-
   if (availableuser) {
     throw new Error("Email already exists");
   }
@@ -34,10 +32,10 @@ export const createUserWithVerification = async (user: NewUser) => {
     console.log("Sending verification email to", user.email);
     await sendEmail(
       user.email,
-      "Verify your email - CAKEApp By Liz",
+      "Verify your email address",
       emailTemplate.verify(user.name, verificationCode),
     );
-    console.log(user.name, verificationCode);
+   
     return {
       message: `User created successfully. Verification code sent to ${user.email}.`,
     };

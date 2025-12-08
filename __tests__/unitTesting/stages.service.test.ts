@@ -109,7 +109,7 @@ describe("Order stages test Suites",()=>{
 
     })
 
-    it.skip("It should delete Stage by stage id",async ()=>{
+    it("It should delete Stage by stage id",async ()=>{
        const mockStage={
         Id:2003,
         OrderId: 2006,
