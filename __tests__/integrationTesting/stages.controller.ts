@@ -11,12 +11,12 @@ import { getPool } from "../../src/db/config";
 beforeAll(async () => {
     pool = await getPool();
 
-    const result = await pool.query("INSERT INTO Cake_Stages ( OrderId, StageName, Status, UpdatedAt) OUTPUT INSERTED.Id VALUES (1006, 'Baking', 'In Progress', '2023-12-01 10:00:00')");
+    const result = await pool.query("INSERT INTO Cake_Stages ( OrderId, StageName, Status, UpdatedAt) OUTPUT INSERTED.Id VALUES (2007, 'Baking', 'In Progress', '2023-12-01 10:00:00')");
     testStageId = result.recordset[0].Id;
 });
 
 afterAll(async () => {
-   await  pool.query("DELETE FROM Cake_Stages WHERE OrderId=1006");
+   await  pool.query(`DELETE FROM Cake_Stages WHERE Id = ${testStageId}`);
     await pool.close();
 });
 

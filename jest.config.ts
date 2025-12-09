@@ -6,7 +6,7 @@ const config: Config = {
     verbose: true, 
 
     // Coverage Configuration
-    collectCoverage: false, // Enables code coverage collection
+    collectCoverage:true, // Enables code coverage collection
     coverageDirectory: "coverage", // Output directory for coverage reports
     collectCoverageFrom: [
         '<rootDir>/src/**/*.ts' // Files to include for coverage
