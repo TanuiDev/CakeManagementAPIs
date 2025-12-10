@@ -49,7 +49,7 @@ export const createOrder = async (orderData: NewOrder) => {
     .query(
       "INSERT INTO Cake_Orders (DesignId, UserId,Size, Flavor, Message, Status, DeliveryDate, Notes, ExtendedDescription, SampleImages, ColorPreferences)VALUES (@DesignId, @UserId, @Size, @Flavor, @Message, @Status, @DeliveryDate, @Notes, @ExtendedDescription, @SampleImages, @ColorPreferences)",
     );
-  return { message: "Order created successfully."}
+  return { message: "Order created successfully." };
 };
 
 export const updateOrderStatus = async (orderId: number, Status: string) => {
@@ -88,7 +88,7 @@ export const updateOrderDetails = async (
     .query(
       "UPDATE Cake_Orders SET DesignId = @DesignId, Size = @Size, Flavor = @Flavor, Message = @Message, ExtendedDescription = @ExtendedDescription, Notes = @Notes, SampleImages = @SampleImages, ColorPreferences = @ColorPreferences WHERE Id = @Id",
     );
-  return { message: "Order details updated successfully."};
+  return { message: "Order details updated successfully." };
 };
 
 export const deleteOrder = async (orderId: number) => {
@@ -99,8 +99,6 @@ export const deleteOrder = async (orderId: number) => {
     .query("DELETE FROM Cake_Orders WHERE Id = @Id");
   return { message: "Order deleted successfully." };
 };
-
-
 
 export const fetchOrdersofUser = async (UserId: number) => {
   const pool = await getPool();

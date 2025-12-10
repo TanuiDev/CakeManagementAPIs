@@ -59,9 +59,9 @@ export const updateOrderDetails = async (req: Request, res: Response) => {
 
 export const updateOrderStatus = async (req: Request, res: Response) => {
   const orderId = parseInt(req.params.id);
-  
+
   const { Status } = req.body;
-  
+
   try {
     await ordersService.changeOrderStatus(orderId, Status);
 
@@ -80,7 +80,6 @@ export const getOrdersByuserid = async (req: Request, res: Response) => {
     const orders = await ordersService.fetchOrdersofUser(UserId);
     res.status(200).json(orders);
   } catch (error) {
-    
     res.status(500).json({ error: "Internal Server Error" });
   }
 };

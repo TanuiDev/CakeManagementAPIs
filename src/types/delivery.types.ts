@@ -10,7 +10,7 @@ export interface Delivery {
   UpdatedAt?: string;
 }
 
-export interface DeliveryUpdate { 
+export interface DeliveryUpdate {
   DeliveryAddress?: string;
   DeliveryDate?: string;
   CourierName?: string;

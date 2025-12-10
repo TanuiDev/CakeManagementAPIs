@@ -5,20 +5,17 @@ dotenv.config();
 
 let transporter;
 
-
 const isTestEnv =
   process.env.NODE_ENV === "test" || process.env.JEST_WORKER_ID !== undefined;
 
 if (isTestEnv) {
-
   transporter = {
     sendMail: async (options: any) => {
       console.log("[TEST MODE] Email would be sent to:", options.to);
-      return { accepted: [options.to], rejected: [] }; 
+      return { accepted: [options.to], rejected: [] };
     },
   };
 } else {
-  
   transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: 465,
